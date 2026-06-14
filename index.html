@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Goa Monsoon Trip 2025 🌧️</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231B3A2D'/%3E%3Cellipse cx='16' cy='28' rx='3' ry='6' fill='%232C5F3F'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='5' fill='%234A7C59' transform='rotate(-30 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='5' fill='%234A7C59' transform='rotate(20 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='10' ry='4' fill='%234A7C59' transform='rotate(65 16 16)'/%3E%3Ccircle cx='16' cy='15' r='3' fill='%23F5C842'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,14 +43,12 @@
   /* ── HERO ── */
   .hero {
     position: relative;
-    min-height: 100vh;
     background: var(--jungle);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    padding: 40px 20px;
+    padding: 60px 20px 260px;
   }
 
   .hero-palms {
@@ -126,28 +125,11 @@
   .pill-green { background: var(--palm); color: var(--marigold); }
   .pill-red   { background: rgba(192,57,43,0.25); color: #F5A6A0; border: 1px solid rgba(192,57,43,0.4); }
 
-  .scroll-cue {
-    position: absolute;
-    bottom: 240px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    color: rgba(253,246,227,0.45);
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    animation: bounce 2s infinite;
-  }
-
-  .scroll-cue svg { opacity: 0.5; }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50%       { transform: translateX(-50%) translateY(8px); }
+  /* ── TOP NAV (above hero, not sticky) ── */
+  .top-nav {
+    position: relative !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
 
   /* ── STAY BANNER ── */
@@ -183,11 +165,9 @@
     display: flex;
     max-width: 900px;
     margin: 0 auto;
-    overflow-x: auto;
-    scrollbar-width: none;
-    gap: 2px;
+    flex-wrap: wrap;
+    gap: 0;
   }
-  .tabs::-webkit-scrollbar { display: none; }
 
   .tab-btn {
     flex-shrink: 0;
@@ -619,6 +599,18 @@
 
 <canvas id="rain-canvas"></canvas>
 
+<!-- TOP NAV BAR -->
+<div class="tabs-wrap top-nav">
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="showDay('day1')">Day 1 · Arrival</button>
+    <button class="tab-btn" onclick="showDay('day2')">Day 2 · Falls / Lakes</button>
+    <button class="tab-btn" onclick="showDay('day3')">Day 3 · South Belt</button>
+    <button class="tab-btn" onclick="showDay('day4')">Day 4 · North Goa</button>
+    <button class="tab-btn" onclick="showDay('day5')">Day 5 · Departure</button>
+    <button class="tab-btn" onclick="showDay('summary')">Summary</button>
+  </nav>
+</div>
+
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
@@ -634,16 +626,12 @@
       <span class="pill pill-green">🏖️ 3 Beaches</span>
       <span class="pill pill-green">🦋 Butterfly Garden</span>
       <span class="pill pill-green">🏰 Chapora Fort</span>
-      <span class="pill pill-red">🌊 Dudhsagar (if lucky!)</span>
+      <span class="pill pill-red">💧 Lots of Water</span>
       <span class="pill pill-green">🔬 Science Centre</span>
       <span class="pill pill-green">🛍️ Mall de Goa</span>
     </div>
   </div>
   <div class="hero-palms"></div>
-  <div class="scroll-cue">
-    <svg width="16" height="22" viewBox="0 0 16 22" fill="none"><rect x="1" y="1" width="14" height="20" rx="7" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="7" r="2.5" fill="currentColor"/></svg>
-    Scroll
-  </div>
 </section>
 
 <!-- STAY BANNER -->
@@ -1480,13 +1468,21 @@ draw();
 // ── TAB NAVIGATION ──
 function showDay(id) {
   document.querySelectorAll('.day-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
   const idx = ['day1','day2','day3','day4','day5','summary'].indexOf(id);
-  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  // sync all sets of tab buttons (top nav + sticky nav)
+  document.querySelectorAll('.tabs-wrap').forEach(wrap => {
+    wrap.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === idx);
+    });
+  });
 
-  window.scrollTo({ top: document.querySelector('.tabs-wrap').offsetTop - 10, behavior: 'smooth' });
+  // if clicking from top nav, scroll down to sticky nav + content
+  const stickyNav = document.querySelector('.tabs-wrap:not(.top-nav)');
+  if (stickyNav) {
+    window.scrollTo({ top: stickyNav.offsetTop - 10, behavior: 'smooth' });
+  }
 }
 
 // ── OPTION TOGGLE ──
