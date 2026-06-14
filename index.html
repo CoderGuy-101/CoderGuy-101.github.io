@@ -48,15 +48,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px 260px;
+    padding: 80px 20px 300px;
   }
 
   .hero-palms {
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    height: 220px;
+    height: 320px;
     background:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 220'%3E%3Cellipse cx='100' cy='220' rx='18' ry='200' fill='%232C5F3F'/%3E%3Cellipse cx='100' cy='70' rx='90' ry='35' fill='%234A7C59' transform='rotate(-30 100 70)'/%3E%3Cellipse cx='100' cy='70' rx='90' ry='35' fill='%234A7C59' transform='rotate(20 100 70)'/%3E%3Cellipse cx='100' cy='70' rx='90' ry='35' fill='%234A7C59' transform='rotate(60 100 70)'/%3E%3Cellipse cx='100' cy='70' rx='80' ry='30' fill='%231B3A2D' transform='rotate(-60 100 70)'/%3E%3Cellipse cx='300' cy='220' rx='15' ry='180' fill='%231B3A2D'/%3E%3Cellipse cx='300' cy='80' rx='80' ry='30' fill='%234A7C59' transform='rotate(40 300 80)'/%3E%3Cellipse cx='300' cy='80' rx='80' ry='30' fill='%234A7C59' transform='rotate(-20 300 80)'/%3E%3Cellipse cx='300' cy='80' rx='70' ry='28' fill='%232C5F3F' transform='rotate(80 300 80)'/%3E%3Cellipse cx='1100' cy='220' rx='18' ry='200' fill='%232C5F3F'/%3E%3Cellipse cx='1100' cy='70' rx='90' ry='35' fill='%234A7C59' transform='rotate(30 1100 70)'/%3E%3Cellipse cx='1100' cy='70' rx='90' ry='35' fill='%234A7C59' transform='rotate(-20 1100 70)'/%3E%3Cellipse cx='1100' cy='70' rx='90' ry='35' fill='%234A7C59' transform='rotate(-60 1100 70)'/%3E%3Cellipse cx='900' cy='220' rx='15' ry='175' fill='%231B3A2D'/%3E%3Cellipse cx='900' cy='85' rx='80' ry='30' fill='%234A7C59' transform='rotate(-40 900 85)'/%3E%3Cellipse cx='900' cy='85' rx='80' ry='30' fill='%234A7C59' transform='rotate(20 900 85)'/%3E%3Cellipse cx='600' cy='220' rx='12' ry='160' fill='%232C5F3F'/%3E%3Cellipse cx='600' cy='100' rx='70' ry='28' fill='%234A7C59' transform='rotate(10 600 100)'/%3E%3Cellipse cx='600' cy='100' rx='70' ry='28' fill='%234A7C59' transform='rotate(-50 600 100)'/%3E%3C/svg%3E") no-repeat bottom center / cover;
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 320'%3E%3Cellipse cx='100' cy='320' rx='18' ry='280' fill='%232C5F3F'/%3E%3Cellipse cx='100' cy='100' rx='110' ry='42' fill='%234A7C59' transform='rotate(-30 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='110' ry='42' fill='%234A7C59' transform='rotate(20 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='110' ry='42' fill='%234A7C59' transform='rotate(65 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='95' ry='36' fill='%231B3A2D' transform='rotate(-60 100 100)'/%3E%3Cellipse cx='300' cy='320' rx='15' ry='260' fill='%231B3A2D'/%3E%3Cellipse cx='300' cy='110' rx='95' ry='36' fill='%234A7C59' transform='rotate(40 300 110)'/%3E%3Cellipse cx='300' cy='110' rx='95' ry='36' fill='%234A7C59' transform='rotate(-20 300 110)'/%3E%3Cellipse cx='300' cy='110' rx='85' ry='32' fill='%232C5F3F' transform='rotate(80 300 110)'/%3E%3Cellipse cx='1100' cy='320' rx='18' ry='280' fill='%232C5F3F'/%3E%3Cellipse cx='1100' cy='100' rx='110' ry='42' fill='%234A7C59' transform='rotate(30 1100 100)'/%3E%3Cellipse cx='1100' cy='100' rx='110' ry='42' fill='%234A7C59' transform='rotate(-20 1100 100)'/%3E%3Cellipse cx='1100' cy='100' rx='110' ry='42' fill='%234A7C59' transform='rotate(-65 1100 100)'/%3E%3Cellipse cx='900' cy='320' rx='15' ry='255' fill='%231B3A2D'/%3E%3Cellipse cx='900' cy='115' rx='95' ry='36' fill='%234A7C59' transform='rotate(-40 900 115)'/%3E%3Cellipse cx='900' cy='115' rx='95' ry='36' fill='%234A7C59' transform='rotate(20 900 115)'/%3E%3Cellipse cx='600' cy='320' rx='12' ry='240' fill='%232C5F3F'/%3E%3Cellipse cx='600' cy='130' rx='85' ry='32' fill='%234A7C59' transform='rotate(10 600 130)'/%3E%3Cellipse cx='600' cy='130' rx='85' ry='32' fill='%234A7C59' transform='rotate(-50 600 130)'/%3E%3C/svg%3E") no-repeat bottom center / cover;
     opacity: 0.85;
     z-index: 1;
   }
@@ -125,13 +125,6 @@
   .pill-green { background: var(--palm); color: var(--marigold); }
   .pill-red   { background: rgba(192,57,43,0.25); color: #F5A6A0; border: 1px solid rgba(192,57,43,0.4); }
 
-  /* ── TOP NAV (above hero, not sticky) ── */
-  .top-nav {
-    position: relative !important;
-    box-shadow: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
   /* ── STAY BANNER ── */
   .stay-banner {
     background: var(--palm);
@@ -165,20 +158,22 @@
     display: flex;
     max-width: 900px;
     margin: 0 auto;
-    flex-wrap: wrap;
-    gap: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
+  .tabs::-webkit-scrollbar { display: none; }
 
   .tab-btn {
     flex-shrink: 0;
-    padding: 16px 20px;
+    padding: 14px 16px;
     background: none;
     border: none;
     color: rgba(253,246,227,0.5);
     font-family: 'Inter', sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
     cursor: pointer;
     position: relative;
@@ -599,18 +594,6 @@
 
 <canvas id="rain-canvas"></canvas>
 
-<!-- TOP NAV BAR -->
-<div class="tabs-wrap top-nav">
-  <nav class="tabs">
-    <button class="tab-btn active" onclick="showDay('day1')">Day 1 · Arrival</button>
-    <button class="tab-btn" onclick="showDay('day2')">Day 2 · Falls / Lakes</button>
-    <button class="tab-btn" onclick="showDay('day3')">Day 3 · South Belt</button>
-    <button class="tab-btn" onclick="showDay('day4')">Day 4 · North Goa</button>
-    <button class="tab-btn" onclick="showDay('day5')">Day 5 · Departure</button>
-    <button class="tab-btn" onclick="showDay('summary')">Summary</button>
-  </nav>
-</div>
-
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
@@ -626,7 +609,7 @@
       <span class="pill pill-green">🏖️ 3 Beaches</span>
       <span class="pill pill-green">🦋 Butterfly Garden</span>
       <span class="pill pill-green">🏰 Chapora Fort</span>
-      <span class="pill pill-red">💧 Lots of Water</span>
+      <span class="pill pill-green">💧 Lots of Water</span>
       <span class="pill pill-green">🔬 Science Centre</span>
       <span class="pill pill-green">🛍️ Mall de Goa</span>
     </div>
@@ -1468,21 +1451,13 @@ draw();
 // ── TAB NAVIGATION ──
 function showDay(id) {
   document.querySelectorAll('.day-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
   const idx = ['day1','day2','day3','day4','day5','summary'].indexOf(id);
-  // sync all sets of tab buttons (top nav + sticky nav)
-  document.querySelectorAll('.tabs-wrap').forEach(wrap => {
-    wrap.querySelectorAll('.tab-btn').forEach((b, i) => {
-      b.classList.toggle('active', i === idx);
-    });
-  });
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
 
-  // if clicking from top nav, scroll down to sticky nav + content
-  const stickyNav = document.querySelector('.tabs-wrap:not(.top-nav)');
-  if (stickyNav) {
-    window.scrollTo({ top: stickyNav.offsetTop - 10, behavior: 'smooth' });
-  }
+  window.scrollTo({ top: document.querySelector('.tabs-wrap').offsetTop - 10, behavior: 'smooth' });
 }
 
 // ── OPTION TOGGLE ──
