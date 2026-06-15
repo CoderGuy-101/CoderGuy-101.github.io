@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Goa Monsoon Trip 2025 🌧️</title>
+<title>Goa Trip 2026 🌧️</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231B3A2D'/%3E%3Cellipse cx='16' cy='28' rx='3' ry='6' fill='%232C5F3F'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='5' fill='%234A7C59' transform='rotate(-30 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='5' fill='%234A7C59' transform='rotate(20 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='10' ry='4' fill='%234A7C59' transform='rotate(65 16 16)'/%3E%3Ccircle cx='16' cy='15' r='3' fill='%23F5C842'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -26,7 +26,7 @@ body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--
 #rain-canvas {
   position: fixed; top: 0; left: 0;
   width: 100%; height: 100%;
-  pointer-events: none; z-index: 0; opacity: 0.18;
+  pointer-events: none; z-index: 999999; opacity: 0.18;
   transition: opacity 0.8s;
 }
 body.rain-mode #rain-canvas { opacity: 0.55; }
@@ -114,20 +114,20 @@ body.rain-mode .hero-eyebrow {
 .hero-pills { 
   display:flex; 
   gap:8px; 
-  justify-content:flex-start; 
+  justify-content:center; 
   align-items:center;
   flex-wrap:nowrap; 
   margin-bottom:30px; 
-  overflow-x:auto; 
+  overflow:visible; 
   scrollbar-width:none; 
   padding:10px 4px;
   width: 100%;
 }
 .hero-pills::-webkit-scrollbar { display:none; }
 .pill { 
-  font-size:11px; 
+  font-size:10px; 
   font-weight:600; 
-  padding:6px 14px; 
+  padding:5px 10px; 
   border-radius:4px; 
   letter-spacing:1px; 
   text-transform: uppercase;
@@ -781,8 +781,12 @@ async function saveAll() {
   if (!saveStatus) return;
   saveStatus.textContent = 'Saving…'; saveStatus.className = 'saving';
   try {
-    await window.storage.set(STORAGE_KEY, JSON.stringify(getState()), true);
-    saveStatus.textContent = '✓ Saved — visible to everyone'; saveStatus.className = 'saved';
+    const data = JSON.stringify(getState());
+    localStorage.setItem(STORAGE_KEY, data);
+    if (window.storage?.set) {
+      try { await window.storage.set(STORAGE_KEY, data, true); } catch(e) {}
+    }
+    saveStatus.textContent = '✓ Saved'; saveStatus.className = 'saved';
   } catch(e) { saveStatus.textContent = '⚠ Could not save'; saveStatus.className = ''; }
 }
 
@@ -794,9 +798,13 @@ function scheduleSave() {
 
 async function loadState() {
   try {
-    const result = await window.storage.get(STORAGE_KEY, true);
-    if (result && result.value) applyState(JSON.parse(result.value));
-  } catch(e) { /* fresh start */ }
+    const local = localStorage.getItem(STORAGE_KEY);
+    if (local) { applyState(JSON.parse(local)); return; }
+    if (window.storage?.get) {
+      const result = await window.storage.get(STORAGE_KEY, true);
+      if (result && result.value) applyState(JSON.parse(result.value));
+    }
+  } catch(e) {}
 }
 
 loadState();
