@@ -319,7 +319,6 @@ footer strong { color:var(--marigold); }
 <canvas id="rain-canvas"></canvas>
 <div id="flood-bar"></div>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-content">
     <div class="hero-eyebrow" id="secret-btn" onclick="toggleRainMode()">🌧️ Monsoon Edition · 4 Days · 4 People</div>
@@ -351,14 +350,12 @@ footer strong { color:var(--marigold); }
   </div>
 </section>
 
-<!-- STAY BANNER -->
 <div class="stay-banner">
   🏨 <strong>Sea Queen Beach Resort &amp; Spa, Colva</strong>
   <div class="dot"></div> All 4 nights
   <div class="dot"></div> Check-in Day 1 · Check-out Day 5 morning
 </div>
 
-<!-- TABS -->
 <div class="tabs-wrap">
   <nav class="tabs">
     <button class="tab-btn active" id="tab-day1" onclick="showDay('day1')">Day 1 · Arrival<span class="tab-done">✓</span></button>
@@ -372,7 +369,6 @@ footer strong { color:var(--marigold); }
 
 <main class="main">
 
-<!-- ── DAY 1 ── -->
 <section id="day1" class="day-section active" data-day-idx="0">
   <div class="day-header">
     <div class="day-number">01</div>
@@ -392,7 +388,6 @@ footer strong { color:var(--marigold); }
   </div>
 </section>
 
-<!-- ── DAY 2 ── -->
 <section id="day2" class="day-section" data-day-idx="1">
   <div class="day-header">
     <div class="day-number">02</div>
@@ -431,7 +426,6 @@ footer strong { color:var(--marigold); }
   </div>
 </section>
 
-<!-- ── DAY 3 ── -->
 <section id="day3" class="day-section" data-day-idx="2">
   <div class="day-header">
     <div class="day-number">03</div>
@@ -454,7 +448,6 @@ footer strong { color:var(--marigold); }
   </div>
 </section>
 
-<!-- ── DAY 4 ── -->
 <section id="day4" class="day-section" data-day-idx="3">
   <div class="day-header">
     <div class="day-number">04</div>
@@ -478,7 +471,6 @@ footer strong { color:var(--marigold); }
   </div>
 </section>
 
-<!-- ── DAY 5 ── -->
 <section id="day5" class="day-section" data-day-idx="4">
   <div class="day-header">
     <div class="day-number">05</div>
@@ -516,7 +508,6 @@ footer strong { color:var(--marigold); }
   </div>
 </section>
 
-<!-- ── SUMMARY ── -->
 <section id="summary" class="day-section">
   <div class="day-header">
     <div class="day-number" style="font-size:52px;">📋</div>
@@ -571,7 +562,6 @@ footer strong { color:var(--marigold); }
 
 <footer>Made with ☀️ and 🌧️ for <strong>The Goa Gang</strong> · 4 Days · 4 People · All Monsoon Magic</footer>
 
-<!-- EDIT MODE BANNER -->
 <div id="edit-banner">
   <span>✏️ <strong>Edit Mode</strong> — tick off activities, lock in your Day 2 &amp; Day 5 plans</span>
   <span id="save-status"></span>
@@ -719,12 +709,9 @@ function checkDayCompletion() {
   const order = ['day1','day2','day3','day4','day5'];
   for (let i = 0; i < order.length; i++) {
     const items = getDayItems(order[i]);
-    if (items.length === 0 || !items.every(item => item.classList.contains('done'))) return; // this day not done, stop
-    // this day is done — check if next day should open
+    if (items.length === 0 || !items.every(item => item.classList.contains('done'))) return;
     if (i < order.length - 1) {
       const nextId = order[i + 1];
-      const nextItems = getDayItems(nextId);
-      // all previous days done, move to next if it's not already active
       const currentActive = document.querySelector('.day-section.active');
       if (currentActive && currentActive.id === order[i]) {
         setTimeout(() => showDay(nextId), 600);
@@ -734,8 +721,11 @@ function checkDayCompletion() {
   }
 }
 
-// ─── STORAGE ───
-const STORAGE_KEY = 'goa-trip-state-v2';
+// ─── STORAGE (Global Cloud Storage) ───
+// 👇 IMPORTANT: Change the string "GoaGang2025_SharedKey_abc123" below to a unique secret phrase 
+// that only your group knows. This prevents strangers from accidentally wiping or changing your data!
+const BUCKET_NAME = 'aabbccdd1234';
+const STORAGE_URL = 'https://kvdb.io/' + BUCKET_NAME + '/goa-trip-state';
 
 function getState() {
   const checks = {};
@@ -750,7 +740,10 @@ function applyState(state) {
   if (state.checks) {
     Object.keys(state.checks).forEach(idx => {
       const cb = document.querySelector('.tl-check[data-idx="' + idx + '"]');
-      if (cb) { cb.checked = state.checks[idx]; cb.closest('.tl-item').classList.toggle('done', !!state.checks[idx]); }
+      if (cb) { 
+        cb.checked = state.checks[idx]; 
+        cb.closest('.tl-item').classList.toggle('done', !!state.checks[idx]); 
+      }
     });
   }
   if (state.day2) { const s = document.getElementById('lock2-sel'); if (s) { s.value = state.day2; showOption(state.day2); } }
@@ -760,11 +753,19 @@ function applyState(state) {
 
 async function saveAll() {
   if (!saveStatus) return;
-  saveStatus.textContent = 'Saving…'; saveStatus.className = 'saving';
+  saveStatus.textContent = 'Saving to cloud…'; saveStatus.className = 'saving';
   try {
-    await window.storage.set(STORAGE_KEY, JSON.stringify(getState()), true);
+    const response = await fetch(STORAGE_URL, {
+      method: 'POST',
+      body: JSON.stringify(getState()),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    if (!response.ok) throw new Error('Cloud storage response failed');
     saveStatus.textContent = '✓ Saved — visible to everyone'; saveStatus.className = 'saved';
-  } catch(e) { saveStatus.textContent = '⚠ Could not save'; saveStatus.className = ''; }
+  } catch(e) { 
+    console.error(e);
+    saveStatus.textContent = '⚠ Could not save to cloud'; saveStatus.className = ''; 
+  }
 }
 
 function scheduleSave() {
@@ -775,11 +776,19 @@ function scheduleSave() {
 
 async function loadState() {
   try {
-    const result = await window.storage.get(STORAGE_KEY, true);
-    if (result && result.value) applyState(JSON.parse(result.value));
-  } catch(e) { /* fresh start */ }
+    const response = await fetch(STORAGE_URL);
+    if (response.ok) {
+      const text = await response.text();
+      if (text && text.trim().length > 0) {
+        applyState(JSON.parse(text));
+      }
+    }
+  } catch(e) { 
+    console.log("No existing cloud data found or temporary offline state. Ready to save."); 
+  }
 }
 
+// Initialize and sync remote state immediately on page open
 loadState();
 </script>
 </body>
