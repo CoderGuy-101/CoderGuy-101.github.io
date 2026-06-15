@@ -709,9 +709,12 @@ function checkDayCompletion() {
   const order = ['day1','day2','day3','day4','day5'];
   for (let i = 0; i < order.length; i++) {
     const items = getDayItems(order[i]);
-    if (items.length === 0 || !items.every(item => item.classList.contains('done'))) return;
+    if (items.length === 0 || !items.every(item => item.classList.contains('done'))) return; // this day not done, stop
+    // this day is done — check if next day should open
     if (i < order.length - 1) {
       const nextId = order[i + 1];
+      const nextItems = getDayItems(nextId);
+      // all previous days done, move to next if it's not already active
       const currentActive = document.querySelector('.day-section.active');
       if (currentActive && currentActive.id === order[i]) {
         setTimeout(() => showDay(nextId), 600);
@@ -720,6 +723,9 @@ function checkDayCompletion() {
     }
   }
 }
+
+// ─── NATIVE STORAGE IMPLEMENTATION ───
+const STORAGE_KEY = 'goa-trip-state-v2';
 
 function getState() {
   const checks = {};
@@ -734,10 +740,7 @@ function applyState(state) {
   if (state.checks) {
     Object.keys(state.checks).forEach(idx => {
       const cb = document.querySelector('.tl-check[data-idx="' + idx + '"]');
-      if (cb) { 
-        cb.checked = state.checks[idx]; 
-        cb.closest('.tl-item').classList.toggle('done', !!state.checks[idx]); 
-      }
+      if (cb) { cb.checked = state.checks[idx]; cb.closest('.tl-item').classList.toggle('done', !!state.checks[idx]); }
     });
   }
   if (state.day2) { const s = document.getElementById('lock2-sel'); if (s) { s.value = state.day2; showOption(state.day2); } }
@@ -747,14 +750,12 @@ function applyState(state) {
 
 async function saveAll() {
   if (!saveStatus) return;
-  saveStatus.textContent = 'Saving…'; saveStatus.className = 'saving';
+  saveStatus.textContent = 'Saving locally…'; saveStatus.className = 'saving';
   try {
-    // Replaced window.storage with native localStorage
+    // Uses native browser storage instead of external APIs
     localStorage.setItem(STORAGE_KEY, JSON.stringify(getState()));
     saveStatus.textContent = '✓ Saved locally'; saveStatus.className = 'saved';
-  } catch(e) { 
-    saveStatus.textContent = '⚠ Could not save'; saveStatus.className = ''; 
-  }
+  } catch(e) { saveStatus.textContent = '⚠ Could not save'; saveStatus.className = ''; }
 }
 
 function scheduleSave() {
@@ -765,17 +766,14 @@ function scheduleSave() {
 
 async function loadState() {
   try {
-    // Replaced window.storage with native localStorage
+    // Reads directly from local browser cache
     const savedData = localStorage.getItem(STORAGE_KEY);
     if (savedData) {
       applyState(JSON.parse(savedData));
     }
-  } catch(e) { 
-    console.error("Fresh start or storage disabled:", e); 
-  }
+  } catch(e) { /* fresh start or cookies/storage blocked */ }
 }
 
-// Initialize and sync remote state immediately on page open
 loadState();
 </script>
 </body>
