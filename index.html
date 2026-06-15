@@ -10,17 +10,14 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --jungle:   #1B3A2D;
-  --palm:     --palm;     #2C5F3F;
+  --palm:     #2C5F3F;
   --fern:     #4A7C59;
   --marigold: #F5C842;
   --bougain:  #C0392B;
   --cream:    #FDF6E3;
   --sand:     #F0E4C8;
-  --ink:      #1a1a1a;
+  --ink:      --ink;
   --muted:    #6B7B6E;
-  --water-bg: #2980B9;
-  --water-mid:#3498DB;
-  --water-top:#5DADE2;
 }
 html { scroll-behavior: smooth; }
 body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
@@ -30,48 +27,31 @@ body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--
   position: fixed; top: 0; left: 0;
   width: 100%; height: 100%;
   pointer-events: none; z-index: 0; opacity: 0.18;
-  transition: opacity 0.8s, z-index 0.1s;
+  transition: opacity 0.8s;
 }
-body.rain-mode #rain-canvas { opacity: 0.75; z-index: 999999; }
+body.rain-mode #rain-canvas { opacity: 0.55; }
 
-/* ── SINUSOIDAL WAVY FLOOD BAR ── */
+/* ── FLOOD BAR ── */
 #flood-bar {
   position: fixed; bottom: 0; left: 0; right: 0; height: 0;
-  background: var(--water-bg);
-  z-index: 9998; pointer-events: none;
+  background: linear-gradient(to top, rgba(20,80,140,0.9) 0%, rgba(50,140,200,0.6) 60%, rgba(80,170,230,0.15) 100%);
+  z-index: 9998; pointer-events: none; overflow: hidden;
 }
-.wave-layer {
-  position: absolute; left: 0; width: 200%; height: 40px;
-  background-repeat: repeat-x;
-  background-position: 0 bottom;
+#flood-bar::before {
+  content: ''; position: absolute; top: -6px; left: -200%;
+  width: 500%; height: 14px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14'%3E%3Cpath d='M0 7 Q25 0 50 7 Q75 14 100 7 Q125 0 150 7 Q175 14 200 7 L200 14 L0 14Z' fill='rgba(255,255,255,0.18)'/%3E%3C/svg%3E") repeat-x;
+  background-size: 200px 14px;
+  animation: waveSlide 2s linear infinite;
 }
-/* Deep Background Wave */
-.wave-layer.back {
-  top: -30px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,60 C150,100 350,20 500,60 C650,100 850,20 1000,60 C1150,100 1350,20 1500,60 L1500,120 L0,120 Z' fill='%232471A3'/%3E%3C/svg%3E");
-  background-size: 600px 40px;
-  animation: waveMove 12s linear infinite;
-  opacity: 0.7;
+#flood-bar::after {
+  content: ''; position: absolute; top: -3px; left: -200%;
+  width: 500%; height: 10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10'%3E%3Cpath d='M0 5 Q25 0 50 5 Q75 10 100 5 Q125 0 150 5 Q175 10 200 5 L200 10 L0 10Z' fill='rgba(255,255,255,0.09)'/%3E%3C/svg%3E") repeat-x;
+  background-size: 140px 10px;
+  animation: waveSlide 3.2s linear infinite reverse;
 }
-/* Midground Wave */
-.wave-layer.mid {
-  top: -24px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,50 C200,10 400,90 600,50 C800,10 1000,90 1200,50 L1200,120 L0,120 Z' fill='%233498DB'/%3E%3C/svg%3E");
-  background-size: 700px 35px;
-  animation: waveMove 8s linear infinite reverse;
-  opacity: 0.8;
-}
-/* Crisp Foreground Crests */
-.wave-layer.front {
-  top: -16px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,60 C150,30 300,90 450,60 C600,30 750,90 900,60 C1050,30 1200,90 1350,60 L1350,120 L0,120 Z' fill='%235DADE2'/%3E%3C/svg%3E");
-  background-size: 500px 30px;
-  animation: waveMove 5s linear infinite;
-}
-@keyframes waveMove {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+@keyframes waveSlide { from { transform: translateX(0); } to { transform: translateX(40%); } }
 
 /* ── HERO ANIMATIONS ── */
 @keyframes heroFadeUp { from { opacity:0; transform:translateY(32px); } to { opacity:1; transform:translateY(0); } }
@@ -107,7 +87,7 @@ body.rain-mode #rain-canvas { opacity: 0.75; z-index: 999999; }
 }
 .hero-palms { position: relative; width: 100%; margin-top: 24px; z-index:1; line-height:0; display:block; }
 .hero-palms svg { width:100%; height:auto; display:block; overflow:visible; }
-.hero-content { position:relative; z-index:2; text-align:center; max-width:840px; width: 100%; }
+.hero-content { position:relative; z-index:2; text-align:center; max-width:780px; width: 100%; }
 
 /* ── SECRET BUTTON ── */
 .hero-eyebrow {
@@ -131,33 +111,43 @@ body.rain-mode .hero-eyebrow {
 .hero-title em { font-style:italic; color:var(--marigold); }
 .hero-sub { font-size:15px; font-weight:300; color:rgba(253,246,227,0.7); line-height:1.7; margin-bottom:40px; letter-spacing:0.3px; }
 
-/* ── SINGLE LINE PILLS ── */
 .hero-pills { 
-  display: flex; 
-  gap: 4px; 
-  justify-content: space-between; 
-  align-items: center;
-  flex-wrap: nowrap; 
-  margin-bottom: 25px; 
+  display:flex; 
+  gap:8px; 
+  justify-content:flex-start; 
+  align-items:center;
+  flex-wrap:nowrap; 
+  margin-bottom:30px; 
+  overflow-x:auto; 
+  scrollbar-width:none; 
+  padding:10px 4px;
   width: 100%;
 }
+.hero-pills::-webkit-scrollbar { display:none; }
 .pill { 
-  font-size: clamp(8px, 1.1vw, 11px); 
-  font-weight: 500; 
-  padding: 5px 8px; 
-  border-radius: 999px; 
-  letter-spacing: 0.1px; 
-  white-space: nowrap; 
-  flex: 1;
-  text-align: center;
+  font-size:11px; 
+  font-weight:600; 
+  padding:6px 14px; 
+  border-radius:4px; 
+  letter-spacing:1px; 
+  text-transform: uppercase;
+  white-space:nowrap; 
+  flex-shrink:0; 
 }
-.pill-green { background:var(--palm); color:var(--marigold); }
+.pill-green { 
+  background: rgba(245,200,66,0.08); 
+  color: var(--marigold); 
+  border: 1px solid rgba(245,200,66,0.25);
+}
 
 /* ── STAY BANNER ── */
 .stay-banner {
-  background:var(--palm); color:var(--cream); padding:18px 24px;
-  display:flex; align-items:center; justify-content:center; gap:14px;
-  font-size:13px; letter-spacing:0.3px; position:relative; z-index:10; margin-top:-2px;
+  background: var(--jungle); 
+  color: var(--cream); 
+  padding: 18px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  font-size: 13px; letter-spacing: 0.3px; position: relative; z-index: 10; margin-top: -2px;
+  border-bottom: 1px solid rgba(74,124,89,0.2);
 }
 .stay-banner strong { color:var(--marigold); font-weight:600; }
 .stay-banner .dot { width:5px; height:5px; border-radius:50%; background:var(--fern); }
@@ -289,7 +279,7 @@ body.rain-mode .tl-card { padding-right:52px; }
 
 /* ── EDIT BANNER ── */
 #edit-banner {
-  display:none; position:sticky; bottom:0; z-index:9999999;
+  display:none; position:sticky; bottom:0; z-index:200;
   background:linear-gradient(90deg,#1a1a2e,#16213e);
   color:var(--cream); padding:10px 20px; font-size:12px; letter-spacing:0.3px;
   align-items:center; justify-content:space-between; gap:12px;
@@ -343,13 +333,12 @@ footer { background:var(--jungle); color:rgba(253,246,227,0.5); text-align:cente
 footer strong { color:var(--marigold); }
 
 @media (max-width:600px) {
-  .hero-pills { flex-wrap: wrap; justify-content: center; gap: 6px 4px; }
-  .pill { font-size: 10px; padding: 4px 8px; flex: none; }
   .tl-card { grid-template-columns:70px 1fr; }
   .tl-dist { display:none; }
   .day-number { font-size:52px; }
   .hotel-nights { margin-left:0; }
   .day-header { gap:14px; }
+  .hero-pills { justify-content: flex-start; }
 }
 @media (prefers-reduced-motion:reduce) { *{ animation:none!important; transition:none!important; } #rain-canvas{ display:none; } }
 </style>
@@ -357,11 +346,7 @@ footer strong { color:var(--marigold); }
 <body>
 
 <canvas id="rain-canvas"></canvas>
-<div id="flood-bar">
-  <div class="wave-layer back"></div>
-  <div class="wave-layer mid"></div>
-  <div class="wave-layer front"></div>
-</div>
+<div id="flood-bar"></div>
 
 <section class="hero">
   <div class="hero-content">
@@ -446,7 +431,7 @@ footer strong { color:var(--marigold); }
     <button class="opt-btn" onclick="showOption('b')">🌿 Option B — Lakes &amp; Springs</button>
   </div>
   <div id="opt-a" class="option-panel active">
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;padding:12px 16px;background:#FEF9E7;border-left:3px solid var(--marigold);border-radius:4px;">⚡ <strong style="color:var(--jungle)">Only if Dudhsagar booking opens.</strong> Check availability in advance — monsoon slots are limited.</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;padding:12px 16px;background:#FEF9E7;border-left:3px solid var(--marigold);border-radius:4px;">⚡ <strong>Only if Dudhsagar booking opens.</strong> Check availability in advance — monsoon slots are limited.</p>
     <div class="timeline">
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-time">7:00 AM</div><div><div class="tl-activity">🚗 Leave hotel early</div><div class="tl-note">Packed breakfast. Long drive ahead.</div><span class="tl-tag tag-travel">Depart</span></div><div class="tl-dist">—</div></div></div>
       <div class="tl-item"><div class="tl-dot" style="background:var(--fern)"></div><div class="tl-card"><div class="tl-time">9:00 AM</div><div><div class="tl-activity">🌊 Arrive at Dudhsagar start point</div><div class="tl-note">India's tallest waterfall at full monsoon force — absolutely thunderous. Pure magic.</div><span class="tl-tag tag-nature">Nature · Trek</span></div><div class="tl-dist">~2 hrs drive</div></div></div>
@@ -457,7 +442,7 @@ footer strong { color:var(--marigold); }
     </div>
   </div>
   <div id="opt-b" class="option-panel">
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;padding:12px 16px;background:#E8F8EF;border-left:3px solid var(--fern);border-radius:4px;">🌿 <strong style="color:var(--jungle)">Fallback plan — and honestly a beautiful one.</strong> Lakes and springs clustered together for an easy, scenic morning.</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;padding:12px 16px;background:#E8F8EF;border-left:3px solid var(--fern);border-radius:4px;">🌿 <strong>Fallback plan — and honestly a beautiful one.</strong> Lakes and springs clustered together for an easy, scenic morning.</p>
     <div class="timeline">
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-time">7:00 AM</div><div><div class="tl-activity">🚗 Leave hotel</div><span class="tl-tag tag-travel">Depart</span></div><div class="tl-dist">—</div></div></div>
       <div class="tl-item"><div class="tl-dot" style="background:var(--fern)"></div><div class="tl-card"><div class="tl-time">7:45–8:45 AM</div><div><div class="tl-activity">🏞️ Ambulor Lake</div><div class="tl-note">Calm, scenic lake stop. Light nature time, great for photos. Peaceful monsoon reflections.</div><span class="tl-tag tag-nature">Lake</span></div><div class="tl-dist">25–30 min drive</div></div></div>
@@ -510,6 +495,7 @@ footer strong { color:var(--marigold); }
     <div class="tl-item"><div class="tl-dot" style="background:var(--marigold)"></div><div class="tl-card"><div class="tl-time">3:30–5:30 PM</div><div><div class="tl-activity">🏰 Chapora Fort</div><div class="tl-note">The <em>Dil Chahta Hai</em> fort! Sweeping views of Vagator and the Arabian Sea. Climb the ramparts, watch the waves, feel like a legend.</div><span class="tl-tag tag-fort">Fort</span></div><div class="tl-dist">Vagator</div></div></div>
     <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-time">5:30 PM</div><div><div class="tl-activity">🚗 Drive to Mall de Goa</div><span class="tl-tag tag-travel">Drive</span></div><div class="tl-dist">25 km · 35 min</div></div></div>
     <div class="tl-item"><div class="tl-dot" style="background:var(--fern)"></div><div class="tl-card"><div class="tl-time">6:00–8:00 PM</div><div><div class="tl-activity">🎳 Mall de Goa</div><div class="tl-note">Arcade, bowling, food court, cinema, haunted house. The kids take the wheel here — let them run wild!</div><span class="tl-tag tag-modern">Mall</span></div><div class="tl-dist">Porvorim</div></div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--muted)"></div><div class="tl-card"><div class="tl-time">8:00 PM</div><div><div class="tl-activity">🚗 Drive to airport-area hotel</div><span class="tl-tag tag-travel">Drive</span></div><div class="tl-dist">—</div></div></div>
     <div class="tl-item"><div class="tl-dot" style="background:var(--bougain)"></div><div class="tl-card"><div class="tl-time">10:00 PM</div><div><div class="tl-activity">🌙 At hotel</div><span class="tl-tag tag-rest">Rest</span></div><div class="tl-dist">—</div></div></div>
   </div>
 </section>
@@ -529,7 +515,7 @@ footer strong { color:var(--marigold); }
   </div>
 
   <div id="opt5-a" class="option-panel active">
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;padding:12px 16px;background:#F4ECF7;border-left:3px solid #8E44AD;border-radius:4px;">🌸 <strong style="color:var(--jungle)">Quick outing before the airport.</strong> Check out hotel first, then go directly to Japanese Garden and on to the airport.</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;padding:12px 16px;background:#F4ECF7;border-left:3px solid #8E44AD;border-radius:4px;">🌸 <strong>Quick outing before the airport.</strong> Check out hotel first, then go directly to Japanese Garden and on to the airport.</p>
     <div class="timeline">
       <div class="tl-item"><div class="tl-dot" style="background:var(--marigold)"></div><div class="tl-card"><div class="tl-time">8:00 AM</div><div><div class="tl-activity">🍳 Breakfast, pack up &amp; check out</div><div class="tl-note">Hotel breakfast, collect all luggage, settle the bill. Bags go in the taxi.</div><span class="tl-tag tag-food">Breakfast + Check Out</span></div><div class="tl-dist">—</div></div></div>
       <div class="tl-item"><div class="tl-dot" style="background:var(--fern)"></div><div class="tl-card"><div class="tl-time">9:00 AM</div><div><div class="tl-activity">🌸 Japanese Garden</div><div class="tl-note">Peaceful, manicured garden near Dabolim. Koi ponds, stone lanterns, bamboo groves — a serene final memory of Goa. Luggage stays in taxi.</div><span class="tl-tag tag-nature">Garden</span></div><div class="tl-dist">Close to airport</div></div></div>
@@ -540,7 +526,7 @@ footer strong { color:var(--marigold); }
   </div>
 
   <div id="opt5-b" class="option-panel">
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;padding:12px 16px;background:#E8F8EF;border-left:3px solid var(--fern);border-radius:4px;">☕ <strong style="color:var(--jungle)">Maximum relaxation before the journey home.</strong> Let the holiday wind down gently.</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;padding:12px 16px;background:#E8F8EF;border-left:3px solid var(--fern);border-radius:4px;">☕ <strong>Maximum relaxation before the journey home.</strong> Let the holiday wind down gently.</p>
     <div class="timeline">
       <div class="tl-item"><div class="tl-dot" style="background:var(--marigold)"></div><div class="tl-card"><div class="tl-time">8:00 AM</div><div><div class="tl-activity">🍳 Slow breakfast</div><div class="tl-note">Take your time. No rush. Last proper Goan meal.</div><span class="tl-tag tag-food">Breakfast</span></div><div class="tl-dist">—</div></div></div>
       <div class="tl-item"><div class="tl-dot" style="background:var(--fern)"></div><div class="tl-card"><div class="tl-time">8:30–10:30 AM</div><div><div class="tl-activity">🏊 Relax at hotel — pack, rest, coffee, pool or beach time</div><div class="tl-note">Let the kids have one last splash. You read, sip coffee, stare at the rain. Perfect.</div><span class="tl-tag tag-rest">Free time</span></div><div class="tl-dist">—</div></div></div>
@@ -683,7 +669,7 @@ const TARGET_FLOOD = 72;
 
 function animateFlood(rising) {
   if (floodRaf) cancelAnimationFrame(floodRaf);
-  const speed = rising ? 1.2 : 2.0;
+  const speed = rising ? 0.9 : 1.5;
   function step() {
     floodHeight = rising
       ? Math.min(floodHeight + speed, TARGET_FLOOD)
@@ -752,9 +738,12 @@ function checkDayCompletion() {
   const order = ['day1','day2','day3','day4','day5'];
   for (let i = 0; i < order.length; i++) {
     const items = getDayItems(order[i]);
-    if (items.length === 0 || !items.every(item => item.classList.contains('done'))) return; 
+    if (items.length === 0 || !items.every(item => item.classList.contains('done'))) return; // this day not done, stop
+    // this day is done — check if next day should open
     if (i < order.length - 1) {
       const nextId = order[i + 1];
+      const nextItems = getDayItems(nextId);
+      // all previous days done, move to next if it's not already active
       const currentActive = document.querySelector('.day-section.active');
       if (currentActive && currentActive.id === order[i]) {
         setTimeout(() => showDay(nextId), 600);
@@ -764,7 +753,7 @@ function checkDayCompletion() {
   }
 }
 
-// ─── NATIVE STORAGE IMPLEMENTATION ───
+// ─── STORAGE ───
 const STORAGE_KEY = 'goa-trip-state-v2';
 
 function getState() {
@@ -790,10 +779,10 @@ function applyState(state) {
 
 async function saveAll() {
   if (!saveStatus) return;
-  saveStatus.textContent = 'Saving locally…'; saveStatus.className = 'saving';
+  saveStatus.textContent = 'Saving…'; saveStatus.className = 'saving';
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(getState()));
-    saveStatus.textContent = '✓ Saved locally'; saveStatus.className = 'saved';
+    await window.storage.set(STORAGE_KEY, JSON.stringify(getState()), true);
+    saveStatus.textContent = '✓ Saved — visible to everyone'; saveStatus.className = 'saved';
   } catch(e) { saveStatus.textContent = '⚠ Could not save'; saveStatus.className = ''; }
 }
 
@@ -805,11 +794,9 @@ function scheduleSave() {
 
 async function loadState() {
   try {
-    const savedData = localStorage.getItem(STORAGE_KEY);
-    if (savedData) {
-      applyState(JSON.parse(savedData));
-    }
-  } catch(e) { }
+    const result = await window.storage.get(STORAGE_KEY, true);
+    if (result && result.value) applyState(JSON.parse(result.value));
+  } catch(e) { /* fresh start */ }
 }
 
 loadState();
