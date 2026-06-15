@@ -661,7 +661,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-eyebrow">🌧️ Monsoon Edition · 4 Days · 4 People</div>
+    <div class="hero-eyebrow" id="secret-btn" onclick="toggleRainMode()" title="🤫">🌧️ Monsoon Edition · 4 Days · 4 People</div>
     <h1 class="hero-title">
       <em>Wild,</em><br>Wet &amp;<br>Wonderful<br>Goa
     </h1>
@@ -1771,6 +1771,589 @@ function showOption5(opt) {
   });
   setTimeout(observeCards, 100);
 }
+
+// ── RAIN / FLOOD / EDIT MODE ──
+let rainMode = false;
+let floodHeight = 0;
+let floodRaf = null;
+let saveTimer = null;
+
+const floodBar   = document.getElementById('flood-bar');
+const saveStatus = document.getElementById('save-status');
+
+// Inject checkboxes into every tl-item
+document.querySelectorAll('.tl-item').forEach((item, idx) => {
+  item.dataset.idx = idx;
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.className = 'tl-check';
+  cb.dataset.idx = idx;
+  cb.addEventListener('change', () => {
+    item.classList.toggle('done', cb.checked);
+    scheduleSave();
+  });
+  item.querySelector('.tl-card').appendChild(cb);
+});
+
+// Inject plan-lock selectors into day 2 and day 5
+function injectPlanLock(sectionId, lockId, label, opts, onchange) {
+  const section = document.getElementById(sectionId);
+  const toggle  = section.querySelector('.option-toggle');
+  const div = document.createElement('div');
+  div.className = 'plan-lock';
+  div.id = lockId;
+  div.innerHTML = '🔒 ' + label + ': <select id="' + lockId + '-sel">' + opts.map(o => '<option value="' + o.v + '">' + o.l + '</option>').join('') + '</select>';
+  section.insertBefore(div, toggle);
+  document.getElementById(lockId + '-sel').addEventListener('change', function(e) { onchange(e.target.value); scheduleSave(); });
+}
+
+injectPlanLock('day2', 'lock2', 'Our Day 2 Plan', [
+  {v:'a', l:'Option A — Dudhsagar Falls'},
+  {v:'b', l:'Option B — Lakes & Springs'}
+], function(v) { showOption(v); });
+
+injectPlanLock('day5', 'lock5', 'Our Day 5 Plan', [
+  {v:'a', l:'Option A — Japanese Garden'},
+  {v:'b', l:'Option B — Hotel Relax'}
+], function(v) { showOption5(v); });
+
+// ── FLOOD ANIMATION ──
+var TARGET_FLOOD = 72;
+
+function animateFlood(rising) {
+  if (floodRaf) cancelAnimationFrame(floodRaf);
+  var speed = rising ? 0.9 : 1.4;
+  function step() {
+    if (rising) {
+      floodHeight = Math.min(floodHeight + speed, TARGET_FLOOD);
+    } else {
+      floodHeight = Math.max(floodHeight - speed, 0);
+    }
+    floodBar.style.height = floodHeight + 'px';
+    if ((rising && floodHeight < TARGET_FLOOD) || (!rising && floodHeight > 0)) {
+      floodRaf = requestAnimationFrame(step);
+    }
+  }
+  floodRaf = requestAnimationFrame(step);
+}
+
+// ── TOGGLE RAIN MODE ──
+function toggleRainMode() {
+  rainMode = !rainMode;
+  document.body.classList.toggle('rain-mode', rainMode);
+  animateFlood(rainMode);
+  if (!rainMode) { saveAll(); }
+}
+
+// ── STORAGE ──
+var STORAGE_KEY = 'goa-trip-state';
+
+function getState() {
+  var checks = {};
+  document.querySelectorAll('.tl-check').forEach(function(cb) {
+    checks[cb.dataset.idx] = cb.checked;
+  });
+  var d2sel = document.getElementById('lock2-sel');
+  var d5sel = document.getElementById('lock5-sel');
+  return {
+    checks: checks,
+    day2: d2sel ? d2sel.value : 'a',
+    day5: d5sel ? d5sel.value : 'a'
+  };
+}
+
+function applyState(state) {
+  if (!state) return;
+  if (state.checks) {
+    Object.keys(state.checks).forEach(function(idx) {
+      var cb = document.querySelector('.tl-check[data-idx="' + idx + '"]');
+      if (cb) {
+        cb.checked = state.checks[idx];
+        var item = cb.closest('.tl-item');
+        if (item) item.classList.toggle('done', state.checks[idx]);
+      }
+    });
+  }
+  if (state.day2) {
+    var sel2 = document.getElementById('lock2-sel');
+    if (sel2) { sel2.value = state.day2; showOption(state.day2); }
+  }
+  if (state.day5) {
+    var sel5 = document.getElementById('lock5-sel');
+    if (sel5) { sel5.value = state.day5; showOption5(state.day5); }
+  }
+}
+
+async function saveAll() {
+  saveStatus.textContent = 'Saving…';
+  saveStatus.className = 'saving';
+  try {
+    var state = getState();
+    await window.storage.set(STORAGE_KEY, JSON.stringify(state), true);
+    saveStatus.textContent = '✓ Saved — visible to everyone';
+    saveStatus.className = 'saved';
+  } catch(e) {
+    saveStatus.textContent = '⚠ Could not save';
+    saveStatus.className = '';
+  }
+}
+
+function scheduleSave() {
+  saveStatus.textContent = 'Unsaved changes…';
+  saveStatus.className = 'saving';
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveAll, 1400);
+}
+
+async function loadState() {
+  try {
+    var result = await window.storage.get(STORAGE_KEY, true);
+    if (result && result.value) {
+      applyState(JSON.parse(result.value));
+    }
+  } catch(e) { /* no saved state yet */ }
+}
+
+loadState();
+</script>
+
+<!-- FLOOD -->
+<div id="flood-bar"></div>
+
+<!-- EDIT MODE BANNER -->
+<div id="edit-banner">
+  <span>✏️ <strong>Edit Mode</strong> — tick off completed activities, lock in your Day 2 &amp; Day 5 plans</span>
+  <span id="save-status"></span>
+</div>
+
+<style>
+#secret-btn {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+#secret-btn:hover {
+  background: rgba(245,200,66,0.22);
+  box-shadow: 0 0 0 1px rgba(245,200,66,0.5);
+}
+body.rain-mode #secret-btn {
+  background: rgba(100,180,255,0.2);
+  border-color: rgba(100,180,255,0.5);
+  color: #a8d8ff;
+  box-shadow: 0 0 12px rgba(100,180,255,0.3);
+}
+#flood-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 0;
+  background: linear-gradient(to top, rgba(30,100,160,0.85) 0%, rgba(50,140,200,0.6) 60%, rgba(80,170,230,0.2) 100%);
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+#flood-bar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 300%; height: 12px;
+  background: repeating-linear-gradient(90deg, transparent 0px, rgba(255,255,255,0.15) 30px, transparent 60px);
+  animation: waveSlide 2.5s linear infinite;
+}
+#flood-bar::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: -100%;
+  width: 300%; height: 8px;
+  background: repeating-linear-gradient(90deg, transparent 0px, rgba(255,255,255,0.08) 20px, transparent 40px);
+  animation: waveSlide 3.5s linear infinite reverse;
+}
+@keyframes waveSlide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(33.33%); }
+}
+#edit-banner {
+  display: none;
+  position: sticky;
+  bottom: 0;
+  z-index: 200;
+  background: linear-gradient(90deg, #1a1a2e, #16213e);
+  color: #FDF6E3;
+  padding: 10px 20px;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
+}
+body.rain-mode #edit-banner { display: flex; }
+#save-status { font-size: 11px; color: rgba(253,246,227,0.5); white-space: nowrap; }
+#save-status.saving { color: #F5C842; }
+#save-status.saved  { color: #4A7C59; }
+body.rain-mode .tl-card { position: relative; padding-right: 48px; }
+.tl-check {
+  display: none;
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(74,124,89,0.4);
+  background: #fff;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: all 0.2s;
+}
+body.rain-mode .tl-check { display: block; }
+.tl-check:checked { background: #4A7C59; border-color: #4A7C59; }
+.tl-check:checked::after {
+  content: '✓'; color: #fff; font-size: 13px; font-weight: 700;
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+body.rain-mode .tl-item.done .tl-card {
+  background: #f0faf4;
+  border-left-color: #4A7C59 !important;
+  opacity: 0.75;
+}
+body.rain-mode .tl-item.done .tl-activity {
+  text-decoration: line-through;
+  color: #6B7B6E;
+}
+.plan-lock {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, rgba(27,58,45,0.06), rgba(27,58,45,0.02));
+  border: 1px solid rgba(74,124,89,0.2);
+  border-radius: 8px;
+  font-size: 12px; font-weight: 600;
+  color: #2C5F3F; letter-spacing: 0.5px;
+}
+body.rain-mode .plan-lock { display: flex; }
+.plan-lock select {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px; font-weight: 600;
+  color: #1B3A2D; background: #fff;
+  border: 1.5px solid #4A7C59;
+  border-radius: 5px; padding: 5px 10px;
+  cursor: pointer; outline: none;
+}
+body.rain-mode #rain-canvas { opacity: 0.55; }
+</style>
+<!-- end -->
+<div id="flood-bar"></div>
+
+<!-- EDIT MODE BANNER -->
+<div id="edit-banner">
+  <span>✏️ <strong>Edit Mode</strong> — tick off completed activities, lock in your Day 2 &amp; Day 5 plans</span>
+  <span id="save-status"></span>
+</div>
+
+<style>
+/* ── SECRET BUTTON ── */
+#secret-btn {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+#secret-btn:hover {
+  background: rgba(245,200,66,0.22);
+  box-shadow: 0 0 0 1px rgba(245,200,66,0.5);
+}
+body.rain-mode #secret-btn {
+  background: rgba(100,180,255,0.2);
+  border-color: rgba(100,180,255,0.5);
+  color: #a8d8ff;
+  box-shadow: 0 0 12px rgba(100,180,255,0.3);
+}
+
+/* ── FLOOD BAR ── */
+#flood-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 0;
+  background: linear-gradient(to top, rgba(30,100,160,0.85) 0%, rgba(50,140,200,0.6) 60%, rgba(80,170,230,0.2) 100%);
+  z-index: 9999;
+  pointer-events: none;
+  transition: none;
+  overflow: hidden;
+}
+#flood-bar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 300%; height: 12px;
+  background: repeating-linear-gradient(90deg, transparent 0px, rgba(255,255,255,0.15) 30px, transparent 60px);
+  animation: waveSlide 2.5s linear infinite;
+}
+#flood-bar::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: -100%;
+  width: 300%; height: 8px;
+  background: repeating-linear-gradient(90deg, transparent 0px, rgba(255,255,255,0.08) 20px, transparent 40px);
+  animation: waveSlide 3.5s linear infinite reverse;
+}
+@keyframes waveSlide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(33.33%); }
+}
+
+/* ── EDIT MODE BANNER ── */
+#edit-banner {
+  display: none;
+  position: sticky;
+  bottom: 0;
+  z-index: 200;
+  background: linear-gradient(90deg, #1a1a2e, #16213e);
+  color: var(--cream);
+  padding: 10px 20px;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
+}
+body.rain-mode #edit-banner { display: flex; }
+
+#save-status {
+  font-size: 11px;
+  color: rgba(253,246,227,0.5);
+  white-space: nowrap;
+}
+#save-status.saving  { color: #F5C842; }
+#save-status.saved   { color: #4A7C59; }
+
+/* ── EDIT MODE CHECKBOXES ON CARDS ── */
+body.rain-mode .tl-card {
+  position: relative;
+  padding-right: 48px;
+}
+.tl-check {
+  display: none;
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(74,124,89,0.4);
+  background: #fff;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+body.rain-mode .tl-check { display: block; }
+.tl-check:checked {
+  background: var(--fern);
+  border-color: var(--fern);
+}
+.tl-check:checked::after {
+  content: '✓';
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ── DONE CARD STYLE ── */
+body.rain-mode .tl-item.done .tl-card {
+  background: #f0faf4;
+  border-left-color: var(--fern) !important;
+  opacity: 0.75;
+}
+body.rain-mode .tl-item.done .tl-activity {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+/* ── PLAN LOCK SELECTORS (day 2 & 5) ── */
+.plan-lock {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, rgba(27,58,45,0.06), rgba(27,58,45,0.02));
+  border: 1px solid rgba(74,124,89,0.2);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--palm);
+  letter-spacing: 0.5px;
+}
+body.rain-mode .plan-lock { display: flex; }
+.plan-lock select {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--jungle);
+  background: #fff;
+  border: 1.5px solid var(--fern);
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  outline: none;
+}
+.plan-lock select:focus { box-shadow: 0 0 0 2px rgba(74,124,89,0.25); }
+
+/* ── HEAVIER RAIN IN RAIN MODE ── */
+body.rain-mode #rain-canvas { opacity: 0.55; }
+</style>
+
+<script>
+// ── RAIN / FLOOD / EDIT MODE ──
+let rainMode = false;
+let floodHeight = 0;
+let floodRaf = null;
+let saveTimer = null;
+
+const floodBar   = document.getElementById('flood-bar');
+const secretBtn  = document.getElementById('secret-btn');
+const saveStatus = document.getElementById('save-status');
+
+// Inject checkboxes into every tl-item
+document.querySelectorAll('.tl-item').forEach((item, idx) => {
+  item.dataset.idx = idx;
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.className = 'tl-check';
+  cb.dataset.idx = idx;
+  cb.addEventListener('change', () => {
+    item.classList.toggle('done', cb.checked);
+    scheduleSave();
+  });
+  item.querySelector('.tl-card').appendChild(cb);
+});
+
+// Inject plan-lock selectors into day 2 and day 5
+function injectPlanLock(sectionId, lockId, label, opts, onchange) {
+  const section = document.getElementById(sectionId);
+  const toggle  = section.querySelector('.option-toggle');
+  const div = document.createElement('div');
+  div.className = 'plan-lock';
+  div.id = lockId;
+  div.innerHTML = `🔒 ${label}: <select id="${lockId}-sel">${opts.map(o=>`<option value="${o.v}">${o.l}</option>`).join('')}</select>`;
+  section.insertBefore(div, toggle);
+  document.getElementById(`${lockId}-sel`).addEventListener('change', e => { onchange(e.target.value); scheduleSave(); });
+}
+
+injectPlanLock('day2', 'lock2', 'Our Day 2 Plan', [
+  {v:'a', l:'Option A — Dudhsagar Falls'},
+  {v:'b', l:'Option B — Lakes & Springs'}
+], v => showOption(v));
+
+injectPlanLock('day5', 'lock5', 'Our Day 5 Plan', [
+  {v:'a', l:'Option A — Japanese Garden'},
+  {v:'b', l:'Option B — Hotel Relax'}
+], v => showOption5(v));
+
+// ── FLOOD ANIMATION ──
+const TARGET_FLOOD = 72; // px
+
+function animateFlood(rising) {
+  if (floodRaf) cancelAnimationFrame(floodRaf);
+  const speed = rising ? 0.9 : 1.4;
+  function step() {
+    if (rising) {
+      floodHeight = Math.min(floodHeight + speed, TARGET_FLOOD);
+    } else {
+      floodHeight = Math.max(floodHeight - speed, 0);
+    }
+    floodBar.style.height = floodHeight + 'px';
+    if ((rising && floodHeight < TARGET_FLOOD) || (!rising && floodHeight > 0)) {
+      floodRaf = requestAnimationFrame(step);
+    }
+  }
+  floodRaf = requestAnimationFrame(step);
+}
+
+// ── TOGGLE RAIN MODE ──
+function toggleRainMode() {
+  rainMode = !rainMode;
+  document.body.classList.toggle('rain-mode', rainMode);
+  animateFlood(rainMode);
+  if (!rainMode) {
+    saveAll();
+  }
+}
+
+// ── STORAGE ──
+const STORAGE_KEY = 'goa-trip-state';
+
+function getState() {
+  const checks = {};
+  document.querySelectorAll('.tl-check').forEach(cb => {
+    checks[cb.dataset.idx] = cb.checked;
+  });
+  return {
+    checks,
+    day2: document.getElementById('lock2-sel')?.value || 'a',
+    day5: document.getElementById('lock5-sel')?.value || 'a',
+  };
+}
+
+function applyState(state) {
+  if (!state) return;
+  if (state.checks) {
+    Object.entries(state.checks).forEach(([idx, checked]) => {
+      const cb = document.querySelector(`.tl-check[data-idx="${idx}"]`);
+      if (cb) {
+        cb.checked = checked;
+        cb.closest('.tl-item')?.classList.toggle('done', checked);
+      }
+    });
+  }
+  if (state.day2) {
+    const sel = document.getElementById('lock2-sel');
+    if (sel) { sel.value = state.day2; showOption(state.day2); }
+  }
+  if (state.day5) {
+    const sel = document.getElementById('lock5-sel');
+    if (sel) { sel.value = state.day5; showOption5(state.day5); }
+  }
+}
+
+async function saveAll() {
+  saveStatus.textContent = 'Saving…';
+  saveStatus.className = 'saving';
+  try {
+    const state = getState();
+    await window.storage.set(STORAGE_KEY, JSON.stringify(state), true); // shared = true
+    saveStatus.textContent = '✓ Saved — visible to everyone';
+    saveStatus.className = 'saved';
+  } catch(e) {
+    saveStatus.textContent = '⚠ Could not save';
+    saveStatus.className = '';
+  }
+}
+
+function scheduleSave() {
+  saveStatus.textContent = 'Unsaved changes…';
+  saveStatus.className = 'saving';
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveAll, 1400);
+}
+
+async function loadState() {
+  try {
+    const result = await window.storage.get(STORAGE_KEY, true);
+    if (result?.value) {
+      applyState(JSON.parse(result.value));
+    }
+  } catch(e) { /* no saved state yet */ }
+}
+
+loadState();
 </script>
 </body>
 </html>
