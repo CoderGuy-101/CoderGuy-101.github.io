@@ -1,1 +1,4075 @@
-hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Storage Cabinet Organizer</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #14161a;
+    color: #f1f1f1;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+    background: #22252b;
+    border-bottom: 1px solid #3b3f47;
+
+    padding: 14px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 21px;
+}
+
+.toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: none;
+    border-radius: 6px;
+
+    padding: 9px 13px;
+
+    background: #3b82f6;
+    color: white;
+
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #2563eb;
+}
+
+button.secondary {
+    background: #4b515c;
+}
+
+button.secondary:hover {
+    background: #606874;
+}
+
+button.danger {
+    background: #dc3545;
+}
+
+button.danger:hover {
+    background: #b91c2c;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-area {
+    background: #1c1f24;
+    border-bottom: 1px solid #343840;
+
+    padding: 16px 20px;
+}
+
+#search {
+    width: 100%;
+    max-width: 650px;
+
+    padding: 12px 14px;
+
+    border-radius: 7px;
+    border: 1px solid #4b505a;
+
+    background: #111316;
+    color: white;
+
+    font-size: 16px;
+    outline: none;
+}
+
+#search:focus {
+    border-color: #3b82f6;
+}
+
+#searchResults {
+    max-width: 850px;
+    margin-top: 10px;
+}
+
+.search-result {
+    background: #292e36;
+
+    padding: 10px 13px;
+    margin-bottom: 6px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.search-result:hover {
+    background: #383e49;
+}
+
+.location {
+    color: #60a5fa;
+
+    font-family: monospace;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   CABINET
+========================================================= */
+
+main {
+    padding: 25px;
+    overflow: auto;
+}
+
+#cabinet {
+    display: grid;
+
+    gap: 10px;
+
+    width: max-content;
+    min-width: 100%;
+}
+
+
+/* =========================================================
+   BOX
+========================================================= */
+
+.cabinet-box {
+    min-width: 220px;
+    height: 180px;
+
+    background: #343941;
+
+    border: 3px solid #555b66;
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    position: relative;
+
+    transition:
+        transform .12s,
+        border-color .15s,
+        box-shadow .15s;
+}
+
+.cabinet-box:hover {
+    transform: translateY(-2px);
+
+    border-color: #707783;
+
+    box-shadow:
+        0 6px 18px rgba(0,0,0,.35);
+}
+
+.cabinet-box.highlight {
+    border-color: #facc15;
+
+    box-shadow:
+        0 0 12px rgba(250,204,21,.9),
+        0 0 30px rgba(250,204,21,.35);
+}
+
+
+/* =========================================================
+   BOX HEADER
+========================================================= */
+
+.box-header {
+    height: 48px;
+
+    background: #454b55;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 5px 7px 5px 12px;
+
+    position: relative;
+    z-index: 5;
+}
+
+.box-location {
+    font-family: monospace;
+
+    color: #93c5fd;
+
+    font-size: 18px;
+
+    font-weight: bold;
+}
+
+.box-controls {
+    display: flex;
+    gap: 5px;
+}
+
+
+/* BIG SETTINGS BUTTON */
+
+.settings-btn {
+    width: 40px;
+    height: 37px;
+
+    padding: 0;
+
+    font-size: 21px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #59616d;
+}
+
+.settings-btn:hover {
+    background: #707986;
+}
+
+.delete-box-btn {
+    width: 36px;
+    height: 37px;
+
+    padding: 0;
+
+    font-size: 20px;
+
+    background: #873843;
+}
+
+.delete-box-btn:hover {
+    background: #b33b49;
+}
+
+
+/* =========================================================
+   BOX BODY
+========================================================= */
+
+.box-body {
+    height: calc(100% - 48px);
+
+    display: flex;
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            #30343a,
+            #292d32
+        );
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   SECTION
+
+   These are the actual physical sections of the box.
+========================================================= */
+
+.box-section {
+    flex: 1;
+
+    height: 100%;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    padding: 10px;
+}
+
+
+/*
+   Actual divider line.
+
+   If there are 2 sections, there is 1 line.
+   If there are 3 sections, there are 2 lines.
+*/
+
+.box-section + .box-section {
+    border-left: 3px solid #737984;
+
+    box-shadow:
+        inset 2px 0 rgba(0,0,0,.25);
+}
+
+
+/* =========================================================
+   PART ICONS
+========================================================= */
+
+.part-dots {
+    width: 100%;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    align-content: center;
+
+    gap: 6px;
+
+    padding: 5px;
+}
+
+.part-dot {
+    width: 14px;
+    height: 14px;
+
+    border-radius: 5px;
+
+    border: 1px solid rgba(255,255,255,.45);
+
+    box-shadow:
+        0 1px 3px rgba(0,0,0,.4);
+
+    flex-shrink: 0;
+}
+
+.empty-section {
+    color: #666d77;
+    font-size: 11px;
+}
+
+
+/* Section number */
+
+.section-number {
+    position: absolute;
+
+    left: 5px;
+    bottom: 4px;
+
+    color: rgba(255,255,255,.28);
+
+    font-size: 9px;
+
+    font-family: monospace;
+}
+
+
+/* =========================================================
+   NUMBER OF SECTIONS
+========================================================= */
+
+.section-indicator {
+    position: absolute;
+
+    right: 8px;
+    bottom: 7px;
+
+    background: rgba(0,0,0,.45);
+
+    padding: 4px 7px;
+
+    border-radius: 5px;
+
+    color: #aeb5bf;
+
+    font-size: 10px;
+
+    font-family: monospace;
+
+    z-index: 4;
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+.modal-backdrop {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.74);
+
+    z-index: 500;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.modal-backdrop.show {
+    display: flex;
+}
+
+
+/* =========================================================
+   BOX VIEW
+========================================================= */
+
+.box-view {
+    width: min(900px, 96vw);
+
+    height: min(700px, 90vh);
+
+    background: #22262c;
+
+    border: 1px solid #4a5059;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    display: flex;
+
+    flex-direction: column;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.65);
+}
+
+.box-view-header {
+    background: #30353d;
+
+    padding: 15px 18px;
+
+    border-bottom: 1px solid #464c55;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.box-view-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.box-view-title h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.box-view-location {
+    color: #60a5fa;
+
+    background: #1c2430;
+
+    border: 1px solid #334155;
+
+    border-radius: 5px;
+
+    padding: 5px 8px;
+
+    font-family: monospace;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   SECTION TABS
+========================================================= */
+
+.section-tabs {
+    display: flex;
+
+    background: #1b1e23;
+
+    border-bottom: 1px solid #41464f;
+
+    overflow-x: auto;
+}
+
+.section-tab {
+    border-radius: 0;
+
+    background: transparent;
+
+    color: #9ca3af;
+
+    padding: 12px 22px;
+
+    border-bottom: 3px solid transparent;
+
+    white-space: nowrap;
+}
+
+.section-tab:hover {
+    background: #292e35;
+    color: white;
+}
+
+.section-tab.active {
+    color: white;
+
+    background: #292e35;
+
+    border-bottom-color: #3b82f6;
+}
+
+
+/* =========================================================
+   SECTION CONTENT
+========================================================= */
+
+.section-content {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 20px;
+}
+
+.section-heading {
+    color: #9ca3af;
+
+    font-family: monospace;
+
+    font-size: 13px;
+
+    margin-bottom: 15px;
+}
+
+.parts-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(220px, 1fr)
+        );
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   PART CARD
+========================================================= */
+
+.part-card {
+    background: #30353d;
+
+    border: 1px solid #474e58;
+
+    border-radius: 8px;
+
+    padding: 13px;
+
+    cursor: pointer;
+
+    transition:
+        background .15s,
+        border-color .15s,
+        transform .12s;
+}
+
+.part-card:hover {
+    background: #3a414b;
+
+    border-color: #60a5fa;
+
+    transform: translateY(-1px);
+}
+
+.part-card-name {
+    font-weight: bold;
+
+    font-size: 14px;
+
+    margin-bottom: 6px;
+}
+
+.part-card-preview {
+    color: #9ca3af;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   PART DETAILS
+========================================================= */
+
+.part-detail {
+    width: min(560px, 94vw);
+
+    background: #252a30;
+
+    border: 1px solid #4a5059;
+
+    border-radius: 11px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.7);
+}
+
+.part-detail-header {
+    background: #30353d;
+
+    padding: 16px 18px;
+
+    border-bottom: 1px solid #464c55;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 15px;
+}
+
+.part-detail-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.part-detail-body {
+    padding: 20px;
+}
+
+.detail-location {
+    display: inline-block;
+
+    margin-bottom: 18px;
+
+    padding: 7px 10px;
+
+    background: #172234;
+
+    border: 1px solid #315b8d;
+
+    color: #60a5fa;
+
+    border-radius: 6px;
+
+    font-family: monospace;
+
+    font-size: 15px;
+
+    font-weight: bold;
+}
+
+.detail-row {
+    padding: 12px 0;
+
+    border-bottom: 1px solid #3b414a;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: #8f98a5;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .05em;
+
+    margin-bottom: 4px;
+}
+
+.detail-value {
+    color: #f1f1f1;
+
+    font-size: 14px;
+
+    white-space: pre-wrap;
+}
+
+.null-value {
+    color: #68717e;
+    font-style: italic;
+}
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+.form-modal {
+    width: min(480px, 94vw);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: #272b31;
+
+    border: 1px solid #484d56;
+
+    border-radius: 10px;
+
+    padding: 21px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.6);
+}
+
+.form-modal h2 {
+    margin-top: 0;
+
+    font-size: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #c9cdd3;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+
+    padding: 10px;
+
+    border-radius: 6px;
+
+    border: 1px solid #505660;
+
+    background: #15171a;
+
+    color: white;
+
+    font-family: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+
+    min-height: 75px;
+}
+
+.info {
+    color: #9ca3af;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.modal-buttons {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    margin-top: 20px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    main {
+        padding: 12px;
+    }
+
+    .cabinet-box {
+        min-width: 190px;
+        height: 160px;
+    }
+
+    .parts-list {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+
+     No box emoji anymore.
+========================================================= -->
+
+<header>
+
+    <h1>
+        Storage Cabinet Organizer
+    </h1>
+
+    <div class="toolbar">
+
+        <button onclick="addNewBox()">
+            ＋ Add New Box
+        </button>
+
+        <button onclick="addRow()">
+            ＋ Add Row
+        </button>
+
+        <button onclick="addColumn()">
+            ＋ Add Column
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     SEARCH
+========================================================= -->
+
+<div class="search-area">
+
+    <input
+        id="search"
+        type="text"
+        placeholder="Search for a part, bag, breadboard, location..."
+        oninput="searchItems()"
+    >
+
+    <div id="searchResults"></div>
+
+</div>
+
+
+<!-- =========================================================
+     CABINET
+========================================================= -->
+
+<main>
+
+    <div id="cabinet"></div>
+
+</main>
+
+
+<!-- =========================================================
+     BOX VIEW
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="boxViewModal"
+>
+
+    <div class="box-view">
+
+        <div class="box-view-header">
+
+            <div class="box-view-title">
+
+                <h2>
+                    Storage Box
+                </h2>
+
+                <span
+                    class="box-view-location"
+                    id="boxViewLocation"
+                >
+                    1A
+                </span>
+
+            </div>
+
+            <button
+                class="secondary"
+                onclick="closeModal('boxViewModal')"
+            >
+                Close
+            </button>
+
+        </div>
+
+
+        <div
+            class="section-tabs"
+            id="sectionTabs"
+        ></div>
+
+
+        <div
+            class="section-content"
+            id="sectionContent"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     PART DETAILS
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="partDetailModal"
+>
+
+    <div class="part-detail">
+
+        <div class="part-detail-header">
+
+            <h2 id="partDetailTitle">
+                Part
+            </h2>
+
+            <button
+                class="secondary"
+                onclick="closeModal('partDetailModal')"
+            >
+                Close
+            </button>
+
+        </div>
+
+
+        <div
+            class="part-detail-body"
+            id="partDetailBody"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     BOX SETTINGS
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="boxSettingsModal"
+>
+
+    <div class="form-modal">
+
+        <h2>
+            Box Settings
+        </h2>
+
+
+        <div class="form-group">
+
+            <label>
+                Number of dividers
+            </label>
+
+            <select id="dividerCount">
+
+                <option value="0">
+                    0 — 1 section
+                </option>
+
+                <option value="1">
+                    1 — 2 sections
+                </option>
+
+                <option value="2">
+                    2 — 3 sections
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <p class="info">
+
+            0 dividers = 1 section<br>
+            1 divider = 2 sections<br>
+            2 dividers = 3 sections
+
+        </p>
+
+
+        <div class="modal-buttons">
+
+            <button
+                class="secondary"
+                onclick="closeModal('boxSettingsModal')"
+            >
+                Cancel
+            </button>
+
+            <button onclick="saveBoxSettings()">
+                Save
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ITEM EDITOR
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="itemModal"
+>
+
+    <div class="form-modal">
+
+        <h2 id="itemModalTitle">
+            Add Item
+        </h2>
+
+
+        <div class="form-group">
+
+            <label>
+                Item / Part Name
+            </label>
+
+            <input
+                id="itemName"
+                placeholder="Example: Arduino Uno"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Description
+            </label>
+
+            <textarea
+                id="itemDescription"
+                placeholder="Example: Rev 3 through-hole board"
+            ></textarea>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Condition
+            </label>
+
+            <input
+                id="itemCondition"
+                placeholder="Example: New, Good, Damaged"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Count
+            </label>
+
+            <input
+                id="itemCount"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="Example: 25"
+            >
+
+        </div>
+
+
+        <p class="info">
+
+            Leave a field blank if it does not apply.
+            Blank fields are stored as <b>null</b>.
+
+        </p>
+
+
+        <div class="modal-buttons">
+
+            <button
+                class="secondary"
+                onclick="closeModal('itemModal')"
+            >
+                Cancel
+            </button>
+
+            <button onclick="saveItem()">
+                Save Item
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   DATA
+========================================================= */
+
+let data = {
+    rows: 3,
+    columns: 4,
+    boxes: []
+};
+
+
+let editingBox = null;
+
+let editingItem = null;
+
+let currentlyViewedBox = null;
+
+let currentlyViewedSection = 0;
+
+
+/* =========================================================
+   COLUMN LETTER
+
+   1  = A
+   2  = B
+   3  = C
+   ...
+   26 = Z
+========================================================= */
+
+function columnLetter(number) {
+
+    let result = "";
+
+    while (number > 0) {
+
+        const remainder =
+            (number - 1) % 26;
+
+        result =
+            String.fromCharCode(
+                65 + remainder
+            ) + result;
+
+        number =
+            Math.floor(
+                (number - 1) / 26
+            );
+    }
+
+    return result;
+}
+
+
+/* =========================================================
+   LOCATION
+========================================================= */
+
+function boxLocation(box) {
+
+    return (
+        box.row +
+        columnLetter(box.column)
+    );
+}
+
+
+function sectionLocation(
+    box,
+    sectionIndex
+) {
+
+    return (
+        boxLocation(box) +
+        (sectionIndex + 1)
+    );
+
+}
+
+
+/* =========================================================
+   CREATE BOX
+========================================================= */
+
+function createBox(row, column) {
+
+    return {
+
+        id: crypto.randomUUID(),
+
+        row: row,
+
+        column: column,
+
+        sections: [
+            []
+        ]
+
+    };
+
+}
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+function saveData() {
+
+    localStorage.setItem(
+        "storageCabinetData",
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* =========================================================
+   LOAD
+========================================================= */
+
+function loadData() {
+
+    const saved =
+        localStorage.getItem(
+            "storageCabinetData"
+        );
+
+
+    if (saved) {
+
+        try {
+
+            data = JSON.parse(saved);
+
+        }
+
+        catch {
+
+            data = {
+                rows: 3,
+                columns: 4,
+                boxes: []
+            };
+
+        }
+
+    }
+
+
+    normalizeData();
+
+}
+
+
+/* =========================================================
+   NORMALIZE OLD DATA
+========================================================= */
+
+function normalizeData() {
+
+    if (
+        !Number.isInteger(data.rows) ||
+        data.rows < 1
+    ) {
+
+        data.rows = 3;
+
+    }
+
+
+    if (
+        !Number.isInteger(data.columns) ||
+        data.columns < 1
+    ) {
+
+        data.columns = 4;
+
+    }
+
+
+    if (!Array.isArray(data.boxes)) {
+
+        data.boxes = [];
+
+    }
+
+
+    /*
+       Preserve boxes by their physical
+       row/column location.
+    */
+
+    const oldBoxes = new Map();
+
+
+    data.boxes.forEach(box => {
+
+        if (
+            Number.isInteger(box.row) &&
+            Number.isInteger(box.column)
+        ) {
+
+            oldBoxes.set(
+                `${box.row}-${box.column}`,
+                box
+            );
+
+        }
+
+    });
+
+
+    const newBoxes = [];
+
+
+    for (
+        let row = 1;
+        row <= data.rows;
+        row++
+    ) {
+
+        for (
+            let column = 1;
+            column <= data.columns;
+            column++
+        ) {
+
+            const key =
+                `${row}-${column}`;
+
+
+            let box =
+                oldBoxes.get(key);
+
+
+            if (!box) {
+
+                box =
+                    createBox(
+                        row,
+                        column
+                    );
+
+            }
+
+
+            if (
+                !Array.isArray(
+                    box.sections
+                )
+            ) {
+
+                box.sections = [[]];
+
+            }
+
+
+            /*
+                Repair old items.
+            */
+
+            box.sections.forEach(
+                section => {
+
+                    section.forEach(
+                        item => {
+
+                            if (
+                                !("description" in item)
+                            ) {
+
+                                item.description = null;
+
+                            }
+
+                            if (
+                                !("condition" in item)
+                            ) {
+
+                                item.condition = null;
+
+                            }
+
+                            if (
+                                !("count" in item)
+                            ) {
+
+                                item.count = null;
+
+                            }
+
+                            if (!item.id) {
+
+                                item.id =
+                                    crypto.randomUUID();
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+            newBoxes.push(box);
+
+        }
+
+    }
+
+
+    data.boxes = newBoxes;
+
+    saveData();
+
+}
+
+
+/* =========================================================
+   UNIQUE COLOR FROM NAME
+
+   The same name always generates the same color.
+========================================================= */
+
+function colorFromName(name) {
+
+    let hash = 0;
+
+
+    for (
+        let i = 0;
+        i < name.length;
+        i++
+    ) {
+
+        hash =
+            name.charCodeAt(i) +
+            ((hash << 5) - hash);
+
+        hash |= 0;
+
+    }
+
+
+    /*
+       Use HSL.
+
+       This gives many distinct colors while
+       keeping them bright enough to see.
+    */
+
+    const hue =
+        Math.abs(hash) % 360;
+
+
+    return `hsl(${hue}, 75%, 60%)`;
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render() {
+
+    const cabinet =
+        document.getElementById(
+            "cabinet"
+        );
+
+
+    cabinet.innerHTML = "";
+
+
+    cabinet.style.gridTemplateColumns =
+        `repeat(
+            ${data.columns},
+            minmax(220px, 1fr)
+        )`;
+
+
+    /*
+       IMPORTANT:
+
+       Sort by row first and column second.
+
+       This guarantees the visual order is:
+
+       1A 1B 1C
+       2A 2B 2C
+       3A 3B 3C
+    */
+
+    const boxes =
+        [...data.boxes].sort(
+            (a, b) => {
+
+                if (
+                    a.row !== b.row
+                ) {
+
+                    return a.row - b.row;
+
+                }
+
+                return (
+                    a.column -
+                    b.column
+                );
+
+            }
+        );
+
+
+    boxes.forEach(box => {
+
+        renderBox(
+            cabinet,
+            box
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   RENDER BOX
+========================================================= */
+
+function renderBox(
+    cabinet,
+    box
+) {
+
+    const element =
+        document.createElement(
+            "div"
+        );
+
+
+    element.className =
+        "cabinet-box";
+
+
+    element.id =
+        `box-${box.id}`;
+
+
+    /*
+       Count all parts.
+    */
+
+    const totalParts =
+        box.sections.reduce(
+            (
+                total,
+                section
+            ) =>
+                total +
+                section.length,
+            0
+        );
+
+
+    let sectionsHTML = "";
+
+
+    /*
+       ACTUAL PHYSICAL SECTIONS.
+
+       Every section is independently rendered,
+       so the icons stay on the correct side
+       of the dividers.
+    */
+
+    box.sections.forEach(
+        (
+            section,
+            sectionIndex
+        ) => {
+
+            let dotsHTML = "";
+
+
+            section.forEach(item => {
+
+                const color =
+                    colorFromName(
+                        item.name
+                    );
+
+
+                dotsHTML += `
+
+                    <span
+                        class="part-dot"
+                        style="
+                            background:${color};
+                            border-color:${color};
+                        "
+                        title="Stored item"
+                    ></span>
+
+                `;
+
+            });
+
+
+            if (
+                section.length === 0
+            ) {
+
+                dotsHTML = `
+
+                    <span class="empty-section">
+                        Empty
+                    </span>
+
+                `;
+
+            }
+
+
+            sectionsHTML += `
+
+                <div
+                    class="box-section"
+                >
+
+                    <div class="part-dots">
+                        ${dotsHTML}
+                    </div>
+
+                    <div class="section-number">
+                        ${sectionIndex + 1}
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    element.innerHTML = `
+
+        <div class="box-header">
+
+            <span class="box-location">
+                ${boxLocation(box)}
+            </span>
+
+
+            <div class="box-controls">
+
+                <button
+                    class="settings-btn"
+                    title="Box Settings"
+                >
+                    ⚙
+                </button>
+
+
+                <button
+                    class="delete-box-btn"
+                    title="Delete Box"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="box-body">
+
+            ${sectionsHTML}
+
+
+            <div class="section-indicator">
+                ${box.sections.length}
+                section${box.sections.length === 1 ? "" : "s"}
+            </div>
+
+        </div>
+
+    `;
+
+
+    /*
+       Clicking box opens it.
+    */
+
+    element.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.closest(
+                    ".box-controls"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            openBoxView(
+                box.id
+            );
+
+        }
+    );
+
+
+    /*
+       Settings.
+    */
+
+    element
+        .querySelector(
+            ".settings-btn"
+        )
+        .addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                editBox(
+                    box.id
+                );
+
+            }
+        );
+
+
+    /*
+       Delete.
+    */
+
+    element
+        .querySelector(
+            ".delete-box-btn"
+        )
+        .addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                deleteBox(
+                    box.id
+                );
+
+            }
+        );
+
+
+    cabinet.appendChild(
+        element
+    );
+
+}
+
+
+/* =========================================================
+   ADD NEW BOX
+
+   THIS IS DIFFERENT FROM ADD ROW/COLUMN.
+
+   A new box is inserted at:
+
+       1A
+
+   Everything currently in the cabinet shifts
+   down/right according to the normal grid.
+
+   The supplies remain attached to their box.
+========================================================= */
+
+function addNewBox() {
+
+    /*
+       Save the current physical boxes,
+       sorted in visual order.
+    */
+
+    const oldBoxes =
+        [...data.boxes].sort(
+            (a, b) => {
+
+                if (
+                    a.row !== b.row
+                ) {
+
+                    return a.row - b.row;
+
+                }
+
+                return (
+                    a.column -
+                    b.column
+                );
+
+            }
+        );
+
+
+    /*
+       Add one new physical position.
+
+       Since this is a grid, the total number
+       of positions increases by one.
+
+       We use a linear position system.
+    */
+
+    const oldTotal =
+        data.rows *
+        data.columns;
+
+
+    const newTotal =
+        oldTotal + 1;
+
+
+    /*
+       Increase the row count when needed.
+
+       Example with 4 columns:
+
+       12 boxes = 3 rows
+       adding one = 13 boxes = 4 rows
+    */
+
+    const newRows =
+        Math.ceil(
+            newTotal /
+            data.columns
+        );
+
+
+    data.rows =
+        newRows;
+
+
+    /*
+       Create a brand new box for position 1.
+    */
+
+    const newBox =
+        createBox(
+            1,
+            1
+        );
+
+
+    /*
+       Shift every old box one linear
+       position forward.
+
+       Most importantly, we are moving
+       the BOX OBJECT itself.
+
+       Therefore its supplies stay with it.
+    */
+
+    oldBoxes.forEach(
+        (box, index) => {
+
+            const newPosition =
+                index + 2;
+
+
+            box.row =
+                Math.floor(
+                    (newPosition - 1) /
+                    data.columns
+                ) + 1;
+
+
+            box.column =
+                ((newPosition - 1) %
+                data.columns) + 1;
+
+        }
+    );
+
+
+    data.boxes = [
+        newBox,
+        ...oldBoxes
+    ];
+
+
+    /*
+       If adding the new box created a new row,
+       fill any missing positions.
+
+       Example:
+
+       4 columns
+       12 boxes
+       Add new box
+
+       New row 4 only needs box 4A.
+    */
+
+    const occupied =
+        new Set(
+            data.boxes.map(
+                box =>
+                    `${box.row}-${box.column}`
+            )
+        );
+
+
+    for (
+        let row = 1;
+        row <= data.rows;
+        row++
+    ) {
+
+        for (
+            let column = 1;
+            column <= data.columns;
+            column++
+        ) {
+
+            const key =
+                `${row}-${column}`;
+
+
+            if (
+                !occupied.has(key)
+            ) {
+
+                /*
+                   Don't create unused trailing
+                   boxes beyond the intended count.
+                */
+
+                const expected =
+                    data.rows *
+                    data.columns;
+
+
+                if (
+                    data.boxes.length <
+                    expected
+                ) {
+
+                    data.boxes.push(
+                        createBox(
+                            row,
+                            column
+                        )
+                    );
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    /*
+       Remove any accidental extra boxes
+       caused by the final partially filled row.
+    */
+
+    data.boxes =
+        data.boxes.slice(
+            0,
+            newTotal
+        );
+
+
+    saveData();
+
+    render();
+
+}
+
+
+/* =========================================================
+   ADD ROW
+========================================================= */
+
+function addRow() {
+
+    const newRow =
+        data.rows + 1;
+
+
+    data.rows =
+        newRow;
+
+
+    for (
+        let column = 1;
+        column <= data.columns;
+        column++
+    ) {
+
+        data.boxes.push(
+            createBox(
+                newRow,
+                column
+            )
+        );
+
+    }
+
+
+    saveData();
+
+    render();
+
+}
+
+
+/* =========================================================
+   ADD COLUMN
+========================================================= */
+
+function addColumn() {
+
+    const oldColumns =
+        data.columns;
+
+
+    const newColumn =
+        oldColumns + 1;
+
+
+    /*
+       Reposition boxes into the new
+       wider grid.
+
+       Their supplies remain attached.
+    */
+
+    const boxes =
+        [...data.boxes].sort(
+            (a, b) => {
+
+                if (
+                    a.row !== b.row
+                ) {
+
+                    return a.row - b.row;
+
+                }
+
+                return (
+                    a.column -
+                    b.column
+                );
+
+            }
+        );
+
+
+    data.columns =
+        newColumn;
+
+
+    data.boxes =
+        boxes;
+
+
+    /*
+       Recalculate positions while
+       preserving object/supply ownership.
+    */
+
+    data.boxes.forEach(
+        (box, index) => {
+
+            box.row =
+                Math.floor(
+                    index /
+                    newColumn
+                ) + 1;
+
+
+            box.column =
+                (index %
+                newColumn) + 1;
+
+        }
+    );
+
+
+    /*
+       Add the new boxes necessary
+       to complete every existing row.
+    */
+
+    const required =
+        data.rows *
+        newColumn;
+
+
+    while (
+        data.boxes.length <
+        required
+    ) {
+
+        const index =
+            data.boxes.length;
+
+
+        data.boxes.push(
+            createBox(
+                Math.floor(
+                    index /
+                    newColumn
+                ) + 1,
+
+                (index %
+                newColumn) + 1
+            )
+        );
+
+    }
+
+
+    data.rows =
+        Math.ceil(
+            data.boxes.length /
+            newColumn
+        );
+
+
+    saveData();
+
+    render();
+
+}
+
+
+/* =========================================================
+   OPEN BOX
+========================================================= */
+
+function openBoxView(boxId) {
+
+    const box =
+        data.boxes.find(
+            b =>
+                b.id === boxId
+        );
+
+
+    if (!box) return;
+
+
+    currentlyViewedBox =
+        boxId;
+
+
+    currentlyViewedSection =
+        0;
+
+
+    document.getElementById(
+        "boxViewLocation"
+    ).textContent =
+        boxLocation(box);
+
+
+    renderBoxView();
+
+    openModal(
+        "boxViewModal"
+    );
+
+}
+
+
+/* =========================================================
+   RENDER BOX VIEW
+========================================================= */
+
+function renderBoxView() {
+
+    const box =
+        data.boxes.find(
+            b =>
+                b.id ===
+                currentlyViewedBox
+        );
+
+
+    if (!box) return;
+
+
+    const tabs =
+        document.getElementById(
+            "sectionTabs"
+        );
+
+
+    const content =
+        document.getElementById(
+            "sectionContent"
+        );
+
+
+    tabs.innerHTML = "";
+
+    content.innerHTML = "";
+
+
+    /*
+       Section tabs.
+    */
+
+    box.sections.forEach(
+        (
+            section,
+            index
+        ) => {
+
+            const tab =
+                document.createElement(
+                    "button"
+                );
+
+
+            tab.className =
+                "section-tab";
+
+
+            if (
+                index ===
+                currentlyViewedSection
+            ) {
+
+                tab.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            tab.textContent =
+                `Section ${index + 1}`;
+
+
+            tab.onclick = () => {
+
+                currentlyViewedSection =
+                    index;
+
+
+                renderBoxView();
+
+            };
+
+
+            tabs.appendChild(
+                tab
+            );
+
+        }
+    );
+
+
+    const section =
+        box.sections[
+            currentlyViewedSection
+        ];
+
+
+    const heading =
+        document.createElement(
+            "div"
+        );
+
+
+    heading.className =
+        "section-heading";
+
+
+    heading.textContent =
+        `LOCATION ${sectionLocation(
+            box,
+            currentlyViewedSection
+        )}`;
+
+
+    content.appendChild(
+        heading
+    );
+
+
+    /*
+       Add Item button.
+    */
+
+    const addButton =
+        document.createElement(
+            "button"
+        );
+
+
+    addButton.textContent =
+        "＋ Add Item";
+
+
+    addButton.style.marginBottom =
+        "15px";
+
+
+    addButton.onclick = () => {
+
+        addItem(
+            box.id,
+            currentlyViewedSection
+        );
+
+    };
+
+
+    content.appendChild(
+        addButton
+    );
+
+
+    /*
+       Parts.
+    */
+
+    const list =
+        document.createElement(
+            "div"
+        );
+
+
+    list.className =
+        "parts-list";
+
+
+    if (
+        section.length === 0
+    ) {
+
+        list.innerHTML = `
+
+            <div class="info">
+                This section is empty.
+            </div>
+
+        `;
+
+    }
+
+    else {
+
+        section.forEach(
+            item => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "part-card";
+
+
+                const color =
+                    colorFromName(
+                        item.name
+                    );
+
+
+                card.style.borderLeft =
+                    `5px solid ${color}`;
+
+
+                card.innerHTML = `
+
+                    <div class="part-card-name">
+                        ${escapeHtml(
+                            item.name
+                        )}
+                    </div>
+
+
+                    <div class="part-card-preview">
+
+                        ${
+                            item.count !== null
+                            ?
+                            `Count: ${escapeHtml(
+                                String(item.count)
+                            )}`
+                            :
+                            "Click to view details"
+                        }
+
+                    </div>
+
+                `;
+
+
+                card.onclick = () => {
+
+                    openPartDetails(
+                        box,
+                        currentlyViewedSection,
+                        item
+                    );
+
+                };
+
+
+                list.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+
+    content.appendChild(
+        list
+    );
+
+}
+
+
+/* =========================================================
+   PART DETAILS
+========================================================= */
+
+/* =========================================================
+   PART DETAILS
+========================================================= */
+
+function openPartDetails(
+    box,
+    sectionIndex,
+    item
+) {
+
+    const location =
+        sectionLocation(
+            box,
+            sectionIndex
+        );
+
+
+    document.getElementById(
+        "partDetailTitle"
+    ).textContent =
+        item.name;
+
+
+    const body =
+        document.getElementById(
+            "partDetailBody"
+        );
+
+
+    body.innerHTML = `
+
+        <div
+            class="detail-location"
+            style="
+                border-color:${colorFromName(item.name)};
+                color:${colorFromName(item.name)};
+            "
+        >
+            ${location}
+        </div>
+
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Part
+            </div>
+
+            <div class="detail-value">
+                ${escapeHtml(item.name)}
+            </div>
+
+        </div>
+
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Description
+            </div>
+
+            <div class="
+                detail-value
+                ${
+                    item.description === null
+                    ? "null-value"
+                    : ""
+                }
+            ">
+
+                ${
+                    item.description === null
+                    ?
+                    "null"
+                    :
+                    escapeHtml(item.description)
+                }
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Condition
+            </div>
+
+            <div class="
+                detail-value
+                ${
+                    item.condition === null
+                    ? "null-value"
+                    : ""
+                }
+            ">
+
+                ${
+                    item.condition === null
+                    ?
+                    "null"
+                    :
+                    escapeHtml(item.condition)
+                }
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Count
+            </div>
+
+            <div class="
+                detail-value
+                ${
+                    item.count === null
+                    ? "null-value"
+                    : ""
+                }
+            ">
+
+                ${
+                    item.count === null
+                    ?
+                    "null"
+                    :
+                    escapeHtml(String(item.count))
+                }
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Location
+            </div>
+
+            <div class="detail-value">
+                ${location}
+            </div>
+
+        </div>
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div
+            class="modal-buttons"
+            style="
+                margin-top:20px;
+                justify-content:space-between;
+            "
+        >
+
+            <button
+                class="danger"
+                onclick="
+                    deleteItem(
+                        '${box.id}',
+                        ${sectionIndex},
+                        '${item.id}'
+                    )
+                "
+            >
+                🗑 Delete Item
+            </button>
+
+
+            <div
+                style="
+                    display:flex;
+                    gap:8px;
+                "
+            >
+
+                <button
+                    class="secondary"
+                    onclick="
+                        closeModal('partDetailModal')
+                    "
+                >
+                    Close
+                </button>
+
+
+                <button
+                    onclick="
+                        editItem(
+                            '${box.id}',
+                            ${sectionIndex},
+                            '${item.id}'
+                        )
+                    "
+                >
+                    ✎ Edit Item
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    openModal(
+        "partDetailModal"
+    );
+
+}
+
+
+/* =========================================================
+   BOX SETTINGS
+========================================================= */
+
+function editBox(id) {
+
+    const box =
+        data.boxes.find(
+            b =>
+                b.id === id
+        );
+
+
+    if (!box) return;
+
+
+    editingBox =
+        id;
+
+
+    document.getElementById(
+        "dividerCount"
+    ).value =
+        box.sections.length - 1;
+
+
+    openModal(
+        "boxSettingsModal"
+    );
+
+}
+
+
+/* =========================================================
+   SAVE BOX SETTINGS
+========================================================= */
+
+function saveBoxSettings() {
+
+    const box =
+        data.boxes.find(
+            b =>
+                b.id === editingBox
+        );
+
+
+    if (!box) return;
+
+
+    const dividerCount =
+        Number(
+            document.getElementById(
+                "dividerCount"
+            ).value
+        );
+
+
+    const desiredSections =
+        dividerCount + 1;
+
+
+    /*
+       Add sections.
+    */
+
+    while (
+        box.sections.length <
+        desiredSections
+    ) {
+
+        box.sections.push([]);
+
+    }
+
+
+    /*
+       If sections are removed,
+       move their contents into the
+       previous remaining section.
+
+       Nothing gets deleted.
+    */
+
+    while (
+        box.sections.length >
+        desiredSections
+    ) {
+
+        const removed =
+            box.sections.pop();
+
+
+        box.sections[
+            box.sections.length - 1
+        ].push(
+            ...removed
+        );
+
+    }
+
+
+    saveData();
+
+    render();
+
+    closeModal(
+        "boxSettingsModal"
+    );
+
+}
+
+
+/* =========================================================
+   DELETE BOX
+========================================================= */
+
+function deleteBox(id) {
+
+    const box =
+        data.boxes.find(
+            b =>
+                b.id === id
+        );
+
+
+    if (!box) return;
+
+
+    const partCount =
+        box.sections.reduce(
+            (
+                total,
+                section
+            ) =>
+                total +
+                section.length,
+            0
+        );
+
+
+    let message =
+        "Delete this box?";
+
+
+    if (
+        partCount > 0
+    ) {
+
+        message =
+            `This box contains ${partCount} item(s).\n\n` +
+            `Delete the box and all of its contents?`;
+
+    }
+
+
+    if (
+        !confirm(message)
+    ) {
+
+        return;
+
+    }
+
+
+    data.boxes =
+        data.boxes.filter(
+            b =>
+                b.id !== id
+        );
+
+
+    /*
+       Repack remaining boxes.
+
+       Supplies stay attached to their
+       original box objects.
+    */
+
+    const remaining =
+        [...data.boxes].sort(
+            (a, b) => {
+
+                if (
+                    a.row !== b.row
+                ) {
+
+                    return a.row - b.row;
+
+                }
+
+                return (
+                    a.column -
+                    b.column
+                );
+
+            }
+        );
+
+
+    remaining.forEach(
+        (box, index) => {
+
+            box.row =
+                Math.floor(
+                    index /
+                    data.columns
+                ) + 1;
+
+
+            box.column =
+                (index %
+                data.columns) + 1;
+
+        }
+    );
+
+
+    data.boxes =
+        remaining;
+
+
+    data.rows =
+        Math.max(
+            1,
+            Math.ceil(
+                data.boxes.length /
+                data.columns
+            )
+        );
+
+
+    /*
+       Make sure the cabinet has all
+       physical boxes in the grid.
+    */
+
+    const required =
+        data.rows *
+        data.columns;
+
+
+    while (
+        data.boxes.length <
+        required
+    ) {
+
+        const index =
+            data.boxes.length;
+
+
+        data.boxes.push(
+            createBox(
+                Math.floor(
+                    index /
+                    data.columns
+                ) + 1,
+
+                (index %
+                data.columns) + 1
+            )
+        );
+
+    }
+
+
+    saveData();
+
+    render();
+
+    searchItems();
+
+}
+
+
+/* =========================================================
+   ADD ITEM
+========================================================= */
+
+function addItem(
+    boxId,
+    sectionIndex
+) {
+
+    editingBox =
+        boxId;
+
+
+    editingItem = {
+
+        sectionIndex:
+            sectionIndex,
+
+        itemId:
+            null
+
+    };
+
+
+    document.getElementById(
+        "itemModalTitle"
+    ).textContent =
+        "Add Item";
+
+
+    document.getElementById(
+        "itemName"
+    ).value = "";
+
+
+    document.getElementById(
+        "itemDescription"
+    ).value = "";
+
+
+    document.getElementById(
+        "itemCondition"
+    ).value = "";
+
+
+    document.getElementById(
+        "itemCount"
+    ).value = "";
+
+
+    openModal(
+        "itemModal"
+    );
+
+}
+
+/* =========================================================
+   EDIT ITEM
+========================================================= */
+
+function editItem(
+    boxId,
+    sectionIndex,
+    itemId
+) {
+
+    const box =
+        data.boxes.find(
+            b =>
+                b.id === boxId
+        );
+
+
+    if (!box) return;
+
+
+    const section =
+        box.sections[
+            sectionIndex
+        ];
+
+
+    if (!section) return;
+
+
+    const item =
+        section.find(
+            item =>
+                item.id === itemId
+        );
+
+
+    if (!item) return;
+
+
+    /*
+       Remember what we are editing.
+    */
+
+    editingBox =
+        boxId;
+
+
+    editingItem = {
+
+        sectionIndex:
+            sectionIndex,
+
+        itemId:
+            itemId
+
+    };
+
+
+    /*
+       Change modal title.
+    */
+
+    document.getElementById(
+        "itemModalTitle"
+    ).textContent =
+        "Edit Item";
+
+
+    /*
+       Fill the form with the
+       existing information.
+    */
+
+    document.getElementById(
+        "itemName"
+    ).value =
+        item.name || "";
+
+
+    document.getElementById(
+        "itemDescription"
+    ).value =
+        item.description === null
+        ?
+        ""
+        :
+        item.description;
+
+
+    document.getElementById(
+        "itemCondition"
+    ).value =
+        item.condition === null
+        ?
+        ""
+        :
+        item.condition;
+
+
+    document.getElementById(
+        "itemCount"
+    ).value =
+        item.count === null
+        ?
+        ""
+        :
+        item.count;
+
+
+    /*
+       Close the details window.
+    */
+
+    closeModal(
+        "partDetailModal"
+    );
+
+
+    /*
+       Open editor.
+    */
+
+    openModal(
+        "itemModal"
+    );
+
+}
+
+/* =========================================================
+   DELETE ITEM
+========================================================= */
+
+function deleteItem(
+    boxId,
+    sectionIndex,
+    itemId
+) {
+
+    const box =
+        data.boxes.find(
+            b =>
+                b.id === boxId
+        );
+
+
+    if (!box) return;
+
+
+    const section =
+        box.sections[
+            sectionIndex
+        ];
+
+
+    if (!section) return;
+
+
+    const itemIndex =
+        section.findIndex(
+            item =>
+                item.id === itemId
+        );
+
+
+    if (
+        itemIndex === -1
+    ) {
+
+        return;
+
+    }
+
+
+    const item =
+        section[itemIndex];
+
+
+    /*
+       Make sure the user actually
+       wants to delete it.
+    */
+
+    const confirmed =
+        confirm(
+            `Delete "${item.name}"?\n\n` +
+            `This cannot be undone.`
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    /*
+       Remove only this item.
+
+       Everything else in the
+       section stays untouched.
+    */
+
+    section.splice(
+        itemIndex,
+        1
+    );
+
+
+    /*
+       Save changes.
+    */
+
+    saveData();
+
+
+    /*
+       Close details.
+    */
+
+    closeModal(
+        "partDetailModal"
+    );
+
+
+    /*
+       Refresh cabinet.
+    */
+
+    render();
+
+
+    /*
+       Refresh currently opened box.
+    */
+
+    if (
+        currentlyViewedBox === boxId
+    ) {
+
+        renderBoxView();
+
+    }
+
+
+    /*
+       Refresh search results.
+    */
+
+    searchItems();
+
+}
+
+/* =========================================================
+   SAVE ITEM
+========================================================= */
+
+function saveItem() {
+
+    const name =
+        document.getElementById(
+            "itemName"
+        ).value.trim();
+
+
+    const descriptionRaw =
+        document.getElementById(
+            "itemDescription"
+        ).value.trim();
+
+
+    const conditionRaw =
+        document.getElementById(
+            "itemCondition"
+        ).value.trim();
+
+
+    const countRaw =
+        document.getElementById(
+            "itemCount"
+        ).value.trim();
+
+
+    /*
+       Name is required.
+    */
+
+    if (!name) {
+
+        alert(
+            "Please enter a part name."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Blank text fields become null.
+    */
+
+    const description =
+        descriptionRaw === ""
+        ?
+        null
+        :
+        descriptionRaw;
+
+
+    const condition =
+        conditionRaw === ""
+        ?
+        null
+        :
+        conditionRaw;
+
+
+    /*
+       Blank count becomes null.
+    */
+
+    let count = null;
+
+
+    if (
+        countRaw !== ""
+    ) {
+
+        const parsed =
+            Number(countRaw);
+
+
+        if (
+            !Number.isFinite(parsed) ||
+            parsed < 0
+        ) {
+
+            alert(
+                "Count must be a valid number."
+            );
+
+            return;
+
+        }
+
+
+        count =
+            parsed;
+
+    }
+
+
+    /*
+       Find the box.
+    */
+
+    const box =
+        data.boxes.find(
+            b =>
+                b.id === editingBox
+        );
+
+
+    if (!box) {
+
+        return;
+
+    }
+
+
+    /*
+       Find the section.
+    */
+
+    const section =
+        box.sections[
+            editingItem.sectionIndex
+        ];
+
+
+    if (!section) {
+
+        return;
+
+    }
+
+
+    /*
+       =====================================================
+       EDIT EXISTING ITEM
+       =====================================================
+    */
+
+    if (
+        editingItem.itemId !== null
+    ) {
+
+        const item =
+            section.find(
+                item =>
+                    item.id ===
+                    editingItem.itemId
+            );
+
+
+        if (!item) {
+
+            alert(
+                "Could not find the item."
+            );
+
+            return;
+
+        }
+
+
+        /*
+           Update the existing object.
+
+           Notice that the ID is NOT changed.
+           This is important because search,
+           references, etc. can continue using it.
+        */
+
+        item.name =
+            name;
+
+        item.description =
+            description;
+
+        item.condition =
+            condition;
+
+        item.count =
+            count;
+
+    }
+
+
+    /*
+       =====================================================
+       ADD NEW ITEM
+       =====================================================
+    */
+
+    else {
+
+        section.push({
+
+            id:
+                crypto.randomUUID(),
+
+            name:
+                name,
+
+            description:
+                description,
+
+            condition:
+                condition,
+
+            count:
+                count
+
+        });
+
+    }
+
+
+    /*
+       Save everything.
+    */
+
+    saveData();
+
+
+    /*
+       Refresh cabinet.
+    */
+
+    render();
+
+
+    /*
+       Refresh open box.
+    */
+
+    if (
+        currentlyViewedBox ===
+        editingBox
+    ) {
+
+        renderBoxView();
+
+    }
+
+
+    /*
+       Refresh search.
+    */
+
+    searchItems();
+
+
+    /*
+       Close editor.
+    */
+
+    closeModal(
+        "itemModal"
+    );
+
+
+    /*
+       Reset editing state.
+    */
+
+    editingItem =
+        null;
+
+    editingBox =
+        null;
+
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function searchItems() {
+
+    const query =
+        document.getElementById(
+            "search"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    const results =
+        document.getElementById(
+            "searchResults"
+        );
+
+
+    results.innerHTML = "";
+
+
+    removeHighlights();
+
+
+    if (!query) {
+
+        return;
+
+    }
+
+
+    const matches = [];
+
+
+    data.boxes.forEach(
+        box => {
+
+            box.sections.forEach(
+                (
+                    section,
+                    sectionIndex
+                ) => {
+
+                    section.forEach(
+                        item => {
+
+                            const location =
+                                sectionLocation(
+                                    box,
+                                    sectionIndex
+                                );
+
+
+                            const searchable =
+                                [
+                                    item.name,
+                                    item.description,
+                                    item.condition,
+                                    item.count,
+                                    location
+                                ]
+                                .filter(
+                                    value =>
+                                        value !== null &&
+                                        value !== undefined
+                                )
+                                .join(" ")
+                                .toLowerCase();
+
+
+                            if (
+                                searchable.includes(
+                                    query
+                                )
+                            ) {
+
+                                matches.push({
+
+                                    item,
+                                    box,
+                                    sectionIndex,
+                                    location
+
+                                });
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    if (
+        matches.length === 0
+    ) {
+
+        results.innerHTML = `
+
+            <div class="search-result">
+                No matching items found.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    matches.forEach(
+        match => {
+
+            const result =
+                document.createElement(
+                    "div"
+                );
+
+
+            result.className =
+                "search-result";
+
+
+            result.innerHTML = `
+
+                <strong>
+                    ${escapeHtml(
+                        match.item.name
+                    )}
+                </strong>
+
+                <br>
+
+                <span class="location">
+                    ${match.location}
+                </span>
+
+
+                ${
+                    match.item.condition !== null
+                    ?
+                    `
+                    <br>
+                    <small>
+                        Condition:
+                        ${escapeHtml(
+                            String(
+                                match.item.condition
+                            )
+                        )}
+                    </small>
+                    `
+                    :
+                    ""
+                }
+
+
+                ${
+                    match.item.count !== null
+                    ?
+                    `
+                    <br>
+                    <small>
+                        Count:
+                        ${escapeHtml(
+                            String(
+                                match.item.count
+                            )
+                        )}
+                    </small>
+                    `
+                    :
+                    ""
+                }
+
+            `;
+
+
+            result.onclick = () => {
+
+                highlightBox(
+                    match.box
+                );
+
+
+                currentlyViewedBox =
+                    match.box.id;
+
+
+                currentlyViewedSection =
+                    match.sectionIndex;
+
+
+                document.getElementById(
+                    "boxViewLocation"
+                ).textContent =
+                    boxLocation(
+                        match.box
+                    );
+
+
+                renderBoxView();
+
+
+                openModal(
+                    "boxViewModal"
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        openPartDetails(
+                            match.box,
+                            match.sectionIndex,
+                            match.item
+                        );
+
+                    },
+                    150
+                );
+
+            };
+
+
+            results.appendChild(
+                result
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   HIGHLIGHT
+========================================================= */
+
+function highlightBox(box) {
+
+    removeHighlights();
+
+
+    const element =
+        document.getElementById(
+            `box-${box.id}`
+        );
+
+
+    if (!element) return;
+
+
+    element.classList.add(
+        "highlight"
+    );
+
+
+    element.scrollIntoView({
+
+        behavior:
+            "smooth",
+
+        block:
+            "center",
+
+        inline:
+            "center"
+
+    });
+
+
+    setTimeout(
+        () => {
+
+            element.classList.remove(
+                "highlight"
+            );
+
+        },
+        5000
+    );
+
+}
+
+
+/* =========================================================
+   REMOVE HIGHLIGHTS
+========================================================= */
+
+function removeHighlights() {
+
+    document
+        .querySelectorAll(
+            ".cabinet-box.highlight"
+        )
+        .forEach(
+            element => {
+
+                element.classList.remove(
+                    "highlight"
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+function openModal(id) {
+
+    document
+        .getElementById(id)
+        .classList.add(
+            "show"
+        );
+
+}
+
+
+function closeModal(id) {
+
+    document
+        .getElementById(id)
+        .classList.remove(
+            "show"
+        );
+
+}
+
+
+/* =========================================================
+   CLICK OUTSIDE MODAL
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".modal-backdrop"
+    )
+    .forEach(
+        backdrop => {
+
+            backdrop.addEventListener(
+                "click",
+                event => {
+
+                    if (
+                        event.target ===
+                        backdrop
+                    ) {
+
+                        backdrop.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            document
+                .querySelectorAll(
+                    ".modal-backdrop.show"
+                )
+                .forEach(
+                    modal => {
+
+                        modal.classList.remove(
+                            "show"
+                        );
+
+                    }
+                );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadData();
+
+render();
+
+</script>
+
+</body>
+</html>
