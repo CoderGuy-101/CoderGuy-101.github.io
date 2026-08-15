@@ -3092,6 +3092,258 @@ function addItem(
 
 }
 
+/* =========================================================
+   EDIT ITEM
+========================================================= */
+
+function editItem(
+    boxId,
+    sectionIndex,
+    itemId
+) {
+
+    const box =
+        data.boxes.find(
+            b =>
+                b.id === boxId
+        );
+
+
+    if (!box) return;
+
+
+    const section =
+        box.sections[
+            sectionIndex
+        ];
+
+
+    if (!section) return;
+
+
+    const item =
+        section.find(
+            item =>
+                item.id === itemId
+        );
+
+
+    if (!item) return;
+
+
+    /*
+       Remember what we are editing.
+    */
+
+    editingBox =
+        boxId;
+
+
+    editingItem = {
+
+        sectionIndex:
+            sectionIndex,
+
+        itemId:
+            itemId
+
+    };
+
+
+    /*
+       Change modal title.
+    */
+
+    document.getElementById(
+        "itemModalTitle"
+    ).textContent =
+        "Edit Item";
+
+
+    /*
+       Fill the form with the
+       existing information.
+    */
+
+    document.getElementById(
+        "itemName"
+    ).value =
+        item.name || "";
+
+
+    document.getElementById(
+        "itemDescription"
+    ).value =
+        item.description === null
+        ?
+        ""
+        :
+        item.description;
+
+
+    document.getElementById(
+        "itemCondition"
+    ).value =
+        item.condition === null
+        ?
+        ""
+        :
+        item.condition;
+
+
+    document.getElementById(
+        "itemCount"
+    ).value =
+        item.count === null
+        ?
+        ""
+        :
+        item.count;
+
+
+    /*
+       Close the details window.
+    */
+
+    closeModal(
+        "partDetailModal"
+    );
+
+
+    /*
+       Open editor.
+    */
+
+    openModal(
+        "itemModal"
+    );
+
+}
+
+/* =========================================================
+   DELETE ITEM
+========================================================= */
+
+function deleteItem(
+    boxId,
+    sectionIndex,
+    itemId
+) {
+
+    const box =
+        data.boxes.find(
+            b =>
+                b.id === boxId
+        );
+
+
+    if (!box) return;
+
+
+    const section =
+        box.sections[
+            sectionIndex
+        ];
+
+
+    if (!section) return;
+
+
+    const itemIndex =
+        section.findIndex(
+            item =>
+                item.id === itemId
+        );
+
+
+    if (
+        itemIndex === -1
+    ) {
+
+        return;
+
+    }
+
+
+    const item =
+        section[itemIndex];
+
+
+    /*
+       Make sure the user actually
+       wants to delete it.
+    */
+
+    const confirmed =
+        confirm(
+            `Delete "${item.name}"?\n\n` +
+            `This cannot be undone.`
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    /*
+       Remove only this item.
+
+       Everything else in the
+       section stays untouched.
+    */
+
+    section.splice(
+        itemIndex,
+        1
+    );
+
+
+    /*
+       Save changes.
+    */
+
+    saveData();
+
+
+    /*
+       Close details.
+    */
+
+    closeModal(
+        "partDetailModal"
+    );
+
+
+    /*
+       Refresh cabinet.
+    */
+
+    render();
+
+
+    /*
+       Refresh currently opened box.
+    */
+
+    if (
+        currentlyViewedBox === boxId
+    ) {
+
+        renderBoxView();
+
+    }
+
+
+    /*
+       Refresh search results.
+    */
+
+    searchItems();
+
+}
 
 /* =========================================================
    SAVE ITEM
@@ -3123,6 +3375,10 @@ function saveItem() {
         ).value.trim();
 
 
+    /*
+       Name is required.
+    */
+
     if (!name) {
 
         alert(
@@ -3133,6 +3389,10 @@ function saveItem() {
 
     }
 
+
+    /*
+       Blank text fields become null.
+    */
 
     const description =
         descriptionRaw === ""
@@ -3149,6 +3409,10 @@ function saveItem() {
         :
         conditionRaw;
 
+
+    /*
+       Blank count becomes null.
+    */
 
     let count = null;
 
@@ -3181,16 +3445,27 @@ function saveItem() {
     }
 
 
+    /*
+       Find the box.
+    */
+
     const box =
         data.boxes.find(
             b =>
-                b.id ===
-                editingBox
+                b.id === editingBox
         );
 
 
-    if (!box) return;
+    if (!box) {
 
+        return;
+
+    }
+
+
+    /*
+       Find the section.
+    */
 
     const section =
         box.sections[
@@ -3198,34 +3473,112 @@ function saveItem() {
         ];
 
 
-    section.push({
+    if (!section) {
 
-        id:
-            crypto.randomUUID(),
+        return;
 
-        name:
-            name,
+    }
 
-        description:
-            description,
 
-        condition:
-            condition,
+    /*
+       =====================================================
+       EDIT EXISTING ITEM
+       =====================================================
+    */
 
-        count:
-            count
+    if (
+        editingItem.itemId !== null
+    ) {
 
-    });
+        const item =
+            section.find(
+                item =>
+                    item.id ===
+                    editingItem.itemId
+            );
 
+
+        if (!item) {
+
+            alert(
+                "Could not find the item."
+            );
+
+            return;
+
+        }
+
+
+        /*
+           Update the existing object.
+
+           Notice that the ID is NOT changed.
+           This is important because search,
+           references, etc. can continue using it.
+        */
+
+        item.name =
+            name;
+
+        item.description =
+            description;
+
+        item.condition =
+            condition;
+
+        item.count =
+            count;
+
+    }
+
+
+    /*
+       =====================================================
+       ADD NEW ITEM
+       =====================================================
+    */
+
+    else {
+
+        section.push({
+
+            id:
+                crypto.randomUUID(),
+
+            name:
+                name,
+
+            description:
+                description,
+
+            condition:
+                condition,
+
+            count:
+                count
+
+        });
+
+    }
+
+
+    /*
+       Save everything.
+    */
 
     saveData();
 
+
+    /*
+       Refresh cabinet.
+    */
+
     render();
 
-    closeModal(
-        "itemModal"
-    );
 
+    /*
+       Refresh open box.
+    */
 
     if (
         currentlyViewedBox ===
@@ -3237,10 +3590,33 @@ function saveItem() {
     }
 
 
+    /*
+       Refresh search.
+    */
+
     searchItems();
 
-}
 
+    /*
+       Close editor.
+    */
+
+    closeModal(
+        "itemModal"
+    );
+
+
+    /*
+       Reset editing state.
+    */
+
+    editingItem =
+        null;
+
+    editingBox =
+        null;
+
+}
 
 /* =========================================================
    SEARCH
