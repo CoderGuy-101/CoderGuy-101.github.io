@@ -3,4072 +3,1449 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Storage Cabinet Organizer</title>
-
+<title>Houston → The Rockies — Sept 4–9</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230e1a17'/%3E%3Cpath d='M10 78 L38 32 L52 54 L64 30 L92 78 Z' fill='%234fb3ab'/%3E%3Cpath d='M52 54 L64 30 L92 78 Z' fill='%23e8935a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: #14161a;
-    color: #f1f1f1;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-header {
-    background: #22252b;
-    border-bottom: 1px solid #3b3f47;
-
-    padding: 14px 20px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 15px;
-
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 21px;
-}
-
-.toolbar {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-button {
-    border: none;
-    border-radius: 6px;
-
-    padding: 9px 13px;
-
-    background: #3b82f6;
-    color: white;
-
-    cursor: pointer;
-    font-weight: bold;
-}
-
-button:hover {
-    background: #2563eb;
-}
-
-button.secondary {
-    background: #4b515c;
-}
-
-button.secondary:hover {
-    background: #606874;
-}
-
-button.danger {
-    background: #dc3545;
-}
-
-button.danger:hover {
-    background: #b91c2c;
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-.search-area {
-    background: #1c1f24;
-    border-bottom: 1px solid #343840;
-
-    padding: 16px 20px;
-}
-
-#search {
-    width: 100%;
-    max-width: 650px;
-
-    padding: 12px 14px;
-
-    border-radius: 7px;
-    border: 1px solid #4b505a;
-
-    background: #111316;
-    color: white;
-
-    font-size: 16px;
-    outline: none;
-}
-
-#search:focus {
-    border-color: #3b82f6;
-}
-
-#searchResults {
-    max-width: 850px;
-    margin-top: 10px;
-}
-
-.search-result {
-    background: #292e36;
-
-    padding: 10px 13px;
-    margin-bottom: 6px;
-
-    border-radius: 6px;
-
-    cursor: pointer;
-}
-
-.search-result:hover {
-    background: #383e49;
-}
-
-.location {
-    color: #60a5fa;
-
-    font-family: monospace;
-    font-weight: bold;
-}
-
-
-/* =========================================================
-   CABINET
-========================================================= */
-
-main {
-    padding: 25px;
-    overflow: auto;
-}
-
-#cabinet {
-    display: grid;
-
-    gap: 10px;
-
-    width: max-content;
-    min-width: 100%;
-}
-
-
-/* =========================================================
-   BOX
-========================================================= */
-
-.cabinet-box {
-    min-width: 220px;
-    height: 180px;
-
-    background: #343941;
-
-    border: 3px solid #555b66;
-    border-radius: 6px;
-
-    overflow: hidden;
-
-    cursor: pointer;
-
-    position: relative;
-
-    transition:
-        transform .12s,
-        border-color .15s,
-        box-shadow .15s;
-}
-
-.cabinet-box:hover {
-    transform: translateY(-2px);
-
-    border-color: #707783;
-
-    box-shadow:
-        0 6px 18px rgba(0,0,0,.35);
-}
-
-.cabinet-box.highlight {
-    border-color: #facc15;
-
-    box-shadow:
-        0 0 12px rgba(250,204,21,.9),
-        0 0 30px rgba(250,204,21,.35);
-}
-
-
-/* =========================================================
-   BOX HEADER
-========================================================= */
-
-.box-header {
-    height: 48px;
-
-    background: #454b55;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding: 5px 7px 5px 12px;
-
-    position: relative;
-    z-index: 5;
-}
-
-.box-location {
-    font-family: monospace;
-
-    color: #93c5fd;
-
-    font-size: 18px;
-
-    font-weight: bold;
-}
-
-.box-controls {
-    display: flex;
-    gap: 5px;
-}
-
-
-/* BIG SETTINGS BUTTON */
-
-.settings-btn {
-    width: 40px;
-    height: 37px;
-
-    padding: 0;
-
-    font-size: 21px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #59616d;
-}
-
-.settings-btn:hover {
-    background: #707986;
-}
-
-.delete-box-btn {
-    width: 36px;
-    height: 37px;
-
-    padding: 0;
-
-    font-size: 20px;
-
-    background: #873843;
-}
-
-.delete-box-btn:hover {
-    background: #b33b49;
-}
-
-
-/* =========================================================
-   BOX BODY
-========================================================= */
-
-.box-body {
-    height: calc(100% - 48px);
-
-    display: flex;
-
-    position: relative;
-
+  :root{
+    --spruce-950:#0e1a17;
+    --spruce-900:#152621;
+    --spruce-800:#1f352e;
+    --paper:#f3ede0;
+    --paper-dim:#e7dfcd;
+    --teal:#4fb3ab;
+    --teal-dim:#2f5f5a;
+    --ember:#e8935a;
+    --ember-dim:#c97845;
+    --ink:#101c19;
+    --muted:#93a7a0;
+    --line: rgba(243,237,224,0.14);
+    --ridge-1:#152621;
+    --ridge-2:#1f352e;
+    --ridge-3:#28423a;
+    --maxw: 860px;
+    --gutter: 46px;
+  }
+  html.theme-aurora{
+    --ember:#9b8bf4;
+    --ember-dim:#7a6be0;
+    --teal:#5fd0c9;
+    --ridge-1:#131329;
+    --ridge-2:#1b1d3d;
+    --ridge-3:#242853;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
     background:
-        linear-gradient(
-            135deg,
-            #30343a,
-            #292d32
-        );
-
-    overflow: hidden;
-}
-
-
-/* =========================================================
-   SECTION
-
-   These are the actual physical sections of the box.
-========================================================= */
-
-.box-section {
-    flex: 1;
-
-    height: 100%;
-
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    overflow: hidden;
-
-    padding: 10px;
-}
-
-
-/*
-   Actual divider line.
-
-   If there are 2 sections, there is 1 line.
-   If there are 3 sections, there are 2 lines.
-*/
-
-.box-section + .box-section {
-    border-left: 3px solid #737984;
-
-    box-shadow:
-        inset 2px 0 rgba(0,0,0,.25);
-}
-
-
-/* =========================================================
-   PART ICONS
-========================================================= */
-
-.part-dots {
-    width: 100%;
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    justify-content: center;
-
-    align-content: center;
-
-    gap: 6px;
-
-    padding: 5px;
-}
-
-.part-dot {
-    width: 14px;
-    height: 14px;
-
-    border-radius: 5px;
-
-    border: 1px solid rgba(255,255,255,.45);
-
-    box-shadow:
-        0 1px 3px rgba(0,0,0,.4);
-
-    flex-shrink: 0;
-}
-
-.empty-section {
-    color: #666d77;
-    font-size: 11px;
-}
-
-
-/* Section number */
-
-.section-number {
-    position: absolute;
-
-    left: 5px;
-    bottom: 4px;
-
-    color: rgba(255,255,255,.28);
-
-    font-size: 9px;
-
-    font-family: monospace;
-}
-
-
-/* =========================================================
-   NUMBER OF SECTIONS
-========================================================= */
-
-.section-indicator {
-    position: absolute;
-
-    right: 8px;
-    bottom: 7px;
-
-    background: rgba(0,0,0,.45);
-
-    padding: 4px 7px;
-
-    border-radius: 5px;
-
-    color: #aeb5bf;
-
-    font-size: 10px;
-
-    font-family: monospace;
-
-    z-index: 4;
-}
-
-
-/* =========================================================
-   MODALS
-========================================================= */
-
-.modal-backdrop {
-    display: none;
-
-    position: fixed;
-
-    inset: 0;
-
-    background: rgba(0,0,0,.74);
-
-    z-index: 500;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
-}
-
-.modal-backdrop.show {
-    display: flex;
-}
-
-
-/* =========================================================
-   BOX VIEW
-========================================================= */
-
-.box-view {
-    width: min(900px, 96vw);
-
-    height: min(700px, 90vh);
-
-    background: #22262c;
-
-    border: 1px solid #4a5059;
-
-    border-radius: 12px;
-
-    overflow: hidden;
-
-    display: flex;
-
-    flex-direction: column;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.65);
-}
-
-.box-view-header {
-    background: #30353d;
-
-    padding: 15px 18px;
-
-    border-bottom: 1px solid #464c55;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 15px;
-}
-
-.box-view-title {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-}
-
-.box-view-title h2 {
-    margin: 0;
-    font-size: 20px;
-}
-
-.box-view-location {
-    color: #60a5fa;
-
-    background: #1c2430;
-
-    border: 1px solid #334155;
-
-    border-radius: 5px;
-
-    padding: 5px 8px;
-
-    font-family: monospace;
-    font-weight: bold;
-}
-
-
-/* =========================================================
-   SECTION TABS
-========================================================= */
-
-.section-tabs {
-    display: flex;
-
-    background: #1b1e23;
-
-    border-bottom: 1px solid #41464f;
-
-    overflow-x: auto;
-}
-
-.section-tab {
-    border-radius: 0;
-
-    background: transparent;
-
-    color: #9ca3af;
-
-    padding: 12px 22px;
-
-    border-bottom: 3px solid transparent;
-
-    white-space: nowrap;
-}
-
-.section-tab:hover {
-    background: #292e35;
-    color: white;
-}
-
-.section-tab.active {
-    color: white;
-
-    background: #292e35;
-
-    border-bottom-color: #3b82f6;
-}
-
-
-/* =========================================================
-   SECTION CONTENT
-========================================================= */
-
-.section-content {
-    flex: 1;
-
-    overflow-y: auto;
-
-    padding: 20px;
-}
-
-.section-heading {
-    color: #9ca3af;
-
-    font-family: monospace;
-
-    font-size: 13px;
-
-    margin-bottom: 15px;
-}
-
-.parts-list {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fill,
-            minmax(220px, 1fr)
-        );
-
-    gap: 10px;
-}
-
-
-/* =========================================================
-   PART CARD
-========================================================= */
-
-.part-card {
-    background: #30353d;
-
-    border: 1px solid #474e58;
-
-    border-radius: 8px;
-
-    padding: 13px;
-
-    cursor: pointer;
-
-    transition:
-        background .15s,
-        border-color .15s,
-        transform .12s;
-}
-
-.part-card:hover {
-    background: #3a414b;
-
-    border-color: #60a5fa;
-
-    transform: translateY(-1px);
-}
-
-.part-card-name {
-    font-weight: bold;
-
-    font-size: 14px;
-
-    margin-bottom: 6px;
-}
-
-.part-card-preview {
-    color: #9ca3af;
-
-    font-size: 11px;
-}
-
-
-/* =========================================================
-   PART DETAILS
-========================================================= */
-
-.part-detail {
-    width: min(560px, 94vw);
-
-    background: #252a30;
-
-    border: 1px solid #4a5059;
-
-    border-radius: 11px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.7);
-}
-
-.part-detail-header {
-    background: #30353d;
-
-    padding: 16px 18px;
-
-    border-bottom: 1px solid #464c55;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: flex-start;
-
-    gap: 15px;
-}
-
-.part-detail-header h2 {
-    margin: 0;
-    font-size: 20px;
-}
-
-.part-detail-body {
-    padding: 20px;
-}
-
-.detail-location {
-    display: inline-block;
-
-    margin-bottom: 18px;
-
-    padding: 7px 10px;
-
-    background: #172234;
-
-    border: 1px solid #315b8d;
-
-    color: #60a5fa;
-
-    border-radius: 6px;
-
-    font-family: monospace;
-
-    font-size: 15px;
-
-    font-weight: bold;
-}
-
-.detail-row {
-    padding: 12px 0;
-
-    border-bottom: 1px solid #3b414a;
-}
-
-.detail-row:last-child {
-    border-bottom: none;
-}
-
-.detail-label {
-    color: #8f98a5;
-
-    font-size: 11px;
-
-    text-transform: uppercase;
-
-    letter-spacing: .05em;
-
-    margin-bottom: 4px;
-}
-
-.detail-value {
-    color: #f1f1f1;
-
-    font-size: 14px;
-
-    white-space: pre-wrap;
-}
-
-.null-value {
-    color: #68717e;
-    font-style: italic;
-}
-
-
-/* =========================================================
-   FORMS
-========================================================= */
-
-.form-modal {
-    width: min(480px, 94vw);
-
-    max-height: 90vh;
-
-    overflow-y: auto;
-
-    background: #272b31;
-
-    border: 1px solid #484d56;
-
-    border-radius: 10px;
-
-    padding: 21px;
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.6);
-}
-
-.form-modal h2 {
-    margin-top: 0;
-
-    font-size: 20px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-
-    margin-bottom: 6px;
-
-    color: #c9cdd3;
-
-    font-size: 13px;
-
-    font-weight: bold;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    width: 100%;
-
-    padding: 10px;
-
-    border-radius: 6px;
-
-    border: 1px solid #505660;
-
-    background: #15171a;
-
-    color: white;
-
-    font-family: inherit;
-}
-
-.form-group textarea {
-    resize: vertical;
-
-    min-height: 75px;
-}
-
-.info {
-    color: #9ca3af;
-
-    font-size: 12px;
-
-    line-height: 1.5;
-}
-
-.modal-buttons {
-    display: flex;
-
-    justify-content: flex-end;
-
-    gap: 8px;
-
-    margin-top: 20px;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 700px) {
-
-    header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    main {
-        padding: 12px;
-    }
-
-    .cabinet-box {
-        min-width: 190px;
-        height: 160px;
-    }
-
-    .parts-list {
-        grid-template-columns: 1fr;
-    }
-
-}
-
+      radial-gradient(1200px 600px at 50% -10%, rgba(79,179,171,0.10), transparent 60%),
+      var(--spruce-950);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    transition:background .6s ease;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  ::selection{ background:var(--ember); color:var(--spruce-950); }
+  a{ color:inherit; }
+  :focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    transition:color .6s ease;
+  }
+
+  /* ---------- SCROLL PROGRESS ---------- */
+  #scroll-progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg, var(--teal), var(--ember));
+    z-index:100;
+    transition:width .08s linear, background .6s ease;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 5vw;
+    background:rgba(14,26,23,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  nav .brand{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.05rem;
+    letter-spacing:0.01em;
+    white-space:nowrap;
+  }
+  nav .brand span{color:var(--ember); transition:color .6s ease;}
+  nav .days{
+    display:flex; gap:2px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+  }
+  nav .days a{
+    color:var(--muted);
+    text-decoration:none;
+    padding:6px 9px;
+    border-radius:100px;
+    transition:color .2s, background .2s;
+    position:relative;
+  }
+  nav .days a:hover, nav .days a:focus-visible{
+    color:var(--spruce-950);
+    background:var(--teal);
+    outline:none;
+  }
+  nav .days a.active{
+    color:var(--spruce-950);
+    background:var(--ember);
+  }
+  @media (max-width:900px){ nav .days{display:none;} }
+
+  .nav-right{ display:flex; align-items:center; gap:10px; }
+  .progress-pill{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    color:var(--muted);
+    padding:6px 10px;
+    border:1px solid var(--line);
+    border-radius:100px;
+    white-space:nowrap;
+  }
+  .progress-pill b{ color:var(--teal); font-weight:600; transition:color .6s ease; }
+
+  .icon-btn{
+    position:relative;
+    width:34px; height:34px;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:100px;
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--paper);
+    cursor:pointer;
+    transition:transform .3s ease, background .3s ease;
+    flex:none;
+  }
+  .icon-btn:hover{ background:var(--spruce-800); }
+  .icon-btn:active{ transform:scale(0.9); }
+  .icon-btn svg{ position:absolute; width:16px; height:16px; transition:transform .5s cubic-bezier(.2,.8,.2,1), opacity .3s ease; }
+  .icon-btn svg.moon{ transform:rotate(-180deg) scale(0); opacity:0; }
+  .icon-btn svg.sun{ transform:rotate(0) scale(1); opacity:1; }
+  html.theme-aurora .icon-btn svg.sun{ transform:rotate(180deg) scale(0); opacity:0; }
+  html.theme-aurora .icon-btn svg.moon{ transform:rotate(0) scale(1); opacity:1; }
+
+  .filter-toggle{
+    display:flex; align-items:center; gap:6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    color:var(--muted);
+    cursor:pointer;
+    user-select:none;
+    padding:6px 10px;
+    border:1px solid var(--line);
+    border-radius:100px;
+    background:transparent;
+    transition:background .2s, color .2s;
+  }
+  .filter-toggle:hover{ color:var(--paper); }
+  .filter-toggle input{ display:none; }
+  .filter-toggle .dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--muted);
+    transition:background .2s;
+  }
+  .filter-toggle input:checked ~ .dot{ background:var(--ember); }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;
+    padding:min(12vh,110px) 5vw 96px;
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+    overflow:hidden;
+    min-height:640px;
+  }
+  .ridge-layer{
+    position:absolute; left:0; bottom:0; width:100%; height:auto;
+    z-index:0; will-change:transform;
+  }
+  header.hero > *:not(.ridge-layer):not(.cloud){ position:relative; z-index:2; }
+  .cloud{ z-index:1; }
+
+  .cloud{
+    position:absolute;
+    opacity:0.4;
+    filter:blur(0.5px);
+    animation:drift linear infinite;
+    transition:opacity .25s ease, filter .25s ease;
+    pointer-events:none;
+  }
+  @keyframes drift{
+    from{ transform:translateX(-15vw); }
+    to{ transform:translateX(115vw); }
+  }
+
+  .sync-status{
+    display:inline-flex; align-items:center; gap:5px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.64rem;
+    color:var(--muted);
+    letter-spacing:0.04em;
+  }
+  .sync-status .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--muted);
+    transition:background .3s ease, box-shadow .3s ease;
+  }
+  .sync-status.live .dot{
+    background:var(--teal);
+    box-shadow:0 0 6px var(--teal);
+    animation:live-pulse 2s ease-in-out infinite;
+  }
+  @keyframes live-pulse{
+    0%,100%{ opacity:1; }
+    50%{ opacity:0.4; }
+  }
+
+  .hero-eyebrow{margin-bottom:22px;}
+  h1.title{
+    font-family:'Fraunces', serif;
+    font-weight:340;
+    font-optical-sizing:auto;
+    font-size:clamp(2.6rem, 8vw, 6rem);
+    line-height:0.98;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  h1.title em{
+    font-style:italic;
+    font-weight:600;
+    color:var(--ember);
+    transition:color .6s ease;
+  }
+  .hero-sub{
+    margin-top:26px;
+    max-width:560px;
+    color:var(--paper-dim);
+    font-size:1.02rem;
+    line-height:1.6;
+  }
+  .route-strip{
+    margin-top:40px;
+    display:flex; align-items:center; flex-wrap:wrap; justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--muted);
+  }
+  .route-strip .stop{
+    padding:8px 14px;
+    border:1px solid var(--line);
+    border-radius:100px;
+    background:var(--spruce-900);
+  }
+  .route-strip .arrow{ padding:0 8px; color:var(--teal); transition:color .6s ease; }
+
+  /* countdown */
+  .countdown{
+    margin-top:44px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .countdown .unit{
+    background:var(--spruce-900);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 18px;
+    min-width:76px;
+    text-align:center;
+    transition:border-color .3s ease, transform .3s ease;
+  }
+  .countdown .unit:hover{ border-color:var(--teal-dim); transform:translateY(-2px); }
+  .countdown .unit .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:1.6rem;
+    font-weight:600;
+    color:var(--teal);
+    font-variant-numeric:tabular-nums;
+    transition:color .6s ease;
+  }
+  .countdown .unit .lbl{
+    display:block;
+    margin-top:4px;
+    font-size:0.62rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .countdown-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    color:var(--muted);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-top:18px;
+  }
+
+  /* ---------- TIMELINE / RAIL ---------- */
+  main{
+    max-width:calc(var(--maxw) + var(--gutter));
+    margin:0 auto;
+    padding:60px max(5vw, var(--gutter)) 40px;
+    position:relative;
+  }
+
+  .rail-track, .rail-fill{
+    position:absolute;
+    top:0;
+    left:16px;
+    width:2px;
+    border-radius:2px;
+  }
+  .rail-track{ height:100%; background:var(--line); }
+  .rail-fill{ height:0%; background:linear-gradient(var(--teal), var(--ember)); transition:height .1s linear, background .6s ease; }
+  @media (max-width:640px){
+    .rail-track, .rail-fill{ left:6px; }
+    :root{ --gutter: 30px; }
+  }
+
+  .day{
+    position:relative;
+    z-index:1;
+    padding:48px 0 8px;
+    border-top:1px solid var(--line);
+    opacity:0;
+    transform:translateY(18px);
+  }
+  .day:first-child{ border-top:none; }
+  .day.revealed{
+    animation:rise 0.7s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+
+  .day-marker{
+    position:absolute;
+    left:calc(-1 * (var(--gutter) - 16px));
+    top:56px;
+    width:11px; height:11px;
+    border-radius:50%;
+    background:var(--spruce-950);
+    border:2px solid var(--teal);
+    transition:border-color .3s ease, background .3s ease, box-shadow .3s ease;
+  }
+  .day.complete .day-marker{
+    background:var(--ember);
+    border-color:var(--ember);
+    box-shadow:0 0 0 4px rgba(232,147,90,0.18);
+  }
+  @media (max-width:640px){
+    .day-marker{ left:calc(-1 * (var(--gutter) - 6px)); }
+  }
+
+  .day-head{
+    display:flex; align-items:baseline; gap:18px; flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .day-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    color:var(--spruce-950);
+    background:var(--teal);
+    padding:5px 10px;
+    border-radius:100px;
+    white-space:nowrap;
+    transition:background .6s ease;
+  }
+  .day-complete-badge{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.66rem;
+    color:var(--ember);
+    letter-spacing:0.04em;
+    display:none;
+    align-items:center;
+    gap:4px;
+  }
+  .day.complete .day-complete-badge{ display:inline-flex; }
+  .day-date{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--muted);
+    font-size:0.8rem;
+    letter-spacing:0.04em;
+  }
+  h2.day-title{
+    font-family:'Fraunces', serif;
+    font-weight:440;
+    font-size:clamp(1.6rem, 4vw, 2.3rem);
+    margin:6px 0 0;
+    width:100%;
+    color:var(--paper);
+  }
+  h2.day-title .accent{ color:var(--ember); font-style:italic; font-weight:600; transition:color .6s ease; }
+
+  .ics-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    margin:16px 0 22px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.04em;
+    color:var(--muted);
+    background:transparent;
+    border:1px dashed var(--line);
+    border-radius:100px;
+    padding:7px 12px;
+    cursor:pointer;
+    transition:color .2s, border-color .2s;
+  }
+  .ics-btn:hover{ color:var(--teal); border-color:var(--teal); }
+  .ics-btn svg{ width:12px; height:12px; }
+
+  .stops{
+    list-style:none;
+    margin:0; padding:0;
+    display:flex; flex-direction:column;
+  }
+  .stop-item{
+    display:grid;
+    grid-template-columns:26px 78px 1fr;
+    gap:14px;
+    padding:14px 10px;
+    margin:0 -10px;
+    border-top:1px dashed var(--line);
+    align-items:start;
+    border-radius:10px;
+    transition:opacity .3s ease, background .2s ease;
+  }
+  .stop-item:first-child{ border-top:none; }
+  .stop-item:hover{ background:rgba(243,237,224,0.03); }
+
+  .check{
+    position:relative;
+    width:18px; height:18px;
+    margin-top:2px;
+    cursor:pointer;
+    flex:none;
+  }
+  .check input{
+    position:absolute; opacity:0; inset:0; cursor:pointer; margin:0;
+  }
+  .check .box{
+    width:18px; height:18px;
+    border:1.5px solid var(--muted);
+    border-radius:5px;
+    display:flex; align-items:center; justify-content:center;
+    transition:border-color .2s, background .2s;
+  }
+  .check svg{
+    width:11px; height:11px;
+    opacity:0;
+    transform:scale(0.5);
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  .check input:checked ~ .box{
+    background:var(--teal);
+    border-color:var(--teal);
+  }
+  .check input:checked ~ .box svg{ opacity:1; transform:scale(1); }
+  .check input:checked ~ .box svg path{ stroke:var(--spruce-950); }
+
+  .stop-time{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.74rem;
+    color:var(--teal);
+    padding-top:3px;
+    transition:color .2s;
+  }
+  .stop-body .stop-name{
+    font-size:1.02rem;
+    font-weight:500;
+    color:var(--paper);
+    transition:color .2s, text-decoration-color .2s;
+  }
+  .stop-item.done .stop-name{
+    color:var(--muted);
+    text-decoration:line-through;
+    text-decoration-color:var(--muted);
+  }
+  .stop-item.done .stop-time{ color:var(--muted); }
+
+  .stop-body .sub-stops{
+    margin:10px 0 0;
+    padding:0;
+    list-style:none;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .sub-stops li{
+    position:relative;
+    padding-left:20px;
+    font-size:0.92rem;
+    color:var(--paper-dim);
+    line-height:1.5;
+  }
+  .sub-stops li::before{
+    content:"";
+    position:absolute; left:0; top:0.55em;
+    width:9px; height:1px;
+    background:var(--ember);
+    transition:background .6s ease;
+  }
+
+  /* optional group styling */
+  .optional-group{
+    margin-top:16px;
+    padding:16px 16px 14px;
+    border:1px dashed var(--teal-dim);
+    border-radius:14px;
+    background:rgba(79,179,171,0.05);
+    transition:opacity .3s ease, background .3s ease, border-color .3s ease;
+  }
+  .optional-group.skipped{
+    opacity:0.45;
+    background:transparent;
+  }
+  .optional-head{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .optional-title{
+    display:flex; align-items:center; gap:8px;
+    font-size:0.95rem;
+    font-weight:600;
+    color:var(--paper);
+  }
+  .optional-badge{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.6rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--teal);
+    border:1px solid var(--teal-dim);
+    border-radius:100px;
+    padding:2px 8px;
+  }
+  .optional-group.skipped .stop-name,
+  .optional-group.skipped .sub-stops li{
+    text-decoration:line-through;
+    text-decoration-color:var(--muted);
+  }
+
+  .switch{
+    position:relative;
+    width:40px; height:22px;
+    flex:none;
+    cursor:pointer;
+  }
+  .switch input{ position:absolute; opacity:0; inset:0; cursor:pointer; margin:0; }
+  .switch .track{
+    position:absolute; inset:0;
+    background:var(--teal);
+    border-radius:100px;
+    transition:background .25s ease;
+  }
+  .switch input:not(:checked) ~ .track{ background:var(--spruce-800); border:1px solid var(--line); }
+  .switch .thumb{
+    position:absolute; top:2px; left:2px;
+    width:18px; height:18px;
+    background:var(--paper);
+    border-radius:50%;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1);
+  }
+  .switch input:not(:checked) ~ .thumb{ transform:translateX(18px); background:var(--muted); }
+
+  .optional-group .stop-item{ padding:10px; }
+  .optional-note{
+    margin:10px 0 0;
+    font-size:0.82rem;
+    color:var(--muted);
+    font-style:italic;
+  }
+
+  .leg-divider{
+    display:flex; align-items:center; gap:14px;
+    margin:6px 0 0;
+    padding:22px 0;
+    color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.74rem;
+    letter-spacing:0.03em;
+  }
+  .leg-divider svg{ flex:none; }
+  .leg-divider .fade{ flex:1; height:1px; background:linear-gradient(90deg, var(--line), transparent); }
+
+  footer{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:50px 5vw 90px;
+    text-align:center;
+    color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.75rem;
+    letter-spacing:0.04em;
+  }
+  footer .peak{ color:var(--ember); transition:color .6s ease; }
+  footer .reset-btn{
+    margin-top:18px;
+    background:none;
+    border:1px solid var(--line);
+    color:var(--muted);
+    border-radius:100px;
+    padding:8px 16px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    cursor:pointer;
+    transition:color .2s, border-color .2s;
+  }
+  footer .reset-btn:hover{ color:var(--ember); border-color:var(--ember); }
+
+  .toast{
+    position:fixed;
+    bottom:24px; left:50%;
+    transform:translate(-50%, 20px);
+    background:var(--spruce-900);
+    border:1px solid var(--line);
+    color:var(--paper);
+    padding:10px 18px;
+    border-radius:100px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease, transform .3s ease;
+    z-index:200;
+    max-width:80vw;
+    text-align:center;
+  }
+  .toast.show{ opacity:1; transform:translate(-50%, 0); }
 </style>
 </head>
-
-
 <body>
 
+<div id="scroll-progress"></div>
 
-<!-- =========================================================
-     HEADER
+<nav>
+  <div class="brand">Houston <span>→</span> The Rockies</div>
+  <div class="days">
+    <a href="#d1" data-day="d1">Fri</a>
+    <a href="#d2" data-day="d2">Sat</a>
+    <a href="#d3" data-day="d3">Sun</a>
+    <a href="#d4" data-day="d4">Mon</a>
+    <a href="#d5" data-day="d5">Tue</a>
+    <a href="#d6" data-day="d6">Wed</a>
+  </div>
+  <div class="nav-right">
+    <span class="sync-status" id="sync-status" title="Whether checklist changes are syncing to every device or staying on this browser only">
+      <span class="dot"></span><span id="sync-status-label">local only</span>
+    </span>
+    <label class="filter-toggle">
+      <input type="checkbox" id="hide-optional-toggle">
+      <span class="dot"></span>
+      Hide skipped
+    </label>
+    <div class="progress-pill"><b id="progress-done">0</b><span id="progress-total">/0 done</span></div>
+    <button class="icon-btn" id="theme-toggle" title="Toggle Alpenglow / Aurora mode" aria-label="Toggle color theme">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 1.5V4M12 20v2.5M4 12H1.5M22.5 12H20M5 5l1.8 1.8M17.2 17.2L19 19M19 5l-1.8 1.8M6.8 17.2L5 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a6.8 6.8 0 0 0 9.5 9.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</nav>
 
-     No box emoji anymore.
-========================================================= -->
+<header class="hero">
+  <svg class="ridge-layer" data-speed="0.15" style="opacity:0.55" viewBox="0 0 1200 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <polygon points="0,220 0,150 100,110 200,160 300,90 400,140 500,70 620,150 700,100 820,170 920,110 1020,160 1120,100 1200,150 1200,220" style="fill:var(--ridge-1); transition:fill .6s ease;"/>
+  </svg>
+  <svg class="ridge-layer" data-speed="0.3" style="opacity:0.8" viewBox="0 0 1200 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <polygon points="0,220 0,180 120,130 220,180 320,110 410,170 500,100 610,175 700,120 810,185 900,140 1000,190 1100,150 1200,190 1200,220" style="fill:var(--ridge-2); transition:fill .6s ease;"/>
+  </svg>
+  <svg class="ridge-layer" data-speed="0.5" viewBox="0 0 1200 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <polygon points="0,220 0,205 150,175 260,208 380,165 480,200 600,155 720,205 840,170 960,210 1080,180 1200,210 1200,220" style="fill:var(--ridge-3); transition:fill .6s ease;"/>
+  </svg>
 
-<header>
+  <div id="cloud-layer"></div>
 
-    <h1>
-        Storage Cabinet Organizer
-    </h1>
+  <div class="eyebrow hero-eyebrow">SEPT 4 &mdash; SEPT 9, 2026 · ROAD LOOP</div>
+  <h1 class="title">Six days,<br>one long <em>drive up</em>.</h1>
+  <p class="hero-sub">Houston to a 4am flight, a rented car in Calgary, and a loop through the Icefields Parkway, Jasper, Lake Louise, and Banff before flying home. Every stop, in order — check things off as you go, and skip what doesn't fit the day.</p>
+  <div class="route-strip">
+    <span class="stop">Houston</span><span class="arrow">✈</span>
+    <span class="stop">Calgary</span><span class="arrow">→</span>
+    <span class="stop">Cline River</span><span class="arrow">→</span>
+    <span class="stop">Jasper</span><span class="arrow">→</span>
+    <span class="stop">Canmore</span><span class="arrow">→</span>
+    <span class="stop">Banff</span><span class="arrow">→</span>
+    <span class="stop">Calgary</span>
+  </div>
 
-    <div class="toolbar">
-
-        <button onclick="addNewBox()">
-            ＋ Add New Box
-        </button>
-
-        <button onclick="addRow()">
-            ＋ Add Row
-        </button>
-
-        <button onclick="addColumn()">
-            ＋ Add Column
-        </button>
-
-    </div>
-
+  <div class="countdown-label">Wheels roll in</div>
+  <div class="countdown" id="countdown">
+    <div class="unit"><span class="num" id="cd-days">--</span><span class="lbl">days</span></div>
+    <div class="unit"><span class="num" id="cd-hours">--</span><span class="lbl">hrs</span></div>
+    <div class="unit"><span class="num" id="cd-mins">--</span><span class="lbl">min</span></div>
+    <div class="unit"><span class="num" id="cd-secs">--</span><span class="lbl">sec</span></div>
+  </div>
 </header>
 
-
-<!-- =========================================================
-     SEARCH
-========================================================= -->
-
-<div class="search-area">
-
-    <input
-        id="search"
-        type="text"
-        placeholder="Search for a part, bag, breadboard, location..."
-        oninput="searchItems()"
-    >
-
-    <div id="searchResults"></div>
-
-</div>
-
-
-<!-- =========================================================
-     CABINET
-========================================================= -->
-
 <main>
+  <div class="rail-track"></div>
+  <div class="rail-fill" id="rail-fill"></div>
 
-    <div id="cabinet"></div>
+  <!-- DAY 1 -->
+  <section class="day" id="d1">
+    <span class="day-marker"></span>
+    <div class="day-head">
+      <span class="day-num">DAY 1</span>
+      <span class="day-date">FRIDAY · SEPT 4</span>
+      <span class="day-complete-badge">✓ Complete</span>
+      <h2 class="day-title">The <span class="accent">long haul</span> to Houston</h2>
+    </div>
+    <button class="ics-btn" data-ics="d1"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Add to calendar</button>
+    <ul class="stops">
+      <li class="stop-item" data-id="d1-1">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">ALL DAY</span>
+        <div class="stop-body"><div class="stop-name">Drive to Houston, stay the night</div></div>
+      </li>
+    </ul>
+  </section>
 
+  <div class="leg-divider">
+    <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M1 12L7 3L11 9L14 4L19 12" stroke="var(--ember)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="transition:stroke .6s ease;"/></svg>
+    <span>4am wake-up, then wheels-up for Calgary</span>
+    <span class="fade"></span>
+  </div>
+
+  <!-- DAY 2 -->
+  <section class="day" id="d2">
+    <span class="day-marker"></span>
+    <div class="day-head">
+      <span class="day-num">DAY 2</span>
+      <span class="day-date">SATURDAY · SEPT 5</span>
+      <span class="day-complete-badge">✓ Complete</span>
+      <h2 class="day-title">Airport at <span class="accent">4am</span>, land in the Rockies</h2>
+    </div>
+    <button class="ics-btn" data-ics="d2"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Add to calendar</button>
+    <ul class="stops">
+      <li class="stop-item" data-id="d2-1">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">~4:00 AM</span>
+        <div class="stop-body"><div class="stop-name">Be at the airport</div></div>
+      </li>
+      <li class="stop-item" data-id="d2-2">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">MORNING</span>
+        <div class="stop-body"><div class="stop-name">Fly to Calgary</div></div>
+      </li>
+      <li class="stop-item" data-id="d2-3">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">ON ARRIVAL</span>
+        <div class="stop-body"><div class="stop-name">Pick up rental car</div></div>
+      </li>
+      <li class="stop-item" data-id="d2-4">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">AFTERNOON</span>
+        <div class="stop-body"><div class="stop-name">Head to David Thompson Resort, Cline River</div></div>
+      </li>
+    </ul>
+  </section>
+
+  <div class="leg-divider">
+    <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M1 12L7 3L11 9L14 4L19 12" stroke="var(--ember)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="transition:stroke .6s ease;"/></svg>
+    <span>North on the Icefields Parkway toward Jasper</span>
+    <span class="fade"></span>
+  </div>
+
+  <!-- DAY 3 -->
+  <section class="day" id="d3">
+    <span class="day-marker"></span>
+    <div class="day-head">
+      <span class="day-num">DAY 3</span>
+      <span class="day-date">SUNDAY · SEPT 6</span>
+      <span class="day-complete-badge">✓ Complete</span>
+      <h2 class="day-title">Icefields Parkway to <span class="accent">Jasper</span> &amp; back to Canmore</h2>
+    </div>
+    <button class="ics-btn" data-ics="d3"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Add to calendar</button>
+    <ul class="stops">
+      <li class="stop-item" data-id="d3-1">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">MORNING</span>
+        <div class="stop-body">
+          <div class="stop-name">Depart David Thompson, head toward Jasper</div>
+          <ul class="sub-stops">
+            <li>Saskatchewan River Crossing</li>
+            <li>Athabasca Falls</li>
+            <li>Pyramid Island footbridge</li>
+            <li>Lake Annette + Lake Edith</li>
+          </ul>
+        </div>
+      </li>
+      <li class="stop-item" data-id="d3-2">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">AFTERNOON</span>
+        <div class="stop-body">
+          <div class="stop-name">Depart Jasper, drive south</div>
+          <ul class="sub-stops">
+            <li>Columbia Icefield</li>
+            <li>Peyto Lake</li>
+            <li>Bow Lake</li>
+          </ul>
+        </div>
+      </li>
+      <li class="stop-item" data-id="d3-3">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">EVENING</span>
+        <div class="stop-body"><div class="stop-name">Check in at Canmore</div></div>
+      </li>
+    </ul>
+  </section>
+
+  <div class="leg-divider">
+    <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M1 12L7 3L11 9L14 4L19 12" stroke="var(--ember)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="transition:stroke .6s ease;"/></svg>
+    <span>Down the Bow Valley to Lake Louise &amp; Banff</span>
+    <span class="fade"></span>
+  </div>
+
+  <!-- DAY 4 -->
+  <section class="day" id="d4">
+    <span class="day-marker"></span>
+    <div class="day-head">
+      <span class="day-num">DAY 4</span>
+      <span class="day-date">MONDAY · SEPT 7</span>
+      <span class="day-complete-badge">✓ Complete</span>
+      <h2 class="day-title">Moraine at dawn, then <span class="accent">Banff Ave</span></h2>
+    </div>
+    <button class="ics-btn" data-ics="d4"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Add to calendar</button>
+    <ul class="stops">
+      <li class="stop-item" data-id="d4-1">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">EARLY AM</span>
+        <div class="stop-body"><div class="stop-name">Lake Louise Park &amp; Ride</div></div>
+      </li>
+    </ul>
+
+    <div class="optional-group" id="group-moraine">
+      <div class="optional-head">
+        <div class="optional-title">Moraine Lake excursion <span class="optional-badge">Optional</span></div>
+        <label class="switch">
+          <input type="checkbox" checked id="toggle-moraine">
+          <span class="track"></span><span class="thumb"></span>
+        </label>
+      </div>
+      <p class="optional-note">Needs the shuttle from the Park &amp; Ride and eats a couple of hours — skip it if the morning is tight.</p>
+      <ul class="stops">
+        <li class="stop-item" data-id="d4-moraine-1">
+          <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+          <span class="stop-time">EARLY AM</span>
+          <div class="stop-body"><div class="stop-name">Shuttle to Moraine Lake</div></div>
+        </li>
+        <li class="stop-item" data-id="d4-moraine-2">
+          <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+          <span class="stop-time">EARLY AM</span>
+          <div class="stop-body"><div class="stop-name">Rockpile &amp; Moraine lakeshore trail</div></div>
+        </li>
+        <li class="stop-item" data-id="d4-moraine-3">
+          <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+          <span class="stop-time">MORNING</span>
+          <div class="stop-body"><div class="stop-name">Shuttle back to Park &amp; Ride</div></div>
+        </li>
+      </ul>
+    </div>
+
+    <ul class="stops">
+      <li class="stop-item" data-id="d4-2" style="margin-top:16px;">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">MIDDAY</span>
+        <div class="stop-body">
+          <div class="stop-name">South on the Bow Valley Parkway</div>
+          <ul class="sub-stops">
+            <li>Johnston Canyon — lower falls only</li>
+            <li>Bow Falls</li>
+            <li>Surprise Corner</li>
+            <li>Banff Ave</li>
+          </ul>
+        </div>
+      </li>
+      <li class="stop-item" data-id="d4-3">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">EVENING</span>
+        <div class="stop-body"><div class="stop-name">Check in at Canmore</div></div>
+      </li>
+    </ul>
+  </section>
+
+  <div class="leg-divider">
+    <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M1 12L7 3L11 9L14 4L19 12" stroke="var(--ember)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="transition:stroke .6s ease;"/></svg>
+    <span>Checkout, then east toward Calgary</span>
+    <span class="fade"></span>
+  </div>
+
+  <!-- DAY 5 -->
+  <section class="day" id="d5">
+    <span class="day-marker"></span>
+    <div class="day-head">
+      <span class="day-num">DAY 5</span>
+      <span class="day-date">TUESDAY · SEPT 8</span>
+      <span class="day-complete-badge">✓ Complete</span>
+      <h2 class="day-title">Roam Banff, roll into <span class="accent">Calgary</span></h2>
+    </div>
+    <button class="ics-btn" data-ics="d5"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Add to calendar</button>
+    <ul class="stops">
+      <li class="stop-item" data-id="d5-1">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">MORNING</span>
+        <div class="stop-body"><div class="stop-name">Checkout</div></div>
+      </li>
+      <li class="stop-item" data-id="d5-2">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">MORNING</span>
+        <div class="stop-body">
+          <div class="stop-name">Roam in Banff</div>
+          <ul class="sub-stops">
+            <li>Banff Gondola</li>
+            <li>Lake Minnewanka loop</li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+
+    <div class="optional-group" id="group-calgary">
+      <div class="optional-head">
+        <div class="optional-title">Calgary sightseeing <span class="optional-badge">Optional</span></div>
+        <label class="switch">
+          <input type="checkbox" checked id="toggle-calgary">
+          <span class="track"></span><span class="thumb"></span>
+        </label>
+      </div>
+      <p class="optional-note">Nice if there's daylight and energy left after Banff — otherwise head straight to the hotel.</p>
+      <ul class="stops">
+        <li class="stop-item" data-id="d5-cal-1">
+          <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+          <span class="stop-time">AFTERNOON</span>
+          <div class="stop-body"><div class="stop-name">Studio Bell / National Music Centre</div></div>
+        </li>
+        <li class="stop-item" data-id="d5-cal-2">
+          <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+          <span class="stop-time">AFTERNOON</span>
+          <div class="stop-body"><div class="stop-name">Prince's Island Park</div></div>
+        </li>
+        <li class="stop-item" data-id="d5-cal-3">
+          <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+          <span class="stop-time">AFTERNOON</span>
+          <div class="stop-body"><div class="stop-name">Bow River pathway</div></div>
+        </li>
+        <li class="stop-item" data-id="d5-cal-4">
+          <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+          <span class="stop-time">EVENING</span>
+          <div class="stop-body"><div class="stop-name">Calgary Tower</div></div>
+        </li>
+        <li class="stop-item" data-id="d5-cal-5">
+          <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+          <span class="stop-time">EVENING</span>
+          <div class="stop-body"><div class="stop-name">Stephen Avenue</div></div>
+        </li>
+      </ul>
+    </div>
+
+    <ul class="stops">
+      <li class="stop-item" data-id="d5-3" style="margin-top:16px;">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">NIGHT</span>
+        <div class="stop-body"><div class="stop-name">Stay at Calgary Hilton</div></div>
+      </li>
+    </ul>
+  </section>
+
+  <div class="leg-divider">
+    <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M1 12L7 3L11 9L14 4L19 12" stroke="var(--ember)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="transition:stroke .6s ease;"/></svg>
+    <span>Wheels down back in Texas</span>
+    <span class="fade"></span>
+  </div>
+
+  <!-- DAY 6 -->
+  <section class="day" id="d6">
+    <span class="day-marker"></span>
+    <div class="day-head">
+      <span class="day-num">DAY 6</span>
+      <span class="day-date">WEDNESDAY · SEPT 9</span>
+      <span class="day-complete-badge">✓ Complete</span>
+      <h2 class="day-title">Home, <span class="accent">by way of</span> Houston</h2>
+    </div>
+    <button class="ics-btn" data-ics="d6"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Add to calendar</button>
+    <ul class="stops">
+      <li class="stop-item" data-id="d6-1">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">MORNING</span>
+        <div class="stop-body"><div class="stop-name">Drive to the airport</div></div>
+      </li>
+      <li class="stop-item" data-id="d6-2">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">MORNING</span>
+        <div class="stop-body"><div class="stop-name">Drop off rental car</div></div>
+      </li>
+      <li class="stop-item" data-id="d6-3">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">MIDDAY</span>
+        <div class="stop-body"><div class="stop-name">Fly to Houston</div></div>
+      </li>
+      <li class="stop-item" data-id="d6-4">
+        <label class="check"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--spruce-950)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></span></label>
+        <span class="stop-time">EVENING</span>
+        <div class="stop-body"><div class="stop-name">Drive back home</div></div>
+      </li>
+    </ul>
+  </section>
 </main>
 
-
-<!-- =========================================================
-     BOX VIEW
-========================================================= -->
-
-<div
-    class="modal-backdrop"
-    id="boxViewModal"
->
-
-    <div class="box-view">
-
-        <div class="box-view-header">
-
-            <div class="box-view-title">
-
-                <h2>
-                    Storage Box
-                </h2>
-
-                <span
-                    class="box-view-location"
-                    id="boxViewLocation"
-                >
-                    1A
-                </span>
-
-            </div>
-
-            <button
-                class="secondary"
-                onclick="closeModal('boxViewModal')"
-            >
-                Close
-            </button>
-
-        </div>
-
-
-        <div
-            class="section-tabs"
-            id="sectionTabs"
-        ></div>
-
-
-        <div
-            class="section-content"
-            id="sectionContent"
-        ></div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     PART DETAILS
-========================================================= -->
-
-<div
-    class="modal-backdrop"
-    id="partDetailModal"
->
-
-    <div class="part-detail">
-
-        <div class="part-detail-header">
-
-            <h2 id="partDetailTitle">
-                Part
-            </h2>
-
-            <button
-                class="secondary"
-                onclick="closeModal('partDetailModal')"
-            >
-                Close
-            </button>
-
-        </div>
-
-
-        <div
-            class="part-detail-body"
-            id="partDetailBody"
-        ></div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     BOX SETTINGS
-========================================================= -->
-
-<div
-    class="modal-backdrop"
-    id="boxSettingsModal"
->
-
-    <div class="form-modal">
-
-        <h2>
-            Box Settings
-        </h2>
-
-
-        <div class="form-group">
-
-            <label>
-                Number of dividers
-            </label>
-
-            <select id="dividerCount">
-
-                <option value="0">
-                    0 — 1 section
-                </option>
-
-                <option value="1">
-                    1 — 2 sections
-                </option>
-
-                <option value="2">
-                    2 — 3 sections
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <p class="info">
-
-            0 dividers = 1 section<br>
-            1 divider = 2 sections<br>
-            2 dividers = 3 sections
-
-        </p>
-
-
-        <div class="modal-buttons">
-
-            <button
-                class="secondary"
-                onclick="closeModal('boxSettingsModal')"
-            >
-                Cancel
-            </button>
-
-            <button onclick="saveBoxSettings()">
-                Save
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     ITEM EDITOR
-========================================================= -->
-
-<div
-    class="modal-backdrop"
-    id="itemModal"
->
-
-    <div class="form-modal">
-
-        <h2 id="itemModalTitle">
-            Add Item
-        </h2>
-
-
-        <div class="form-group">
-
-            <label>
-                Item / Part Name
-            </label>
-
-            <input
-                id="itemName"
-                placeholder="Example: Arduino Uno"
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Description
-            </label>
-
-            <textarea
-                id="itemDescription"
-                placeholder="Example: Rev 3 through-hole board"
-            ></textarea>
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Condition
-            </label>
-
-            <input
-                id="itemCondition"
-                placeholder="Example: New, Good, Damaged"
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Count
-            </label>
-
-            <input
-                id="itemCount"
-                type="number"
-                min="0"
-                step="1"
-                placeholder="Example: 25"
-            >
-
-        </div>
-
-
-        <p class="info">
-
-            Leave a field blank if it does not apply.
-            Blank fields are stored as <b>null</b>.
-
-        </p>
-
-
-        <div class="modal-buttons">
-
-            <button
-                class="secondary"
-                onclick="closeModal('itemModal')"
-            >
-                Cancel
-            </button>
-
-            <button onclick="saveItem()">
-                Save Item
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
+<footer>
+  <span class="peak">▲ ▲ ▲</span><br><br>
+  Houston · Calgary · Cline River · Jasper · Canmore · Banff · Calgary · Houston
+  <br>
+  <button class="reset-btn" id="reset-btn">Reset checklist</button>
+</footer>
+
+<div class="toast" id="toast"></div>
 
 <script>
+(function(){
+try{
+  const STORE_KEY = 'rockies-trip-2026';
+  const state = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+  state.done = state.done || {};
+  state.optional = state.optional || { moraine:true, calgary:true };
+  state.theme = state.theme || 'alpenglow';
 
-/* =========================================================
-   DATA
-========================================================= */
+  function saveLocal(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
 
-let data = {
-    rows: 3,
-    columns: 4,
-    boxes: []
-};
+  function toast(msg, ms){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(()=> t.classList.remove('show'), ms || 2400);
+  }
 
+  /* =========================================================================
+     LIVE SYNC — using your own GitHub repo as the backend
+     -------------------------------------------------------------------------
+     Since this page lives in a GitHub repo already, that repo doubles as the
+     storage: every change gets committed to a small JSON file, and every
+     device polls that file, so everyone converges on the same checklist.
+     No other service, no signup elsewhere.
 
-let editingBox = null;
+     Setup (~2 minutes):
+     1. github.com/settings/tokens -> "Fine-grained tokens" -> Generate new.
+        Repository access: "Only select repositories" -> pick this repo.
+        Permissions: Repository permissions -> Contents -> Read and write.
+     2. Copy the generated token and paste it below as GITHUB_TOKEN.
+     3. Fill in GITHUB_OWNER and GITHUB_REPO (from your repo's URL:
+        github.com/<OWNER>/<REPO>). Leave GITHUB_PATH and GITHUB_BRANCH as-is
+        unless you want to change them.
+     Until this is filled in, the page still works great — it just saves to
+     this browser only (localStorage), same as before.
 
-let editingItem = null;
+     Note: the token lives in this file's source, so anyone who views the
+     page source can use it to write to this one file in this one repo.
+     Scope the token to just this repo (as above) and this is a low-stakes
+     trip checklist, not a secret — but don't reuse a broad/all-repo token.
+     ========================================================================= */
+  const GITHUB_OWNER  = 'CoderGuy-101';
+  const GITHUB_REPO   = 'coderguy-101.github.io';
+  const GITHUB_PATH   = 'checklist-state.json';
+  const GITHUB_BRANCH = 'main';
+  const GITHUB_TOKEN  = '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';
 
-let currentlyViewedBox = null;
+  const ghConfigured = GITHUB_OWNER.indexOf('YOUR_') !== 0
+    && GITHUB_REPO.indexOf('YOUR_') !== 0
+    && GITHUB_TOKEN.indexOf('YOUR_') !== 0;
 
-let currentlyViewedSection = 0;
+  let ghSha = null; // tracks the file's current commit sha so writes don't collide
+  let ghPushTimer = null;
+  let applyingRemote = false; // guards against re-pushing a change we just pulled
 
+  function setSyncStatus(mode){
+    const el = document.getElementById('sync-status');
+    const label = document.getElementById('sync-status-label');
+    if(!el || !label) return;
+    el.classList.toggle('live', mode === 'live');
+    label.textContent = mode === 'live' ? 'synced everywhere' : (mode === 'connecting' ? 'connecting…' : 'local only');
+  }
 
-/* =========================================================
-   COLUMN LETTER
-
-   1  = A
-   2  = B
-   3  = C
-   ...
-   26 = Z
-========================================================= */
-
-function columnLetter(number) {
-
-    let result = "";
-
-    while (number > 0) {
-
-        const remainder =
-            (number - 1) % 26;
-
-        result =
-            String.fromCharCode(
-                65 + remainder
-            ) + result;
-
-        number =
-            Math.floor(
-                (number - 1) / 26
-            );
-    }
-
-    return result;
-}
-
-
-/* =========================================================
-   LOCATION
-========================================================= */
-
-function boxLocation(box) {
-
-    return (
-        box.row +
-        columnLetter(box.column)
-    );
-}
-
-
-function sectionLocation(
-    box,
-    sectionIndex
-) {
-
-    return (
-        boxLocation(box) +
-        (sectionIndex + 1)
-    );
-
-}
-
-
-/* =========================================================
-   CREATE BOX
-========================================================= */
-
-function createBox(row, column) {
-
+  function ghUrl(){
+    return 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + GITHUB_PATH + '?ref=' + GITHUB_BRANCH + '&t=' + Date.now();
+  }
+  function ghHeaders(){
     return {
-
-        id: crypto.randomUUID(),
-
-        row: row,
-
-        column: column,
-
-        sections: [
-            []
-        ]
-
+      'Authorization': 'Bearer ' + GITHUB_TOKEN,
+      'Accept': 'application/vnd.github+json'
     };
+  }
+  function b64EncodeUnicode(str){
+    return btoa(unescape(encodeURIComponent(str)));
+  }
+  function b64DecodeUnicode(str){
+    return decodeURIComponent(escape(atob(str.replace(/\n/g, ''))));
+  }
 
-}
+  async function ghFetchState(){
+    const res = await fetch(ghUrl(), { headers: ghHeaders() });
+    if(res.status === 404){ ghSha = null; return null; }
+    if(!res.ok) throw new Error('GitHub read failed: ' + res.status);
+    const json = await res.json();
+    ghSha = json.sha;
+    return JSON.parse(b64DecodeUnicode(json.content));
+  }
 
-
-/* =========================================================
-   SAVE
-========================================================= */
-
-function saveData() {
-
-    localStorage.setItem(
-        "storageCabinetData",
-        JSON.stringify(data)
-    );
-
-}
-
-
-/* =========================================================
-   LOAD
-========================================================= */
-
-function loadData() {
-
-    const saved =
-        localStorage.getItem(
-            "storageCabinetData"
-        );
-
-
-    if (saved) {
-
-        try {
-
-            data = JSON.parse(saved);
-
-        }
-
-        catch {
-
-            data = {
-                rows: 3,
-                columns: 4,
-                boxes: []
-            };
-
-        }
-
+  async function ghPushState(){
+    try{
+      setSyncStatus('connecting');
+      const payload = JSON.stringify({ done: state.done, optional: state.optional }, null, 2);
+      const body = {
+        message: 'Update checklist',
+        content: b64EncodeUnicode(payload),
+        branch: GITHUB_BRANCH
+      };
+      if(ghSha) body.sha = ghSha;
+      const res = await fetch(
+        'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + GITHUB_PATH,
+        { method:'PUT', headers: Object.assign({'Content-Type':'application/json'}, ghHeaders()), body: JSON.stringify(body) }
+      );
+      if(res.status === 409){
+        // someone else wrote in between — pull their version, then let the next change retry
+        await ghPull();
+        return;
+      }
+      if(!res.ok) throw new Error('GitHub write failed: ' + res.status);
+      const json = await res.json();
+      ghSha = json.content.sha;
+      setSyncStatus('live');
+    }catch(err){
+      console.warn('Could not sync to GitHub, saved on this device only:', err);
+      setSyncStatus('local');
     }
+  }
 
-
-    normalizeData();
-
-}
-
-
-/* =========================================================
-   NORMALIZE OLD DATA
-========================================================= */
-
-function normalizeData() {
-
-    if (
-        !Number.isInteger(data.rows) ||
-        data.rows < 1
-    ) {
-
-        data.rows = 3;
-
+  async function ghPull(){
+    try{
+      const remote = await ghFetchState();
+      setSyncStatus('live');
+      if(remote){
+        applyingRemote = true;
+        state.done = remote.done || {};
+        state.optional = remote.optional || state.optional;
+        saveLocal();
+        renderFromState();
+        applyingRemote = false;
+      }
+    }catch(err){
+      console.warn('Could not read from GitHub, staying local-only for now:', err);
+      setSyncStatus('local');
     }
+  }
 
+  if(ghConfigured){
+    setSyncStatus('connecting');
+    ghPull();
+    setInterval(ghPull, 15000); // catch changes made from other devices
+    window.addEventListener('focus', ghPull);
+  } else {
+    setSyncStatus('local');
+  }
 
-    if (
-        !Number.isInteger(data.columns) ||
-        data.columns < 1
-    ) {
+  /* Call this any time the local state changes (checkbox, optional toggle). */
+  function persist(){
+    saveLocal();
+    if(applyingRemote || !ghConfigured) return;
+    clearTimeout(ghPushTimer);
+    ghPushTimer = setTimeout(ghPushState, 600); // small debounce so rapid clicks don't spam the API
+  }
 
-        data.columns = 4;
+  /* ---------- rail (declared early so updateProgress can use it) ---------- */
+  const mainEl = document.querySelector('main');
+  const railFill = document.getElementById('rail-fill');
+  function updateRail(){
+    const rect = mainEl.getBoundingClientRect();
+    const mainTop = window.scrollY + rect.top;
+    const mainHeight = mainEl.offsetHeight;
+    const scrolled = window.scrollY + window.innerHeight * 0.5 - mainTop;
+    const frac = Math.max(0, Math.min(1, scrolled / mainHeight));
+    railFill.style.height = (frac * 100) + '%';
+  }
 
-    }
+  /* ---------- checkboxes ---------- */
+  const checkItems = document.querySelectorAll('.stop-item[data-id]');
+  const dayEls = {};
+  document.querySelectorAll('.day').forEach(d=>{ dayEls[d.id] = d; });
 
-
-    if (!Array.isArray(data.boxes)) {
-
-        data.boxes = [];
-
-    }
-
-
-    /*
-       Preserve boxes by their physical
-       row/column location.
-    */
-
-    const oldBoxes = new Map();
-
-
-    data.boxes.forEach(box => {
-
-        if (
-            Number.isInteger(box.row) &&
-            Number.isInteger(box.column)
-        ) {
-
-            oldBoxes.set(
-                `${box.row}-${box.column}`,
-                box
-            );
-
-        }
-
+  function updateDayCompletion(dayId){
+    const day = dayEls[dayId];
+    if(!day) return;
+    const items = Array.from(day.querySelectorAll('.stop-item[data-id]')).filter(item=>{
+      const group = item.closest('.optional-group');
+      return !(group && group.classList.contains('skipped'));
     });
-
-
-    const newBoxes = [];
-
-
-    for (
-        let row = 1;
-        row <= data.rows;
-        row++
-    ) {
-
-        for (
-            let column = 1;
-            column <= data.columns;
-            column++
-        ) {
-
-            const key =
-                `${row}-${column}`;
-
-
-            let box =
-                oldBoxes.get(key);
-
-
-            if (!box) {
-
-                box =
-                    createBox(
-                        row,
-                        column
-                    );
-
-            }
-
-
-            if (
-                !Array.isArray(
-                    box.sections
-                )
-            ) {
-
-                box.sections = [[]];
-
-            }
-
-
-            /*
-                Repair old items.
-            */
-
-            box.sections.forEach(
-                section => {
-
-                    section.forEach(
-                        item => {
-
-                            if (
-                                !("description" in item)
-                            ) {
-
-                                item.description = null;
-
-                            }
-
-                            if (
-                                !("condition" in item)
-                            ) {
-
-                                item.condition = null;
-
-                            }
-
-                            if (
-                                !("count" in item)
-                            ) {
-
-                                item.count = null;
-
-                            }
-
-                            if (!item.id) {
-
-                                item.id =
-                                    crypto.randomUUID();
-
-                            }
-
-                        }
-                    );
-
-                }
-            );
-
-
-            newBoxes.push(box);
-
-        }
-
-    }
-
-
-    data.boxes = newBoxes;
-
-    saveData();
-
-}
-
-
-/* =========================================================
-   UNIQUE COLOR FROM NAME
-
-   The same name always generates the same color.
-========================================================= */
-
-function colorFromName(name) {
-
-    let hash = 0;
-
-
-    for (
-        let i = 0;
-        i < name.length;
-        i++
-    ) {
-
-        hash =
-            name.charCodeAt(i) +
-            ((hash << 5) - hash);
-
-        hash |= 0;
-
-    }
-
-
-    /*
-       Use HSL.
-
-       This gives many distinct colors while
-       keeping them bright enough to see.
-    */
-
-    const hue =
-        Math.abs(hash) % 360;
-
-
-    return `hsl(${hue}, 75%, 60%)`;
-
-}
-
-
-/* =========================================================
-   RENDER
-========================================================= */
-
-function render() {
-
-    const cabinet =
-        document.getElementById(
-            "cabinet"
-        );
-
-
-    cabinet.innerHTML = "";
-
-
-    cabinet.style.gridTemplateColumns =
-        `repeat(
-            ${data.columns},
-            minmax(220px, 1fr)
-        )`;
-
-
-    /*
-       IMPORTANT:
-
-       Sort by row first and column second.
-
-       This guarantees the visual order is:
-
-       1A 1B 1C
-       2A 2B 2C
-       3A 3B 3C
-    */
-
-    const boxes =
-        [...data.boxes].sort(
-            (a, b) => {
-
-                if (
-                    a.row !== b.row
-                ) {
-
-                    return a.row - b.row;
-
-                }
-
-                return (
-                    a.column -
-                    b.column
-                );
-
-            }
-        );
-
-
-    boxes.forEach(box => {
-
-        renderBox(
-            cabinet,
-            box
-        );
-
+    const allDone = items.length > 0 && items.every(i=>i.classList.contains('done'));
+    day.classList.toggle('complete', allDone);
+  }
+
+  function updateProgress(){
+    let total = 0, done = 0;
+    checkItems.forEach(item=>{
+      const group = item.closest('.optional-group');
+      if(group && group.classList.contains('skipped')) return;
+      total++;
+      if(item.classList.contains('done')) done++;
     });
-
-}
-
-
-/* =========================================================
-   RENDER BOX
-========================================================= */
-
-function renderBox(
-    cabinet,
-    box
-) {
-
-    const element =
-        document.createElement(
-            "div"
-        );
-
-
-    element.className =
-        "cabinet-box";
-
-
-    element.id =
-        `box-${box.id}`;
-
-
-    /*
-       Count all parts.
-    */
-
-    const totalParts =
-        box.sections.reduce(
-            (
-                total,
-                section
-            ) =>
-                total +
-                section.length,
-            0
-        );
-
-
-    let sectionsHTML = "";
-
-
-    /*
-       ACTUAL PHYSICAL SECTIONS.
-
-       Every section is independently rendered,
-       so the icons stay on the correct side
-       of the dividers.
-    */
-
-    box.sections.forEach(
-        (
-            section,
-            sectionIndex
-        ) => {
-
-            let dotsHTML = "";
-
-
-            section.forEach(item => {
-
-                const color =
-                    colorFromName(
-                        item.name
-                    );
-
-
-                dotsHTML += `
-
-                    <span
-                        class="part-dot"
-                        style="
-                            background:${color};
-                            border-color:${color};
-                        "
-                        title="Stored item"
-                    ></span>
-
-                `;
-
-            });
-
-
-            if (
-                section.length === 0
-            ) {
-
-                dotsHTML = `
-
-                    <span class="empty-section">
-                        Empty
-                    </span>
-
-                `;
-
-            }
-
-
-            sectionsHTML += `
-
-                <div
-                    class="box-section"
-                >
-
-                    <div class="part-dots">
-                        ${dotsHTML}
-                    </div>
-
-                    <div class="section-number">
-                        ${sectionIndex + 1}
-                    </div>
-
-                </div>
-
-            `;
-
-        }
-    );
-
-
-    element.innerHTML = `
-
-        <div class="box-header">
-
-            <span class="box-location">
-                ${boxLocation(box)}
-            </span>
-
-
-            <div class="box-controls">
-
-                <button
-                    class="settings-btn"
-                    title="Box Settings"
-                >
-                    ⚙
-                </button>
-
-
-                <button
-                    class="delete-box-btn"
-                    title="Delete Box"
-                >
-                    ×
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div class="box-body">
-
-            ${sectionsHTML}
-
-
-            <div class="section-indicator">
-                ${box.sections.length}
-                section${box.sections.length === 1 ? "" : "s"}
-            </div>
-
-        </div>
-
-    `;
-
-
-    /*
-       Clicking box opens it.
-    */
-
-    element.addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target.closest(
-                    ".box-controls"
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            openBoxView(
-                box.id
-            );
-
-        }
-    );
-
-
-    /*
-       Settings.
-    */
-
-    element
-        .querySelector(
-            ".settings-btn"
-        )
-        .addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-                editBox(
-                    box.id
-                );
-
-            }
-        );
-
-
-    /*
-       Delete.
-    */
-
-    element
-        .querySelector(
-            ".delete-box-btn"
-        )
-        .addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-                deleteBox(
-                    box.id
-                );
-
-            }
-        );
-
-
-    cabinet.appendChild(
-        element
-    );
-
-}
-
-
-/* =========================================================
-   ADD NEW BOX
-
-   THIS IS DIFFERENT FROM ADD ROW/COLUMN.
-
-   A new box is inserted at:
-
-       1A
-
-   Everything currently in the cabinet shifts
-   down/right according to the normal grid.
-
-   The supplies remain attached to their box.
-========================================================= */
-
-function addNewBox() {
-
-    /*
-       Save the current physical boxes,
-       sorted in visual order.
-    */
-
-    const oldBoxes =
-        [...data.boxes].sort(
-            (a, b) => {
-
-                if (
-                    a.row !== b.row
-                ) {
-
-                    return a.row - b.row;
-
-                }
-
-                return (
-                    a.column -
-                    b.column
-                );
-
-            }
-        );
-
-
-    /*
-       Add one new physical position.
-
-       Since this is a grid, the total number
-       of positions increases by one.
-
-       We use a linear position system.
-    */
-
-    const oldTotal =
-        data.rows *
-        data.columns;
-
-
-    const newTotal =
-        oldTotal + 1;
-
-
-    /*
-       Increase the row count when needed.
-
-       Example with 4 columns:
-
-       12 boxes = 3 rows
-       adding one = 13 boxes = 4 rows
-    */
-
-    const newRows =
-        Math.ceil(
-            newTotal /
-            data.columns
-        );
-
-
-    data.rows =
-        newRows;
-
-
-    /*
-       Create a brand new box for position 1.
-    */
-
-    const newBox =
-        createBox(
-            1,
-            1
-        );
-
-
-    /*
-       Shift every old box one linear
-       position forward.
-
-       Most importantly, we are moving
-       the BOX OBJECT itself.
-
-       Therefore its supplies stay with it.
-    */
-
-    oldBoxes.forEach(
-        (box, index) => {
-
-            const newPosition =
-                index + 2;
-
-
-            box.row =
-                Math.floor(
-                    (newPosition - 1) /
-                    data.columns
-                ) + 1;
-
-
-            box.column =
-                ((newPosition - 1) %
-                data.columns) + 1;
-
-        }
-    );
-
-
-    data.boxes = [
-        newBox,
-        ...oldBoxes
-    ];
-
-
-    /*
-       If adding the new box created a new row,
-       fill any missing positions.
-
-       Example:
-
-       4 columns
-       12 boxes
-       Add new box
-
-       New row 4 only needs box 4A.
-    */
-
-    const occupied =
-        new Set(
-            data.boxes.map(
-                box =>
-                    `${box.row}-${box.column}`
-            )
-        );
-
-
-    for (
-        let row = 1;
-        row <= data.rows;
-        row++
-    ) {
-
-        for (
-            let column = 1;
-            column <= data.columns;
-            column++
-        ) {
-
-            const key =
-                `${row}-${column}`;
-
-
-            if (
-                !occupied.has(key)
-            ) {
-
-                /*
-                   Don't create unused trailing
-                   boxes beyond the intended count.
-                */
-
-                const expected =
-                    data.rows *
-                    data.columns;
-
-
-                if (
-                    data.boxes.length <
-                    expected
-                ) {
-
-                    data.boxes.push(
-                        createBox(
-                            row,
-                            column
-                        )
-                    );
-
-                }
-
-            }
-
-        }
-
-    }
-
-
-    /*
-       Remove any accidental extra boxes
-       caused by the final partially filled row.
-    */
-
-    data.boxes =
-        data.boxes.slice(
-            0,
-            newTotal
-        );
-
-
-    saveData();
-
-    render();
-
-}
-
-
-/* =========================================================
-   ADD ROW
-========================================================= */
-
-function addRow() {
-
-    const newRow =
-        data.rows + 1;
-
-
-    data.rows =
-        newRow;
-
-
-    for (
-        let column = 1;
-        column <= data.columns;
-        column++
-    ) {
-
-        data.boxes.push(
-            createBox(
-                newRow,
-                column
-            )
-        );
-
-    }
-
-
-    saveData();
-
-    render();
-
-}
-
-
-/* =========================================================
-   ADD COLUMN
-========================================================= */
-
-function addColumn() {
-
-    const oldColumns =
-        data.columns;
-
-
-    const newColumn =
-        oldColumns + 1;
-
-
-    /*
-       Reposition boxes into the new
-       wider grid.
-
-       Their supplies remain attached.
-    */
-
-    const boxes =
-        [...data.boxes].sort(
-            (a, b) => {
-
-                if (
-                    a.row !== b.row
-                ) {
-
-                    return a.row - b.row;
-
-                }
-
-                return (
-                    a.column -
-                    b.column
-                );
-
-            }
-        );
-
-
-    data.columns =
-        newColumn;
-
-
-    data.boxes =
-        boxes;
-
-
-    /*
-       Recalculate positions while
-       preserving object/supply ownership.
-    */
-
-    data.boxes.forEach(
-        (box, index) => {
-
-            box.row =
-                Math.floor(
-                    index /
-                    newColumn
-                ) + 1;
-
-
-            box.column =
-                (index %
-                newColumn) + 1;
-
-        }
-    );
-
-
-    /*
-       Add the new boxes necessary
-       to complete every existing row.
-    */
-
-    const required =
-        data.rows *
-        newColumn;
-
-
-    while (
-        data.boxes.length <
-        required
-    ) {
-
-        const index =
-            data.boxes.length;
-
-
-        data.boxes.push(
-            createBox(
-                Math.floor(
-                    index /
-                    newColumn
-                ) + 1,
-
-                (index %
-                newColumn) + 1
-            )
-        );
-
-    }
-
-
-    data.rows =
-        Math.ceil(
-            data.boxes.length /
-            newColumn
-        );
-
-
-    saveData();
-
-    render();
-
-}
-
-
-/* =========================================================
-   OPEN BOX
-========================================================= */
-
-function openBoxView(boxId) {
-
-    const box =
-        data.boxes.find(
-            b =>
-                b.id === boxId
-        );
-
-
-    if (!box) return;
-
-
-    currentlyViewedBox =
-        boxId;
-
-
-    currentlyViewedSection =
-        0;
-
-
-    document.getElementById(
-        "boxViewLocation"
-    ).textContent =
-        boxLocation(box);
-
-
-    renderBoxView();
-
-    openModal(
-        "boxViewModal"
-    );
-
-}
-
-
-/* =========================================================
-   RENDER BOX VIEW
-========================================================= */
-
-function renderBoxView() {
-
-    const box =
-        data.boxes.find(
-            b =>
-                b.id ===
-                currentlyViewedBox
-        );
-
-
-    if (!box) return;
-
-
-    const tabs =
-        document.getElementById(
-            "sectionTabs"
-        );
-
-
-    const content =
-        document.getElementById(
-            "sectionContent"
-        );
-
-
-    tabs.innerHTML = "";
-
-    content.innerHTML = "";
-
-
-    /*
-       Section tabs.
-    */
-
-    box.sections.forEach(
-        (
-            section,
-            index
-        ) => {
-
-            const tab =
-                document.createElement(
-                    "button"
-                );
-
-
-            tab.className =
-                "section-tab";
-
-
-            if (
-                index ===
-                currentlyViewedSection
-            ) {
-
-                tab.classList.add(
-                    "active"
-                );
-
-            }
-
-
-            tab.textContent =
-                `Section ${index + 1}`;
-
-
-            tab.onclick = () => {
-
-                currentlyViewedSection =
-                    index;
-
-
-                renderBoxView();
-
-            };
-
-
-            tabs.appendChild(
-                tab
-            );
-
-        }
-    );
-
-
-    const section =
-        box.sections[
-            currentlyViewedSection
-        ];
-
-
-    const heading =
-        document.createElement(
-            "div"
-        );
-
-
-    heading.className =
-        "section-heading";
-
-
-    heading.textContent =
-        `LOCATION ${sectionLocation(
-            box,
-            currentlyViewedSection
-        )}`;
-
-
-    content.appendChild(
-        heading
-    );
-
-
-    /*
-       Add Item button.
-    */
-
-    const addButton =
-        document.createElement(
-            "button"
-        );
-
-
-    addButton.textContent =
-        "＋ Add Item";
-
-
-    addButton.style.marginBottom =
-        "15px";
-
-
-    addButton.onclick = () => {
-
-        addItem(
-            box.id,
-            currentlyViewedSection
-        );
-
-    };
-
-
-    content.appendChild(
-        addButton
-    );
-
-
-    /*
-       Parts.
-    */
-
-    const list =
-        document.createElement(
-            "div"
-        );
-
-
-    list.className =
-        "parts-list";
-
-
-    if (
-        section.length === 0
-    ) {
-
-        list.innerHTML = `
-
-            <div class="info">
-                This section is empty.
-            </div>
-
-        `;
-
-    }
-
-    else {
-
-        section.forEach(
-            item => {
-
-                const card =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                card.className =
-                    "part-card";
-
-
-                const color =
-                    colorFromName(
-                        item.name
-                    );
-
-
-                card.style.borderLeft =
-                    `5px solid ${color}`;
-
-
-                card.innerHTML = `
-
-                    <div class="part-card-name">
-                        ${escapeHtml(
-                            item.name
-                        )}
-                    </div>
-
-
-                    <div class="part-card-preview">
-
-                        ${
-                            item.count !== null
-                            ?
-                            `Count: ${escapeHtml(
-                                String(item.count)
-                            )}`
-                            :
-                            "Click to view details"
-                        }
-
-                    </div>
-
-                `;
-
-
-                card.onclick = () => {
-
-                    openPartDetails(
-                        box,
-                        currentlyViewedSection,
-                        item
-                    );
-
-                };
-
-
-                list.appendChild(
-                    card
-                );
-
-            }
-        );
-
-    }
-
-
-    content.appendChild(
-        list
-    );
-
-}
-
-
-/* =========================================================
-   PART DETAILS
-========================================================= */
-
-/* =========================================================
-   PART DETAILS
-========================================================= */
-
-function openPartDetails(
-    box,
-    sectionIndex,
-    item
-) {
-
-    const location =
-        sectionLocation(
-            box,
-            sectionIndex
-        );
-
-
-    document.getElementById(
-        "partDetailTitle"
-    ).textContent =
-        item.name;
-
-
-    const body =
-        document.getElementById(
-            "partDetailBody"
-        );
-
-
-    body.innerHTML = `
-
-        <div
-            class="detail-location"
-            style="
-                border-color:${colorFromName(item.name)};
-                color:${colorFromName(item.name)};
-            "
-        >
-            ${location}
-        </div>
-
-
-        <div class="detail-row">
-
-            <div class="detail-label">
-                Part
-            </div>
-
-            <div class="detail-value">
-                ${escapeHtml(item.name)}
-            </div>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <div class="detail-label">
-                Description
-            </div>
-
-            <div class="
-                detail-value
-                ${
-                    item.description === null
-                    ? "null-value"
-                    : ""
-                }
-            ">
-
-                ${
-                    item.description === null
-                    ?
-                    "null"
-                    :
-                    escapeHtml(item.description)
-                }
-
-            </div>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <div class="detail-label">
-                Condition
-            </div>
-
-            <div class="
-                detail-value
-                ${
-                    item.condition === null
-                    ? "null-value"
-                    : ""
-                }
-            ">
-
-                ${
-                    item.condition === null
-                    ?
-                    "null"
-                    :
-                    escapeHtml(item.condition)
-                }
-
-            </div>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <div class="detail-label">
-                Count
-            </div>
-
-            <div class="
-                detail-value
-                ${
-                    item.count === null
-                    ? "null-value"
-                    : ""
-                }
-            ">
-
-                ${
-                    item.count === null
-                    ?
-                    "null"
-                    :
-                    escapeHtml(String(item.count))
-                }
-
-            </div>
-
-        </div>
-
-
-        <div class="detail-row">
-
-            <div class="detail-label">
-                Location
-            </div>
-
-            <div class="detail-value">
-                ${location}
-            </div>
-
-        </div>
-
-
-        <!-- ACTION BUTTONS -->
-
-        <div
-            class="modal-buttons"
-            style="
-                margin-top:20px;
-                justify-content:space-between;
-            "
-        >
-
-            <button
-                class="danger"
-                onclick="
-                    deleteItem(
-                        '${box.id}',
-                        ${sectionIndex},
-                        '${item.id}'
-                    )
-                "
-            >
-                🗑 Delete Item
-            </button>
-
-
-            <div
-                style="
-                    display:flex;
-                    gap:8px;
-                "
-            >
-
-                <button
-                    class="secondary"
-                    onclick="
-                        closeModal('partDetailModal')
-                    "
-                >
-                    Close
-                </button>
-
-
-                <button
-                    onclick="
-                        editItem(
-                            '${box.id}',
-                            ${sectionIndex},
-                            '${item.id}'
-                        )
-                    "
-                >
-                    ✎ Edit Item
-                </button>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    openModal(
-        "partDetailModal"
-    );
-
-}
-
-
-/* =========================================================
-   BOX SETTINGS
-========================================================= */
-
-function editBox(id) {
-
-    const box =
-        data.boxes.find(
-            b =>
-                b.id === id
-        );
-
-
-    if (!box) return;
-
-
-    editingBox =
-        id;
-
-
-    document.getElementById(
-        "dividerCount"
-    ).value =
-        box.sections.length - 1;
-
-
-    openModal(
-        "boxSettingsModal"
-    );
-
-}
-
-
-/* =========================================================
-   SAVE BOX SETTINGS
-========================================================= */
-
-function saveBoxSettings() {
-
-    const box =
-        data.boxes.find(
-            b =>
-                b.id === editingBox
-        );
-
-
-    if (!box) return;
-
-
-    const dividerCount =
-        Number(
-            document.getElementById(
-                "dividerCount"
-            ).value
-        );
-
-
-    const desiredSections =
-        dividerCount + 1;
-
-
-    /*
-       Add sections.
-    */
-
-    while (
-        box.sections.length <
-        desiredSections
-    ) {
-
-        box.sections.push([]);
-
-    }
-
-
-    /*
-       If sections are removed,
-       move their contents into the
-       previous remaining section.
-
-       Nothing gets deleted.
-    */
-
-    while (
-        box.sections.length >
-        desiredSections
-    ) {
-
-        const removed =
-            box.sections.pop();
-
-
-        box.sections[
-            box.sections.length - 1
-        ].push(
-            ...removed
-        );
-
-    }
-
-
-    saveData();
-
-    render();
-
-    closeModal(
-        "boxSettingsModal"
-    );
-
-}
-
-
-/* =========================================================
-   DELETE BOX
-========================================================= */
-
-function deleteBox(id) {
-
-    const box =
-        data.boxes.find(
-            b =>
-                b.id === id
-        );
-
-
-    if (!box) return;
-
-
-    const partCount =
-        box.sections.reduce(
-            (
-                total,
-                section
-            ) =>
-                total +
-                section.length,
-            0
-        );
-
-
-    let message =
-        "Delete this box?";
-
-
-    if (
-        partCount > 0
-    ) {
-
-        message =
-            `This box contains ${partCount} item(s).\n\n` +
-            `Delete the box and all of its contents?`;
-
-    }
-
-
-    if (
-        !confirm(message)
-    ) {
-
-        return;
-
-    }
-
-
-    data.boxes =
-        data.boxes.filter(
-            b =>
-                b.id !== id
-        );
-
-
-    /*
-       Repack remaining boxes.
-
-       Supplies stay attached to their
-       original box objects.
-    */
-
-    const remaining =
-        [...data.boxes].sort(
-            (a, b) => {
-
-                if (
-                    a.row !== b.row
-                ) {
-
-                    return a.row - b.row;
-
-                }
-
-                return (
-                    a.column -
-                    b.column
-                );
-
-            }
-        );
-
-
-    remaining.forEach(
-        (box, index) => {
-
-            box.row =
-                Math.floor(
-                    index /
-                    data.columns
-                ) + 1;
-
-
-            box.column =
-                (index %
-                data.columns) + 1;
-
-        }
-    );
-
-
-    data.boxes =
-        remaining;
-
-
-    data.rows =
-        Math.max(
-            1,
-            Math.ceil(
-                data.boxes.length /
-                data.columns
-            )
-        );
-
-
-    /*
-       Make sure the cabinet has all
-       physical boxes in the grid.
-    */
-
-    const required =
-        data.rows *
-        data.columns;
-
-
-    while (
-        data.boxes.length <
-        required
-    ) {
-
-        const index =
-            data.boxes.length;
-
-
-        data.boxes.push(
-            createBox(
-                Math.floor(
-                    index /
-                    data.columns
-                ) + 1,
-
-                (index %
-                data.columns) + 1
-            )
-        );
-
-    }
-
-
-    saveData();
-
-    render();
-
-    searchItems();
-
-}
-
-
-/* =========================================================
-   ADD ITEM
-========================================================= */
-
-function addItem(
-    boxId,
-    sectionIndex
-) {
-
-    editingBox =
-        boxId;
-
-
-    editingItem = {
-
-        sectionIndex:
-            sectionIndex,
-
-        itemId:
-            null
-
-    };
-
-
-    document.getElementById(
-        "itemModalTitle"
-    ).textContent =
-        "Add Item";
-
-
-    document.getElementById(
-        "itemName"
-    ).value = "";
-
-
-    document.getElementById(
-        "itemDescription"
-    ).value = "";
-
-
-    document.getElementById(
-        "itemCondition"
-    ).value = "";
-
-
-    document.getElementById(
-        "itemCount"
-    ).value = "";
-
-
-    openModal(
-        "itemModal"
-    );
-
-}
-
-/* =========================================================
-   EDIT ITEM
-========================================================= */
-
-function editItem(
-    boxId,
-    sectionIndex,
-    itemId
-) {
-
-    const box =
-        data.boxes.find(
-            b =>
-                b.id === boxId
-        );
-
-
-    if (!box) return;
-
-
-    const section =
-        box.sections[
-            sectionIndex
-        ];
-
-
-    if (!section) return;
-
-
-    const item =
-        section.find(
-            item =>
-                item.id === itemId
-        );
-
-
-    if (!item) return;
-
-
-    /*
-       Remember what we are editing.
-    */
-
-    editingBox =
-        boxId;
-
-
-    editingItem = {
-
-        sectionIndex:
-            sectionIndex,
-
-        itemId:
-            itemId
-
-    };
-
-
-    /*
-       Change modal title.
-    */
-
-    document.getElementById(
-        "itemModalTitle"
-    ).textContent =
-        "Edit Item";
-
-
-    /*
-       Fill the form with the
-       existing information.
-    */
-
-    document.getElementById(
-        "itemName"
-    ).value =
-        item.name || "";
-
-
-    document.getElementById(
-        "itemDescription"
-    ).value =
-        item.description === null
-        ?
-        ""
-        :
-        item.description;
-
-
-    document.getElementById(
-        "itemCondition"
-    ).value =
-        item.condition === null
-        ?
-        ""
-        :
-        item.condition;
-
-
-    document.getElementById(
-        "itemCount"
-    ).value =
-        item.count === null
-        ?
-        ""
-        :
-        item.count;
-
-
-    /*
-       Close the details window.
-    */
-
-    closeModal(
-        "partDetailModal"
-    );
-
-
-    /*
-       Open editor.
-    */
-
-    openModal(
-        "itemModal"
-    );
-
-}
-
-/* =========================================================
-   DELETE ITEM
-========================================================= */
-
-function deleteItem(
-    boxId,
-    sectionIndex,
-    itemId
-) {
-
-    const box =
-        data.boxes.find(
-            b =>
-                b.id === boxId
-        );
-
-
-    if (!box) return;
-
-
-    const section =
-        box.sections[
-            sectionIndex
-        ];
-
-
-    if (!section) return;
-
-
-    const itemIndex =
-        section.findIndex(
-            item =>
-                item.id === itemId
-        );
-
-
-    if (
-        itemIndex === -1
-    ) {
-
-        return;
-
-    }
-
-
-    const item =
-        section[itemIndex];
-
-
-    /*
-       Make sure the user actually
-       wants to delete it.
-    */
-
-    const confirmed =
-        confirm(
-            `Delete "${item.name}"?\n\n` +
-            `This cannot be undone.`
-        );
-
-
-    if (!confirmed) {
-
-        return;
-
-    }
-
-
-    /*
-       Remove only this item.
-
-       Everything else in the
-       section stays untouched.
-    */
-
-    section.splice(
-        itemIndex,
-        1
-    );
-
-
-    /*
-       Save changes.
-    */
-
-    saveData();
-
-
-    /*
-       Close details.
-    */
-
-    closeModal(
-        "partDetailModal"
-    );
-
-
-    /*
-       Refresh cabinet.
-    */
-
-    render();
-
-
-    /*
-       Refresh currently opened box.
-    */
-
-    if (
-        currentlyViewedBox === boxId
-    ) {
-
-        renderBoxView();
-
-    }
-
-
-    /*
-       Refresh search results.
-    */
-
-    searchItems();
-
-}
-
-/* =========================================================
-   SAVE ITEM
-========================================================= */
-
-function saveItem() {
-
-    const name =
-        document.getElementById(
-            "itemName"
-        ).value.trim();
-
-
-    const descriptionRaw =
-        document.getElementById(
-            "itemDescription"
-        ).value.trim();
-
-
-    const conditionRaw =
-        document.getElementById(
-            "itemCondition"
-        ).value.trim();
-
-
-    const countRaw =
-        document.getElementById(
-            "itemCount"
-        ).value.trim();
-
-
-    /*
-       Name is required.
-    */
-
-    if (!name) {
-
-        alert(
-            "Please enter a part name."
-        );
-
-        return;
-
-    }
-
-
-    /*
-       Blank text fields become null.
-    */
-
-    const description =
-        descriptionRaw === ""
-        ?
-        null
-        :
-        descriptionRaw;
-
-
-    const condition =
-        conditionRaw === ""
-        ?
-        null
-        :
-        conditionRaw;
-
-
-    /*
-       Blank count becomes null.
-    */
-
-    let count = null;
-
-
-    if (
-        countRaw !== ""
-    ) {
-
-        const parsed =
-            Number(countRaw);
-
-
-        if (
-            !Number.isFinite(parsed) ||
-            parsed < 0
-        ) {
-
-            alert(
-                "Count must be a valid number."
-            );
-
-            return;
-
-        }
-
-
-        count =
-            parsed;
-
-    }
-
-
-    /*
-       Find the box.
-    */
-
-    const box =
-        data.boxes.find(
-            b =>
-                b.id === editingBox
-        );
-
-
-    if (!box) {
-
-        return;
-
-    }
-
-
-    /*
-       Find the section.
-    */
-
-    const section =
-        box.sections[
-            editingItem.sectionIndex
-        ];
-
-
-    if (!section) {
-
-        return;
-
-    }
-
-
-    /*
-       =====================================================
-       EDIT EXISTING ITEM
-       =====================================================
-    */
-
-    if (
-        editingItem.itemId !== null
-    ) {
-
-        const item =
-            section.find(
-                item =>
-                    item.id ===
-                    editingItem.itemId
-            );
-
-
-        if (!item) {
-
-            alert(
-                "Could not find the item."
-            );
-
-            return;
-
-        }
-
-
-        /*
-           Update the existing object.
-
-           Notice that the ID is NOT changed.
-           This is important because search,
-           references, etc. can continue using it.
-        */
-
-        item.name =
-            name;
-
-        item.description =
-            description;
-
-        item.condition =
-            condition;
-
-        item.count =
-            count;
-
-    }
-
-
-    /*
-       =====================================================
-       ADD NEW ITEM
-       =====================================================
-    */
-
-    else {
-
-        section.push({
-
-            id:
-                crypto.randomUUID(),
-
-            name:
-                name,
-
-            description:
-                description,
-
-            condition:
-                condition,
-
-            count:
-                count
-
-        });
-
-    }
-
-
-    /*
-       Save everything.
-    */
-
-    saveData();
-
-
-    /*
-       Refresh cabinet.
-    */
-
-    render();
-
-
-    /*
-       Refresh open box.
-    */
-
-    if (
-        currentlyViewedBox ===
-        editingBox
-    ) {
-
-        renderBoxView();
-
-    }
-
-
-    /*
-       Refresh search.
-    */
-
-    searchItems();
-
-
-    /*
-       Close editor.
-    */
-
-    closeModal(
-        "itemModal"
-    );
-
-
-    /*
-       Reset editing state.
-    */
-
-    editingItem =
-        null;
-
-    editingBox =
-        null;
-
-}
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-function searchItems() {
-
-    const query =
-        document.getElementById(
-            "search"
-        ).value
-        .trim()
-        .toLowerCase();
-
-
-    const results =
-        document.getElementById(
-            "searchResults"
-        );
-
-
-    results.innerHTML = "";
-
-
-    removeHighlights();
-
-
-    if (!query) {
-
-        return;
-
-    }
-
-
-    const matches = [];
-
-
-    data.boxes.forEach(
-        box => {
-
-            box.sections.forEach(
-                (
-                    section,
-                    sectionIndex
-                ) => {
-
-                    section.forEach(
-                        item => {
-
-                            const location =
-                                sectionLocation(
-                                    box,
-                                    sectionIndex
-                                );
-
-
-                            const searchable =
-                                [
-                                    item.name,
-                                    item.description,
-                                    item.condition,
-                                    item.count,
-                                    location
-                                ]
-                                .filter(
-                                    value =>
-                                        value !== null &&
-                                        value !== undefined
-                                )
-                                .join(" ")
-                                .toLowerCase();
-
-
-                            if (
-                                searchable.includes(
-                                    query
-                                )
-                            ) {
-
-                                matches.push({
-
-                                    item,
-                                    box,
-                                    sectionIndex,
-                                    location
-
-                                });
-
-                            }
-
-                        }
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-    if (
-        matches.length === 0
-    ) {
-
-        results.innerHTML = `
-
-            <div class="search-result">
-                No matching items found.
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    matches.forEach(
-        match => {
-
-            const result =
-                document.createElement(
-                    "div"
-                );
-
-
-            result.className =
-                "search-result";
-
-
-            result.innerHTML = `
-
-                <strong>
-                    ${escapeHtml(
-                        match.item.name
-                    )}
-                </strong>
-
-                <br>
-
-                <span class="location">
-                    ${match.location}
-                </span>
-
-
-                ${
-                    match.item.condition !== null
-                    ?
-                    `
-                    <br>
-                    <small>
-                        Condition:
-                        ${escapeHtml(
-                            String(
-                                match.item.condition
-                            )
-                        )}
-                    </small>
-                    `
-                    :
-                    ""
-                }
-
-
-                ${
-                    match.item.count !== null
-                    ?
-                    `
-                    <br>
-                    <small>
-                        Count:
-                        ${escapeHtml(
-                            String(
-                                match.item.count
-                            )
-                        )}
-                    </small>
-                    `
-                    :
-                    ""
-                }
-
-            `;
-
-
-            result.onclick = () => {
-
-                highlightBox(
-                    match.box
-                );
-
-
-                currentlyViewedBox =
-                    match.box.id;
-
-
-                currentlyViewedSection =
-                    match.sectionIndex;
-
-
-                document.getElementById(
-                    "boxViewLocation"
-                ).textContent =
-                    boxLocation(
-                        match.box
-                    );
-
-
-                renderBoxView();
-
-
-                openModal(
-                    "boxViewModal"
-                );
-
-
-                setTimeout(
-                    () => {
-
-                        openPartDetails(
-                            match.box,
-                            match.sectionIndex,
-                            match.item
-                        );
-
-                    },
-                    150
-                );
-
-            };
-
-
-            results.appendChild(
-                result
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   HIGHLIGHT
-========================================================= */
-
-function highlightBox(box) {
-
-    removeHighlights();
-
-
-    const element =
-        document.getElementById(
-            `box-${box.id}`
-        );
-
-
-    if (!element) return;
-
-
-    element.classList.add(
-        "highlight"
-    );
-
-
-    element.scrollIntoView({
-
-        behavior:
-            "smooth",
-
-        block:
-            "center",
-
-        inline:
-            "center"
-
+    document.getElementById('progress-done').textContent = done;
+    document.getElementById('progress-total').textContent = '/' + total + ' done';
+    Object.keys(dayEls).forEach(updateDayCompletion);
+    updateRail();
+  }
+
+  checkItems.forEach(item=>{
+    const id = item.dataset.id;
+    const input = item.querySelector('.check input');
+    if(state.done[id]){ input.checked = true; item.classList.add('done'); }
+    input.addEventListener('change', ()=>{
+      state.done[id] = input.checked;
+      item.classList.toggle('done', input.checked);
+      persist();
+      updateProgress();
     });
+  });
 
+  /* ---------- optional groups ---------- */
+  function applyOptional(key, checked){
+    const group = document.getElementById('group-' + key);
+    if(!group) return;
+    group.classList.toggle('skipped', !checked);
+    const hideOptional = document.getElementById('hide-optional-toggle').checked;
+    group.style.display = (hideOptional && !checked) ? 'none' : '';
+  }
+  ['moraine','calgary'].forEach(key=>{
+    const toggle = document.getElementById('toggle-' + key);
+    toggle.checked = state.optional[key];
+    applyOptional(key, toggle.checked);
+    toggle.addEventListener('change', ()=>{
+      state.optional[key] = toggle.checked;
+      persist();
+      applyOptional(key, toggle.checked);
+      updateProgress();
+      toast(toggle.checked ? 'Added back to the plan' : 'Marked as skipped');
+    });
+  });
 
-    setTimeout(
-        () => {
+  /* Re-applies state.done / state.optional to the DOM — used when a remote update arrives. */
+  function renderFromState(){
+    checkItems.forEach(item=>{
+      const id = item.dataset.id;
+      const input = item.querySelector('.check input');
+      const isDone = !!state.done[id];
+      input.checked = isDone;
+      item.classList.toggle('done', isDone);
+    });
+    ['moraine','calgary'].forEach(function(key){
+      const toggle = document.getElementById('toggle-' + key);
+      if(!toggle) return;
+      toggle.checked = state.optional[key] !== false;
+      applyOptional(key, toggle.checked);
+    });
+    updateProgress();
+  }
 
-            element.classList.remove(
-                "highlight"
-            );
+  const hideOptionalToggle = document.getElementById('hide-optional-toggle');
+  hideOptionalToggle.addEventListener('change', ()=>{
+    ['moraine','calgary'].forEach(key=>{
+      applyOptional(key, document.getElementById('toggle-' + key).checked);
+    });
+  });
 
-        },
-        5000
-    );
+  updateProgress();
 
-}
+  /* ---------- reset ---------- */
+  document.getElementById('reset-btn').addEventListener('click', ()=>{
+    state.done = {};
+    state.optional = { moraine:true, calgary:true };
+    persist();
+    renderFromState();
+    toast('Checklist reset' + (ghConfigured ? ' everywhere' : ''));
+  });
 
+  /* ---------- theme toggle (local display preference only, not synced) ---------- */
+  const themeBtn = document.getElementById('theme-toggle');
+  function applyTheme(t){
+    document.documentElement.classList.toggle('theme-aurora', t === 'aurora');
+  }
+  applyTheme(state.theme);
+  themeBtn.addEventListener('click', ()=>{
+    state.theme = state.theme === 'alpenglow' ? 'aurora' : 'alpenglow';
+    applyTheme(state.theme);
+    saveLocal();
+  });
 
-/* =========================================================
-   REMOVE HIGHLIGHTS
-========================================================= */
+  /* ---------- scrollspy + scroll progress ---------- */
+  const dayLinks = document.querySelectorAll('.days a');
+  const daySections = document.querySelectorAll('.day');
+  const scrollBar = document.getElementById('scroll-progress');
 
-function removeHighlights() {
+  function onScroll(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const frac = docHeight > 0 ? scrollTop / docHeight : 0;
+    scrollBar.style.width = (frac * 100) + '%';
+    updateRail();
 
-    document
-        .querySelectorAll(
-            ".cabinet-box.highlight"
-        )
-        .forEach(
-            element => {
+    document.querySelectorAll('.ridge-layer').forEach(layer=>{
+      const speed = parseFloat(layer.dataset.speed || '0.2');
+      layer.style.transform = 'translateY(' + (scrollTop * speed * 0.15) + 'px)';
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
 
-                element.classList.remove(
-                    "highlight"
-                );
+  const spy = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      const link = document.querySelector('.days a[data-day="' + e.target.id + '"]');
+      if(!link) return;
+      if(e.isIntersecting){
+        dayLinks.forEach(l=>l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin:'-40% 0px -50% 0px' });
+  daySections.forEach(d=>spy.observe(d));
 
-            }
-        );
+  const reveal = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('revealed');
+        reveal.unobserve(e.target);
+      }
+    });
+  }, { threshold:0.12 });
+  daySections.forEach(d=>reveal.observe(d));
 
-}
-
-
-/* =========================================================
-   MODALS
-========================================================= */
-
-function openModal(id) {
-
-    document
-        .getElementById(id)
-        .classList.add(
-            "show"
-        );
-
-}
-
-
-function closeModal(id) {
-
-    document
-        .getElementById(id)
-        .classList.remove(
-            "show"
-        );
-
-}
-
-
-/* =========================================================
-   CLICK OUTSIDE MODAL
-========================================================= */
-
-document
-    .querySelectorAll(
-        ".modal-backdrop"
-    )
-    .forEach(
-        backdrop => {
-
-            backdrop.addEventListener(
-                "click",
-                event => {
-
-                    if (
-                        event.target ===
-                        backdrop
-                    ) {
-
-                        backdrop.classList.remove(
-                            "show"
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value) {
-
-    return String(value)
-
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-
-}
-
-
-/* =========================================================
-   ESCAPE KEY
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key ===
-            "Escape"
-        ) {
-
-            document
-                .querySelectorAll(
-                    ".modal-backdrop.show"
-                )
-                .forEach(
-                    modal => {
-
-                        modal.classList.remove(
-                            "show"
-                        );
-
-                    }
-                );
-
-        }
-
+  /* ---------- countdown: wheels roll 5:30pm Sept 4, 2026 ---------- */
+  const target = new Date('2026-09-04T17:30:00');
+  function tickCountdown(){
+    const now = new Date();
+    let diff = target - now;
+    const label = document.querySelector('.countdown-label');
+    if(diff <= 0){
+      document.getElementById('cd-days').textContent = '0';
+      document.getElementById('cd-hours').textContent = '00';
+      document.getElementById('cd-mins').textContent = '00';
+      document.getElementById('cd-secs').textContent = '00';
+      label.textContent = 'On the road';
+      return;
     }
-);
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent = d;
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+  }
+  tickCountdown();
+  setInterval(tickCountdown, 1000);
 
+  /* ---------- clouds: purely decorative, drifting across the hero ---------- */
+  const cloudLayer = document.getElementById('cloud-layer');
+  const cloudConfigs = [
+    {top:10, left:4,  w:120, dur:46, delay:0},
+    {top:20, left:18, w:80,  dur:58, delay:-8},
+    {top:6,  left:32, w:150, dur:64, delay:-22},
+    {top:28, left:46, w:70,  dur:40, delay:-4},
+    {top:14, left:58, w:110, dur:52, delay:-30},
+    {top:34, left:70, w:90,  dur:60, delay:-14},
+    {top:8,  left:82, w:130, dur:70, delay:-40},
+    {top:24, left:92, w:75,  dur:44, delay:-18},
+    {top:38, left:8,  w:95,  dur:66, delay:-50},
+    {top:2,  left:60, w:65,  dur:38, delay:-6},
+    {top:44, left:28, w:100, dur:56, delay:-26},
+    {top:16, left:74, w:60,  dur:34, delay:-2},
+    {top:32, left:2,  w:85,  dur:62, delay:-36},
+    {top:40, left:88, w:110, dur:50, delay:-10},
+    {top:12, left:40, w:70,  dur:48, delay:-16},
+    {top:26, left:12, w:90,  dur:54, delay:-28},
+    {top:4,  left:96, w:60,  dur:42, delay:-34},
+    {top:36, left:54, w:80,  dur:58, delay:-46}
+  ];
+  function makeCloud(cfg){
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 100 40');
+    svg.classList.add('cloud');
+    svg.style.top = cfg.top + '%';
+    svg.style.left = cfg.left + '%';
+    svg.style.width = cfg.w + 'px';
+    svg.style.animationDuration = cfg.dur + 's';
+    svg.style.animationDelay = cfg.delay + 's';
+    svg.innerHTML = '<ellipse cx="30" cy="24" rx="26" ry="12" fill="#f3ede0"/><ellipse cx="58" cy="18" rx="20" ry="14" fill="#f3ede0"/><ellipse cx="75" cy="26" rx="18" ry="10" fill="#f3ede0"/>';
+    return svg;
+  }
+  cloudConfigs.forEach(cfg=> cloudLayer.appendChild(makeCloud(cfg)) );
 
-/* =========================================================
-   START
-========================================================= */
-
-loadData();
-
-render();
-
+  /* ---------- ICS export ---------- */
+  const dayMeta = {
+    d1: { date:'20260904', title:'Drive to Houston' },
+    d2: { date:'20260905', title:'Fly to Calgary, drive to Cline River' },
+    d3: { date:'20260906', title:'Icefields Parkway to Jasper, back to Canmore' },
+    d4: { date:'20260907', title:'Lake Louise / Moraine, Bow Valley Parkway' },
+    d5: { date:'20260908', title:'Banff, then Calgary' },
+    d6: { date:'20260909', title:'Fly home to Houston' }
+  };
+  document.querySelectorAll('.ics-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.ics;
+      const meta = dayMeta[key];
+      const section = document.getElementById(key);
+      const stopNames = Array.from(section.querySelectorAll('.stop-name')).map(n=>n.textContent.trim());
+      const desc = stopNames.join('\\n');
+      const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Rockies Trip//EN',
+        'BEGIN:VEVENT',
+        'UID:' + key + '-rockies-2026@trip',
+        'DTSTART;VALUE=DATE:' + meta.date,
+        'SUMMARY:' + meta.title,
+        'DESCRIPTION:' + desc.replace(/\\n/g, '\\\\n'),
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\\r\\n');
+      const blob = new Blob([ics], { type:'text/calendar' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = key + '-rockies-trip.ics';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast('Calendar file downloaded');
+    });
+  });
+}catch(err){
+  console.error('Itinerary script error:', err);
+  document.querySelectorAll('.day').forEach(function(d){ d.classList.add('revealed'); });
+}
+})();
 </script>
 
 </body>
